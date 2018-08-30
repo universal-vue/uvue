@@ -9,5 +9,12 @@
   "devDependencies": {
     "@vue/cli-service": "^3.0.1",
     "@vue/eslint-config-prettier": "^3.0.1"
+  },
+  "dependencies": {
+    "html-webpack-plugin": "^3.2.0",
+    "vue-server-renderer": "^2.5.17",
+    "webpack": "^4.17.1",
+    "webpack-node-externals": "^1.7.2",
+    "webpackbar": "^2.6.3"
   }
 }
