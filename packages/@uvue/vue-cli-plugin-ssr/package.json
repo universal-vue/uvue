@@ -1,11 +1,24 @@
 {
   "name": "@uvue/vue-cli-plugin-ssr",
   "version": "0.4.0-alpha.0",
-  "description": "Vue CLI plugin for UVue",
+  "description": "Vue CLI plugin for UVue SSR (Server side rendering)",
   "main": "index.js",
   "repository": "https://github.com/universal-vue/uvue",
+  "bugs": {
+    "url": "https://github.com/universal-vue/uvue/issues"
+  },
+  "homepage": "https://uvue.github.io/docs/",
   "author": "Simon Babay <simon@babay.fr>",
   "license": "MIT",
+  "keywords": [
+    "vue",
+    "vuejs",
+    "cli",
+    "plugin",
+    "ssr",
+    "server",
+    "uvue"
+  ],
   "devDependencies": {
     "@vue/cli-service": "^3.0.1",
     "@vue/eslint-config-prettier": "^3.0.1"
