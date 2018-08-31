@@ -1,0 +1,6 @@
+node_modules/
+src/
+.editorconfig
+.prettierrc
+tsconfig.json
+tslint.json
