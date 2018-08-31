@@ -7,7 +7,7 @@
   "bugs": {
     "url": "https://github.com/universal-vue/uvue/issues"
   },
-  "homepage": "https://uvue.github.io/docs/",
+  "homepage": "https://universal-vue.github.io/docs/",
   "author": "Simon Babay <simon@babay.fr>",
   "license": "MIT",
   "keywords": [
@@ -17,7 +17,9 @@
     "plugin",
     "ssr",
     "server",
-    "uvue"
+    "uvue",
+    "universal",
+    "isomorphic"
   ],
   "devDependencies": {
     "@vue/cli-service": "^3.0.1",
