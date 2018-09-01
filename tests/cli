@@ -19,7 +19,7 @@ const os = require('os');
   }
 
   if (!fs.existsSync(`packages/tests/${name}/src/main.js`)) {
-    await tm.create();
+    await tm.create(name);
   }
 
   switch (command) {

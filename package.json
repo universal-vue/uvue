@@ -16,6 +16,7 @@
   "devDependencies": {
     "@vue/cli": "^3.0.1",
     "@vue/cli-test-utils": "^3.0.1",
+    "deepmerge": "^2.1.1",
     "esm": "^3.0.80",
     "execa": "^1.0.0",
     "jest": "^23.5.0",

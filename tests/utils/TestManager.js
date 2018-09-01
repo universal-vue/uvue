@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import execa from 'execa';
 import vueCreate from '@vue/cli-test-utils/createTestProject';
+import deepMerge from 'deepmerge';
 
 export class TestManager {
   constructor(baseDir = process.cwd()) {
@@ -45,7 +46,7 @@ export class TestManager {
     let packageData = JSON.parse(await fs.readFile(packagePath));
 
     // Override package.json
-    Object.assign(packageData, data);
+    packageData = deepMerge(packageData, data);
 
     // Update package.json
     await fs.writeFile(packagePath, JSON.stringify(packageData, null, 2));
@@ -76,14 +77,10 @@ export class TestManager {
     const projectPath = path.join(this.baseDir, name);
 
     // Vue invoke command
-    await execa(
-      require.resolve('@vue/cli/bin/vue'),
-      ['invoke', '@uvue/vue-cli-plugin-ssr'],
-      {
-        cwd: projectPath,
-        stdio: 'inherit',
-      },
-    );
+    await execa(require.resolve('@vue/cli/bin/vue'), ['invoke', '@uvue/vue-cli-plugin-ssr'], {
+      cwd: projectPath,
+      stdio: 'inherit',
+    });
 
     // Setup syminlks
     await this.updatePackage(name, {
