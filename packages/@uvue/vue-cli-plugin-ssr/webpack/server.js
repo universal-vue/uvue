@@ -55,7 +55,7 @@ module.exports = (api, chainConfig) => {
     });
 
   // Replace Webpack Bar configuration
-  chainConfig.plugin('webpack-bar').tap(args => {
+  chainConfig.plugin('webpack-bar').tap(() => {
     return [{ name: 'Server', color: 'orange' }];
   });
 
@@ -65,17 +65,11 @@ module.exports = (api, chainConfig) => {
   for (const rule of config.module.rules) {
     if (rule.use) {
       for (const item of rule.use) {
-        if (item.loader === 'cache-loader' && !client) {
-          // Change cache directory for server-side
+        if (item.loader === 'cache-loader' || item.loader === 'vue-loader') {
           item.options.cacheIdentifier += '-server';
           item.options.cacheDirectory += '-server';
-        } else if (item.loader === 'vue-loader') {
-          // Optimize SSR only on server-side
-          if (client) {
-            item.options.optimizeSSR = false;
-          } else {
-            item.options.cacheIdentifier += '-server';
-            item.options.cacheDirectory += '-server';
+
+          if (item.loader === 'vue-loader') {
             item.options.optimizeSSR = true;
           }
         }

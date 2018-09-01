@@ -3,6 +3,11 @@
   "version": "0.4.0-alpha.0",
   "description": "Vue CLI plugin for UVue SSR (Server side rendering)",
   "main": "index.js",
+  "scripts": {
+    "lint": "eslint './**/*.js'",
+    "lint:fix": "eslint --fix './**/*.js'",
+    "format": "prettier --ignore-path .gitignore --write './**/*.js'"
+  },
   "repository": "https://github.com/universal-vue/uvue",
   "bugs": {
     "url": "https://github.com/universal-vue/uvue/issues"
@@ -23,7 +28,11 @@
   ],
   "devDependencies": {
     "@vue/cli-service": "^3.0.1",
-    "@vue/eslint-config-prettier": "^3.0.1"
+    "@vue/eslint-config-prettier": "^3.0.1",
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.5.0",
+    "eslint-plugin-vue": "^4.7.1",
+    "vue-eslint-parser": "^3.2.2"
   },
   "dependencies": {
     "html-webpack-plugin": "^3.2.0",

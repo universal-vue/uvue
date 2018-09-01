@@ -6,7 +6,7 @@ const defineOptions = require('./defineOptions');
 
 module.exports = (api, options = {}) => {
   const opts = Object.assign({ client: true, ssr: true }, options);
-  const { client, ssr } = opts;
+  const { client } = opts;
 
   // Get base config from SPA
   const chainConfig = spaConfig(api, true);
@@ -89,8 +89,8 @@ module.exports = (api, options = {}) => {
   });
 
   if (client) {
-    return require('./client');
+    return require('./client')(api, chainConfig);
   } else {
-    return require('./server');
+    return require('./server')(api, chainConfig);
   }
 };
