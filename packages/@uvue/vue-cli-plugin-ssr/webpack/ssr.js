@@ -1,6 +1,5 @@
 const HtmlWebpack = require('html-webpack-plugin');
 const WebpackBar = require('webpackbar');
-const spaConfig = require('./spa');
 const cssConfig = require('./css');
 const defineOptions = require('./defineOptions');
 
@@ -9,11 +8,11 @@ module.exports = (api, options = {}) => {
   const { client } = opts;
 
   // Get base config from SPA
-  const chainConfig = spaConfig(api, true);
+  const chainConfig = api.resolveChainableWebpackConfig();
 
   // Change template for HTMLWebpackPlugin
   let htmlOptions = {
-    template: this.api.resolve(api.uvue.getConfig('paths.template')),
+    template: api.resolve('index.html'),
     filename: 'assets/ssr.html',
   };
 
@@ -27,6 +26,7 @@ module.exports = (api, options = {}) => {
     htmlOptions = {
       ...args[0],
       ...htmlOptions,
+      filename: 'assets/ssr.html',
       inject: false,
       templateParameters: params,
     };
@@ -67,14 +67,16 @@ module.exports = (api, options = {}) => {
     return args;
   });
 
+  chainConfig.plugins.delete('friendly-errors');
+
   // Remove default progress bar
   chainConfig.plugins.delete('progress');
 
   // Add Webpack Bar
-  chainConfig
-    .plugin('webpack-bar')
-    .use(WebpackBar, [{ name: 'Client', color: 'green' }])
-    .before('vue-loader');
+  // chainConfig
+  //   .plugin('webpack-bar')
+  //   .use(WebpackBar, [{ name: 'Client', color: 'green' }])
+  //   .before('vue-loader');
 
   // CSS management
   cssConfig(api, chainConfig);

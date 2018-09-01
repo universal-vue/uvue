@@ -4,11 +4,7 @@ module.exports = (api, chainConfig) => {
   const oneOfsNames = [];
 
   // No extract: All CSS will be inlined
-  if (!api.uvue.getConfig('css.extract')) {
-    oneOfsNames.push('normal', 'normal-modules', 'vue', 'vue-modules');
-  } else {
-    oneOfsNames.push('vue', 'vue-modules');
-  }
+  oneOfsNames.push('normal', 'normal-modules', 'vue', 'vue-modules');
 
   // Replace extract css loader by vue style loader
   if (oneOfsNames.length) {

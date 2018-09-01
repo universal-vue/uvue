@@ -38,26 +38,26 @@ module.exports = (api, chainConfig) => {
   chainConfig.performance.maxAssetSize(Infinity);
 
   // Change babel configs
-  chainConfig.module.rules
-    .get('js')
-    .uses.get('babel-loader')
-    .options({
-      presets: [
-        [
-          '@vue/app',
-          {
-            targets: { node: 'current' },
-            // No need to regenator on node
-            exclude: ['transform-regenerator'],
-          },
-        ],
-      ],
-    });
+  // chainConfig.module.rules
+  //   .get('js')
+  //   .uses.get('babel-loader')
+  //   .options({
+  //     presets: [
+  //       [
+  //         '@vue/app',
+  //         {
+  //           targets: { node: 'current' },
+  //           // No need to regenator on node
+  //           exclude: ['transform-regenerator'],
+  //         },
+  //       ],
+  //     ],
+  //   });
 
   // Replace Webpack Bar configuration
-  chainConfig.plugin('webpack-bar').tap(() => {
-    return [{ name: 'Server', color: 'orange' }];
-  });
+  // chainConfig.plugin('webpack-bar').tap(() => {
+  //   return [{ name: 'Server', color: 'orange' }];
+  // });
 
   const config = api.resolveWebpackConfig(chainConfig);
 
