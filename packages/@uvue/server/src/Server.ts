@@ -154,6 +154,11 @@ export class Server implements IServer {
           // Render page body
           response.body = await this.renderer.render(context);
 
+          // Check if there is a redirection
+          if (context.redirected) {
+            return;
+          }
+
           // Hook before building the page
           await this.callHook('beforeBuild', response, context, this);
 
@@ -180,6 +185,11 @@ export class Server implements IServer {
 
     // Hook after response was sent
     this.callHook('afterResponse', context, this);
+
+    return {
+      context,
+      response,
+    };
   }
 
   /**
