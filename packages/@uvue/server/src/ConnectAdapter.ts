@@ -1,6 +1,7 @@
-import connect, { HandleFunction } from 'connect';
-import http from 'http';
-import https from 'https';
+import * as connect from 'connect';
+import { HandleFunction } from 'connect';
+import * as http from 'http';
+import * as https from 'https';
 import { IAdapter, IAdapterOptions } from './interfaces';
 
 /**
@@ -28,7 +29,7 @@ export class ConnectAdapter implements IAdapter {
     this.app = connect();
 
     // Create HTTP server
-    const httpsOptions = this.options.https;
+    const httpsOptions = this.options.https || { key: null, cert: null };
     if (httpsOptions.key && httpsOptions.cert) {
       this.server = https.createServer(httpsOptions, this.app);
     } else {
@@ -52,8 +53,11 @@ export class ConnectAdapter implements IAdapter {
    * Start server
    */
   public start(): Promise<void> {
-    return new Promise(resolve => {
-      this.server.listen(this.options.port, this.options.host, () => {
+    return new Promise((resolve, reject) => {
+      this.server.listen(this.options.port, this.options.host, err => {
+        if (err) {
+          return reject(err);
+        }
         resolve();
       });
     });

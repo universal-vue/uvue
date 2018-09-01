@@ -1,11 +1,14 @@
-import MFS from 'memory-fs';
-import path from 'path';
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
+import * as MFS from 'memory-fs';
+import * as path from 'path';
+import * as webpack from 'webpack';
+import * as webpackDevMiddleware from 'webpack-dev-middleware';
+import * as webpackHotMiddleware from 'webpack-hot-middleware';
 import { IServer } from './interfaces';
 
-export const setupDevMiddleware = async (app: IServer, callback: (...args: any[]) => void) => {
+export const setupDevMiddleware = async (
+  app: IServer,
+  callback: (...args: any[]) => void,
+): Promise<any> => {
   const { client, server } = app.options.webpack;
 
   // Vue SSR

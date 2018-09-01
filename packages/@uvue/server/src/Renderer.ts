@@ -1,4 +1,4 @@
-import lruCache from 'lru-cache';
+import * as lruCache from 'lru-cache';
 import { BundleRenderer, createBundleRenderer } from 'vue-server-renderer';
 import { IRenderer, IRendererOptions, IRequestContext } from './interfaces';
 

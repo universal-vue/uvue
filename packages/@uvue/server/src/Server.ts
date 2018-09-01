@@ -4,6 +4,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import micromatch from 'micromatch';
 import { join } from 'path';
 import { ConnectAdapter } from './ConnectAdapter';
+import { setupDevMiddleware } from './devMiddleware';
 import { IAdapter, IRenderer, IRequestContext, IServer, IServerOptions } from './interfaces';
 import { Renderer } from './Renderer';
 
@@ -41,6 +42,7 @@ export class Server implements IServer {
       this.options.adapter = ConnectAdapter;
     }
     this.adapter = new this.options.adapter(options.httpOptions);
+    this.templates = { spa: '', ssr: '' };
   }
 
   /**
@@ -95,9 +97,9 @@ export class Server implements IServer {
     let readyPromise = Promise.resolve();
 
     // Setup renderer
-    if (!this.options.webpack) {
+    if (this.options.webpack) {
       // Development mode
-      readyPromise = require('./devMiddleware')((serverBundle, { clientManifest }) => {
+      readyPromise = setupDevMiddleware(this, (serverBundle, { clientManifest }) => {
         this.renderer = new Renderer(serverBundle, {
           ...this.options.renderer,
           clientManifest,
@@ -119,6 +121,8 @@ export class Server implements IServer {
 
     // Setup last middleware: renderer
     this.use((req: IncomingMessage, res: ServerResponse) => this.renderMiddleware(req, res));
+
+    return this.adapter.start();
   }
 
   /**
@@ -173,6 +177,9 @@ export class Server implements IServer {
         this.sendResponse(response, context);
       }
     } catch (err) {
+      // tslint:disable-next-line
+      console.error(err);
+
       // Catch errors
       await this.callHook('routeError', err, response, context, this);
 
