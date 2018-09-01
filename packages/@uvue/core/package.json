@@ -4,6 +4,21 @@
   "description": "UVue core package",
   "main": "index.js",
   "repository": "https://github.com/universal-vue/uvue",
+  "bugs": {
+    "url": "https://github.com/universal-vue/uvue/issues"
+  },
+  "homepage": "https://universal-vue.github.io/docs/",
   "author": "Simon Babay <simon@babay.fr>",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "vuejs",
+    "cli",
+    "plugin",
+    "ssr",
+    "server",
+    "uvue",
+    "universal",
+    "isomorphic"
+  ]
 }
