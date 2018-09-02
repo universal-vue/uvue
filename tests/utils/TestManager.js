@@ -21,7 +21,9 @@ export class TestManager {
     const preset = {
       router: true,
       routerHistoryMode: true,
-      plugins: ['@vue/cli-plugin-babel'],
+      plugins: {
+        '@vue/cli-plugin-babel': {},
+      },
     };
 
     // Check tests path exists

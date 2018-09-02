@@ -8,7 +8,6 @@ const fs = require('fs');
 const { TestManager } = require('./utils/TestManager');
 const yargv = require('yargs').argv;
 const execa = require('execa');
-const os = require('os');
 
 (async () => {
   const tm = new TestManager('packages/tests');
