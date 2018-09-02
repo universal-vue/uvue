@@ -5,7 +5,7 @@ const defineOptions = require('./defineOptions');
 
 module.exports = (api, options = {}) => {
   const opts = Object.assign({ client: true, ssr: true }, options);
-  const { client } = opts;
+  const { client, host, port } = opts;
 
   // Get base config from SPA
   const chainConfig = api.resolveChainableWebpackConfig();
@@ -54,12 +54,12 @@ module.exports = (api, options = {}) => {
   chainConfig.plugin('friendly-errors').tap(args => {
     const messages = [];
 
-    // TODO: get port & host
-    // if (opts.host && opts.port) {
-    //   const https = this.getServerConfig('https');
-    //   const protocol = https && https.key && https.key ? 'https' : 'http';
-    //   messages.push(`Server is running: ${protocol}://${opts.host}:${opts.port}`);
-    // }
+    if (host && port) {
+      // TODO: detect https
+
+      const protocol = 'http';
+      messages.push(`Server is running: ${protocol}://${host}:${port}`);
+    }
 
     args[0].compilationSuccessInfo = {
       messages,
@@ -67,16 +67,15 @@ module.exports = (api, options = {}) => {
     return args;
   });
 
-  chainConfig.plugins.delete('friendly-errors');
-
-  // Remove default progress bar
+  // Remove default plugins
+  chainConfig.plugins.delete('no-emit-on-errors');
   chainConfig.plugins.delete('progress');
 
   // Add Webpack Bar
-  // chainConfig
-  //   .plugin('webpack-bar')
-  //   .use(WebpackBar, [{ name: 'Client', color: 'green' }])
-  //   .before('vue-loader');
+  chainConfig
+    .plugin('webpack-bar')
+    .use(WebpackBar, [{ name: 'Client', color: 'green' }])
+    .before('vue-loader');
 
   // CSS management
   cssConfig(api, chainConfig);

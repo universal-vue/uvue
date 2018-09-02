@@ -36,28 +36,30 @@ module.exports = (api, chainConfig) => {
   chainConfig.optimization.splitChunks(false);
   chainConfig.performance.hints(false);
   chainConfig.performance.maxAssetSize(Infinity);
+  chainConfig.plugins.delete('hmr');
 
   // Change babel configs
-  // chainConfig.module.rules
-  //   .get('js')
-  //   .uses.get('babel-loader')
-  //   .options({
-  //     presets: [
-  //       [
-  //         '@vue/app',
-  //         {
-  //           targets: { node: 'current' },
-  //           // No need to regenator on node
-  //           exclude: ['transform-regenerator'],
-  //         },
-  //       ],
-  //     ],
-  //   });
+  const jsRule = chainConfig.module.rules.get('js');
+
+  if (jsRule) {
+    jsRule.uses.get('babel-loader').options({
+      presets: [
+        [
+          '@vue/app',
+          {
+            targets: { node: 'current' },
+            // No need to regenator on node
+            exclude: ['transform-regenerator'],
+          },
+        ],
+      ],
+    });
+  }
 
   // Replace Webpack Bar configuration
-  // chainConfig.plugin('webpack-bar').tap(() => {
-  //   return [{ name: 'Server', color: 'orange' }];
-  // });
+  chainConfig.plugin('webpack-bar').tap(() => {
+    return [{ name: 'Server', color: 'orange' }];
+  });
 
   const config = api.resolveWebpackConfig(chainConfig);
 

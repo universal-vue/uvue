@@ -33,8 +33,6 @@ module.exports = (api, options) => {
       const { Server } = require('@uvue/server');
       const getWebpackConfig = require('../webpack/ssr');
 
-      console.log(host, port);
-
       const server = new Server({
         paths: {
           serverBundle: 'assets/server-bundle.json',
@@ -46,8 +44,8 @@ module.exports = (api, options) => {
         },
 
         webpack: {
-          client: getWebpackConfig(api, { client: true }),
-          server: getWebpackConfig(api, { client: false }),
+          client: getWebpackConfig(api, { client: true, host, port }),
+          server: getWebpackConfig(api, { client: false, host, port }),
         },
 
         httpOptions: {
