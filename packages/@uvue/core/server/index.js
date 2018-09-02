@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import { getVueOptions } from '../main';
-import routeProcess from '../lib/routeProcess';
 
 /**
  * Vue start
@@ -29,8 +28,6 @@ export default ssr => {
   // On router ready
   return new Promise(resolve => {
     router.onReady(async () => {
-      await routeProcess(context);
-
       resolve(context.app);
     });
   });
