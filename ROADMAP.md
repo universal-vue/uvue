@@ -12,12 +12,11 @@
   - [x] Command: serve
   - [x] Command: build
   - [x] Command: start
-  - [ ] Start Webpack plugin & loader to overwrite project code
 - [x] UVue API
   - [x] Attach to Vue CLI API
   - [x] Read configs files from current project
-- [ ] Write tests for server
-- [ ] Write E2E tests for basic core
+  - [ ] Start Webpack plugin & loader to overwrite project code
+- [ ] Write basic tests
   - [ ] Base project as a storybook
 - [x] Contribute guide
 
@@ -48,7 +47,6 @@
 - [ ] Transorm Vue plugins instanciation with an export function (router, store)
   - [ ] Transform main.js to use these functions
 - [ ] Watch uvue config change to reload app
-- [ ] Watch server config to reload server (implements nodemon)
 
 ### Server
 
@@ -106,12 +104,16 @@
 
 - [ ] Prompts to install core & server plugins
 
-### Server plugins
+### Server
 
+- [ ] Watch server config to reload server (implements nodemon)
 - [ ] Pages cache plugin
-- [ ] Server error plugin (to customize page)
+  - [ ] Memory
+  - [ ] Files
+  - [ ] Redis
+- [ ] Server error plugin (to customize server error page)
 
-## Core plugins
+## Core
 
-- [ ] SPA loader
-- [ ] Navigation loader
+- [ ] SPA loader plugin
+- [ ] Navigation loader plugin
