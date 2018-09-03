@@ -5,7 +5,6 @@ module.exports = (api, chainConfig) => {
   chainConfig.entryPoints
     .get('app')
     .clear()
-    .add('webpack-hot-middleware/client')
     .add(require.resolve('@uvue/core/client'));
 
   // Add Vue SSR plugin

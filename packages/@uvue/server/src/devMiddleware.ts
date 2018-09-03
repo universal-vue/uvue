@@ -32,6 +32,7 @@ export const setupDevMiddleware = async (
   };
 
   // Config for dev middleware
+  client.entry.app.unshift('webpack-hot-middleware/client');
   client.output.filename = '[name].js';
 
   // Instanciate virtual file system
