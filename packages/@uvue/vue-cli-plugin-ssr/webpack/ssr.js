@@ -26,7 +26,7 @@ module.exports = (api, options = {}) => {
     htmlOptions = {
       ...args[0],
       ...htmlOptions,
-      filename: 'assets/ssr.html',
+      filename: 'uvue/ssr.html',
       inject: false,
       templateParameters: params,
     };
@@ -38,7 +38,7 @@ module.exports = (api, options = {}) => {
   chainConfig.plugin('html-spa').use(HtmlWebpack, [
     {
       ...htmlOptions,
-      filename: 'assets/spa.html',
+      filename: 'uvue/spa.html',
       inject: true,
       templateParameters: {
         ...htmlOptions.templateParameters,

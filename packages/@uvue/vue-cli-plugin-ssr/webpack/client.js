@@ -10,7 +10,7 @@ module.exports = (api, chainConfig) => {
   // Add Vue SSR plugin
   chainConfig
     .plugin('vue-ssr-plugin')
-    .use(VueSSRClientPlugin, [{ filename: 'assets/client-manifest.json' }]);
+    .use(VueSSRClientPlugin, [{ filename: 'uvue/client-manifest.json' }]);
 
   return api.resolveWebpackConfig(chainConfig);
 };

@@ -11,7 +11,7 @@ module.exports = (api, chainConfig) => {
   // Add Vue SSR plugin
   chainConfig
     .plugin('vue-ssr-plugin')
-    .use(VueSSRServerPlugin, [{ filename: 'assets/server-bundle.json' }]);
+    .use(VueSSRServerPlugin, [{ filename: 'uvue/server-bundle.json' }]);
 
   // Server needs
   chainConfig
