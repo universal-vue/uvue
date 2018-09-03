@@ -1,7 +1,7 @@
 {
   "name": "@uvue/vue-cli-plugin-ssr",
   "version": "0.4.0-alpha.0",
-  "description": "Vue CLI plugin for UVue SSR (Server side rendering)",
+  "description": "Vue CLI plugin UVue: build SSR (Server side rendering) applications with ease",
   "main": "index.js",
   "scripts": {
     "lint": "eslint './**/*.js'",
@@ -38,6 +38,7 @@
     "html-webpack-plugin": "^3.2.0",
     "vue-server-renderer": "^2.5.17",
     "webpack": "^4.17.1",
+    "webpack-bundle-analyzer": "^2.13.1",
     "webpack-node-externals": "^1.7.2",
     "webpackbar": "^2.6.3"
   }

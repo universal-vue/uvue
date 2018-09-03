@@ -34,20 +34,23 @@ module.exports = (api, options) => {
       const getWebpackConfig = require('../webpack/ssr');
 
       const server = new Server({
+        // Set files destinations
         paths: {
-          serverBundle: 'assets/server-bundle.json',
-          clientManifest: 'assets/client-manifest.json',
+          serverBundle: 'uvue/server-bundle.json',
+          clientManifest: 'uvue/client-manifest.json',
           templates: {
-            spa: 'assets/spa.html',
-            ssr: 'assets/ssr.html',
+            spa: 'uvue/spa.html',
+            ssr: 'uvue/ssr.html',
           },
         },
 
+        // Set webpakc config for webpack compiler
         webpack: {
           client: getWebpackConfig(api, { client: true, host, port }),
           server: getWebpackConfig(api, { client: false, host, port }),
         },
 
+        // Set server configuration
         httpOptions: {
           host,
           port,
