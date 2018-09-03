@@ -12,8 +12,8 @@ module.exports = (api, options = {}) => {
 
   // Change template for HTMLWebpackPlugin
   let htmlOptions = {
-    template: api.resolve('index.html'),
-    filename: 'assets/ssr.html',
+    template: api.resolve(api.uvue.getConfig('paths.template')),
+    filename: 'uvue/ssr.html',
   };
 
   // Override HTMLWebpackPlugin behavior

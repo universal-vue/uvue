@@ -1,3 +1,8 @@
+// ESM module for Node
+// eslint-disable-next-line
+require = require('esm')(module);
+
+// Imports
 const fs = require('fs-extra');
 const { merge, get } = require('lodash');
 const webpack = require('webpack');
