@@ -6,6 +6,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "watch": "tsc -w",
     "lint": "tslint 'src/**/*.ts'",
     "lint:fix": "tslint --fix 'src/**/*.ts'",
     "format": "prettier --ignore-path .gitignore --write 'src/**/*.ts'",

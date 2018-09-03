@@ -7,7 +7,7 @@ This project uses a monorepo setup that requires using [Yarn](https://yarnpkg.co
 ```bash
 git clone git@gitlab.com:yabab/uvue.git
 cd uvue
-yarn # Install all dependencies
+yarn install
 ```
 
 ## Create test project
@@ -20,6 +20,14 @@ testing purposes.
 ```
 
 Then you can go to `packages/tests/project` to start the application with UVue plugin installed.
+
+## Linting and formatting
+
+Theses libs are mandatory to lint and format your code:
+
+- Prettier
+- ESLint for JavaScript
+- TSLint for TypeScript
 
 ## Run units tests
 

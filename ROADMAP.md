@@ -3,7 +3,7 @@
 ## Alpha 0
 
 - [x] Basic core package
-- [ ] Basic server package
+- [x] Basic server package
 - [x] CLI plugin
   - [x] Base commands works
   - [x] Command: serve
@@ -43,6 +43,7 @@ All tasks need to have a unit, intregration or e2e tests !
 
 ### Server
 
+- [ ] Server plugins with hooks
 - [ ] Handle correctly Vue meta plugin
 - [ ] Tools for CPU & RAM monotirong
 - [ ] Benchmarks

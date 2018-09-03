@@ -45,16 +45,9 @@ const execa = require('execa');
       break;
 
     /**
-     * Start project server
-     */
-    case 'test:start':
-      // TODO
-      break;
-
-    /**
      * Run tests
      */
-    case 'test:run':
+    case 'test':
       const jest = execa('./node_modules/.bin/jest', ['--config', `tests/${name}/jest.config.js`], {
         stdio: 'inherit',
       });
@@ -63,12 +56,6 @@ const execa = require('execa');
         console.log(`Exit code: ${exitCode}`);
         process.exit(exitCode);
       });
-      break;
-
-    /**
-     * Test a project
-     */
-    case 'test':
       break;
   }
 })().catch(err => console.error(err));
