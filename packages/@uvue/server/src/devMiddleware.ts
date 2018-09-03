@@ -73,15 +73,17 @@ export const setupDevMiddleware = async (
     const { paths } = app.options;
 
     // Get templates
-    app.templates.ssr = readFile(paths.templates.ssr);
-    app.templates.spa = readFile(paths.templates.spa);
+    const templates = {
+      spa: readFile(paths.templates.spa),
+      ssr: readFile(paths.templates.ssr),
+    };
 
     // Get bundled files
     clientManifest = JSON.parse(readFile(paths.clientManifest));
     serverBundle = JSON.parse(readFile(paths.serverBundle));
 
     if (clientManifest && serverBundle) {
-      ready(serverBundle, { clientManifest });
+      ready(serverBundle, { clientManifest, templates });
     }
   };
 

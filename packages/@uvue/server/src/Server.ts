@@ -1,4 +1,3 @@
-import jsonEncode from 'fast-safe-stringify';
 import { existsSync, readFileSync } from 'fs-extra';
 import { IncomingMessage, ServerResponse } from 'http';
 import micromatch from 'micromatch';
@@ -9,13 +8,6 @@ import { IAdapter, IRenderer, IRequestContext, IServer, IServerOptions } from '.
 import { Renderer } from './Renderer';
 
 export class Server implements IServer {
-  /**
-   * Templates to render full pages
-   */
-  public templates: {
-    spa: string;
-    ssr: string;
-  };
   /**
    * HTTP server adapter
    */
@@ -42,7 +34,6 @@ export class Server implements IServer {
       this.options.adapter = ConnectAdapter;
     }
     this.adapter = new this.options.adapter(options.httpOptions);
-    this.templates = { spa: '', ssr: '' };
   }
 
   /**
@@ -99,21 +90,22 @@ export class Server implements IServer {
     // Setup renderer
     if (this.options.webpack) {
       // Development mode
-      readyPromise = setupDevMiddleware(this, (serverBundle, { clientManifest }) => {
+      readyPromise = setupDevMiddleware(this, (serverBundle, { clientManifest, templates }) => {
         this.renderer = new Renderer(serverBundle, {
           ...this.options.renderer,
           clientManifest,
+          templates,
         });
       });
 
       // Production mode
     } else {
       const { clientManifest, serverBundle, templates } = this.getBuiltFiles();
-      this.templates = templates;
 
       this.renderer = new Renderer(serverBundle, {
         ...this.options.renderer,
         clientManifest,
+        templates,
       });
     }
 
@@ -151,7 +143,7 @@ export class Server implements IServer {
         if (spaPaths && spaPaths.length && micromatch.some(context.url, spaPaths)) {
           // SPA paths
 
-          response.body = this.spaBuilder();
+          response.body = await this.renderer.renderSPAPage();
         } else {
           // SSR Process
 
@@ -167,7 +159,7 @@ export class Server implements IServer {
           await this.callHook('beforeBuild', response, context, this);
 
           // Build page
-          response.body = await this.ssrBuilder(response.body, context);
+          response.body = await this.renderer.renderSSRPage(response.body, context);
         }
 
         // Hook on rendered
@@ -226,77 +218,5 @@ export class Server implements IServer {
         ssr: readFileSync(join(outputDir, ssr), 'utf-8'),
       },
     };
-  }
-
-  /**
-   * Render SSR page
-   */
-  private ssrBuilder(body: string, context: IRequestContext) {
-    let head = '';
-    let bodyAttrs = '';
-    let htmlAttrs = '';
-
-    // Add Vuex and components data
-    body += `<script data-vue-ssr-data>window.__DATA__=${jsonEncode(context.data)}</script>`;
-
-    // Body additions
-    if (typeof context.bodyAdd === 'string') {
-      body += context.bodyAdd;
-    }
-
-    /**
-     * Handle vue-meta
-     */
-    if (context.meta) {
-      const metas = context.meta.inject();
-
-      bodyAttrs = metas.bodyAttrs.text();
-      htmlAttrs = metas.htmlAttrs.text();
-
-      // Inject metas to head
-      head =
-        metas.meta.text() +
-        metas.title.text() +
-        metas.link.text() +
-        metas.style.text() +
-        metas.script.text() +
-        metas.noscript.text();
-    }
-
-    // Build head
-    if (context.headAdd) {
-      head += context.headAdd;
-    }
-
-    // Handle styles
-    head += context.renderStyles();
-
-    // Resource hints
-    head += context.renderResourceHints();
-
-    // Build body
-    body += context.renderScripts();
-
-    // Replace final html
-    const result = this.templates.ssr
-      .replace(/data-html-attrs(="")?/i, htmlAttrs)
-      .replace(/data-body-attrs(="")?/i, bodyAttrs)
-      .replace(/<ssr-head\/?>/i, head)
-      .replace(/<ssr-body\/?>/i, body)
-      .replace(/<\/ssr-head>/i, '')
-      .replace(/<\/ssr-body>/i, '');
-
-    return result;
-  }
-
-  /**
-   * Render SPA page
-   */
-  private spaBuilder() {
-    return this.templates.spa.replace(/<ssr-head\/?>/i, '').replace(
-      /<ssr-body\/?>/i,
-      `<div id="app"></div>
-        <script data-vue-spa>window.__SPA_ROUTE__=true;</script>`,
-    );
   }
 }

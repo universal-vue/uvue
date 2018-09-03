@@ -5,10 +5,6 @@ import { IServerOptions } from './IServerOptions';
 export interface IServer {
   // Options
   options: IServerOptions;
-  templates: {
-    spa: string;
-    ssr: string;
-  };
 
   // Add middlewares
   use(middleware: HandleFunction);
