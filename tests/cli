@@ -25,21 +25,21 @@ const execa = require('execa');
     /**
      * Install fixtures on project
      */
-    case 'test:fixtures':
+    case 'install:fixtures':
       await tm.installFixtures(name, `tests/${name}/fixtures`);
       break;
 
     /**
      * Invoke a Vue CLI plugin on project
      */
-    case 'test:invoke':
+    case 'install:invoke':
       await tm.invoke(name, arg0);
       break;
 
     /**
      * Create a full test project
      */
-    case 'test:full':
+    case 'install':
       await tm.installFixtures(name, `tests/${name}/fixtures`);
       await tm.invoke(name, arg0);
       break;
