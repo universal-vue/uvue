@@ -7,13 +7,14 @@
 - [x] CLI plugin
   - [x] Base commands works
   - [x] Command: serve
-  - [ ] Command: build
-  - [ ] Command: start
+  - [x] Command: build
+  - [x] Command: start
 - [ ] UVue API
   - [ ] Attach to Vue CLI API
   - [ ] Read configs files from current project
 - [ ] Write tests for server
 - [ ] Write E2E tests for basic core
+  - [ ] Base project as a storybook
 - [x] Contribute guide
 
 ## Alpha 1
@@ -30,7 +31,7 @@ All tasks need to have a unit, intregration or e2e tests !
 
 - [ ] Plugins system with hooks
 - [ ] Vuex and `onHttpRequest` action
-- [ ] Error handler
+- [ ] Error handler (without Vuex)
 - [ ] Middlewares system
   - [ ] Handle hot reload
 
@@ -43,11 +44,13 @@ All tasks need to have a unit, intregration or e2e tests !
 
 ### Server
 
+- [ ] Handle HTTPS configuration
 - [ ] Server plugins with hooks
 - [ ] Handle correctly Vue meta plugin
 - [ ] Tools for CPU & RAM monotirong
 - [ ] Benchmarks
 - [ ] Base plugins middlewares (static files, gzip, cookies)
+- [ ] Docker start script
 
 ### CLI plugin
 
@@ -55,6 +58,11 @@ All tasks need to have a unit, intregration or e2e tests !
 - [ ] Base template if needed
 - [ ] UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
 - [ ] `generate` command
+- [ ] Docker: prompt & dockerfile
+
+### Webpack
+
+- [ ] CSS management
 
 ### Killers features
 
@@ -88,9 +96,13 @@ All tasks need to have a unit, intregration or e2e tests !
 - [ ] Vue i18n
 - [ ] Apollo
 
+### Vue CLI generator
+
+- [ ] Prompts to install core & server plugins
+
 ### Server plugins
 
-- [ ] Cache plugin
+- [ ] Pages cache plugin
 - [ ] Server error plugin (to customize page)
 
 ## Core plugins
