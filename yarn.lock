@@ -1446,9 +1446,12 @@
 "@uvue/vue-cli-plugin-ssr@link:packages/@uvue/vue-cli-plugin-ssr":
   version "0.4.0-alpha.0"
   dependencies:
+    fs-extra "^7.0.0"
     html-webpack-plugin "^3.2.0"
+    lodash "^4.17.10"
     vue-server-renderer "^2.5.17"
     webpack "^4.17.1"
+    webpack-bundle-analyzer "^2.13.1"
     webpack-node-externals "^1.7.2"
     webpackbar "^2.6.3"
 
@@ -2409,8 +2412,8 @@ babel-jest@^23.4.2:
     babel-preset-jest "^23.2.0"
 
 babel-loader@^8.0.0-0:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.0.1.tgz#b1a45e81bb21b6f47b1df2e67d4c7fd7a64e8ad3"
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.0.2.tgz#2079b8ec1628284a929241da3d90f5b3de2a5ae5"
   dependencies:
     find-cache-dir "^1.0.0"
     loader-utils "^1.0.2"
@@ -4436,7 +4439,7 @@ eslint@^5.5.0:
     table "^4.0.3"
     text-table "^0.2.0"
 
-esm@^3.0.74, esm@^3.0.80:
+esm@^3.0.74, esm@^3.0.80, esm@^3.0.81:
   version "3.0.81"
   resolved "https://registry.yarnpkg.com/esm/-/esm-3.0.81.tgz#3d78df013960b6d30bb5a5adfafe5d9da654b9d2"
 

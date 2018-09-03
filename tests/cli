@@ -26,6 +26,7 @@ const execa = require('execa');
      * Install fixtures on project
      */
     case 'install:fixtures':
+    case 'if':
       await tm.installFixtures(name, `tests/${name}/fixtures`);
       break;
 
@@ -33,6 +34,7 @@ const execa = require('execa');
      * Invoke a Vue CLI plugin on project
      */
     case 'install:invoke':
+    case 'ii':
       await tm.invoke(name, arg0);
       break;
 
@@ -40,6 +42,7 @@ const execa = require('execa');
      * Create a full test project
      */
     case 'install':
+    case 'i':
       await tm.installFixtures(name, `tests/${name}/fixtures`);
       await tm.invoke(name, arg0);
       break;
@@ -48,6 +51,7 @@ const execa = require('execa');
      * Run tests
      */
     case 'test':
+    case 't':
       const jest = execa('./node_modules/.bin/jest', ['--config', `tests/${name}/jest.config.js`], {
         stdio: 'inherit',
       });

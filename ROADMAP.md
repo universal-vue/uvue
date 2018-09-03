@@ -4,14 +4,18 @@
 
 - [x] Basic core package
 - [x] Basic server package
+  - [ ] Plugins system
+  - [ ] Can send options to plugins from config
+  - [ ] Base plugins middlewares (static files, gzip, cookies)
 - [x] CLI plugin
   - [x] Base commands works
   - [x] Command: serve
   - [x] Command: build
   - [x] Command: start
-- [ ] UVue API
-  - [ ] Attach to Vue CLI API
-  - [ ] Read configs files from current project
+  - [ ] Start Webpack plugin & loader to overwrite project code
+- [x] UVue API
+  - [x] Attach to Vue CLI API
+  - [x] Read configs files from current project
 - [ ] Write tests for server
 - [ ] Write E2E tests for basic core
   - [ ] Base project as a storybook
@@ -19,7 +23,9 @@
 
 ## Alpha 1
 
-All tasks need to have a unit, intregration or e2e tests !
+**All tasks need to have a unit, intregration or e2e tests if possible !**
+
+**Please comment you code !**
 
 ### Core
 
@@ -41,21 +47,21 @@ All tasks need to have a unit, intregration or e2e tests !
 - [ ] Load imports from project configuration
 - [ ] Transorm Vue plugins instanciation with an export function (router, store)
   - [ ] Transform main.js to use these functions
+- [ ] Watch uvue config change to reload app
+- [ ] Watch server config to reload server (implements nodemon)
 
 ### Server
 
 - [ ] Handle HTTPS configuration
-- [ ] Server plugins with hooks
 - [ ] Handle correctly Vue meta plugin
 - [ ] Tools for CPU & RAM monotirong
 - [ ] Benchmarks
-- [ ] Base plugins middlewares (static files, gzip, cookies)
 - [ ] Docker start script
 
 ### CLI plugin
 
+- [ ] Base template (configs, router, server with plugins)
 - [ ] Detect Vue plugins presence and transform code
-- [ ] Base template if needed
 - [ ] UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
 - [ ] `generate` command
 - [ ] Docker: prompt & dockerfile
