@@ -85,7 +85,7 @@
 - [ ] Issue template for Github
 - [ ] Better contribution guide
 - [ ] Example repository
-- [ ] Discord Chat ?
+- [x] Discord Chat ?
 
 ## Alpha 2
 
