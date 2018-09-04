@@ -1,3 +1,14 @@
-# UVue / Universal Vue
+![Uvue](https://i.imgur.com/2SjDZOi.png)
 
-Work in progress...
+### UVue / Universal Vue
+
+*Create server rendered Vue applications with ease.*
+
+### Goals
+
+- [ ] usage with or without vue cli
+- [ ] exposed ssr lifecycle hooks
+- [ ] unobtrusive non-destructive installation
+- [ ] rich plugin system supporting popular packages
+- [ ] modular extensible server layer
+- [ ] scan and fix any broken ssr code
