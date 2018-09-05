@@ -72,13 +72,16 @@ module.exports = (api, options) => {
         },
       });
 
-      // eslint-disable-next-line
-      console.log(`Server listening: http://${host}:${port}`);
+      // Install plugins
+      api.uvue.installServerPlugins(server);
 
       /**
        * Start server
        */
       await server.start();
+
+      // eslint-disable-next-line
+      console.log(`Server listening: http://${host}:${port}`);
     },
   );
 };

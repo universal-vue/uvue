@@ -44,21 +44,27 @@ module.exports = class {
     // Load config in project if exists
     const configPath = this.api.resolve('uvue.config.js');
     if (fs.existsSync(configPath)) {
-      config = merge(config, require(configPath));
+      const module = require(configPath);
+      config = merge(config, module.default || module);
       // For HMR
       delete require.cache[configPath];
     }
 
     // Imports
     const imports = [];
-    for (const item of config.imports) {
+    for (let item of config.imports) {
       // Convert import string to object with options
       if (typeof item === 'string') {
-        imports.push({
+        item = {
           src: item,
           ssr: true,
-        });
+        };
       }
+
+      // Get plugin absolute path
+      item.src = this.resolveImportPath(item.src);
+
+      imports.push(item);
     }
     config.imports = imports;
 
@@ -75,25 +81,48 @@ module.exports = class {
     // Load config in project if exists
     const configPath = this.api.resolve('server.config.js');
     if (fs.existsSync(configPath)) {
-      config = merge(config, require(configPath));
+      const module = require(configPath);
+      config = merge(config, module.default || module);
       // For HMR
       delete require.cache[configPath];
     }
 
     // Plugins
     const plugins = [];
-    for (const item of config.plugins) {
+    for (let item of config.plugins) {
       // Convert plugin string to object with options
       if (typeof item === 'string') {
-        plugins.push({
-          src: item,
-          options: {},
-        });
+        item = [item];
       }
+
+      // Get plugin absolute path
+      item[0] = this.resolveImportPath(item[0]);
+
+      plugins.push(item);
     }
     config.plugins = plugins;
 
     if (selector) return get(config, selector);
     return config;
+  }
+
+  /**
+   * Install server plugins
+   */
+  installServerPlugins(server) {
+    const plugins = this.getServerConfig('plugins') || [];
+    for (const plugin of plugins) {
+      const [src, ...args] = plugin;
+
+      const module = require(src);
+      server.addPlugin(module.default || module, ...args);
+    }
+  }
+
+  resolveImportPath(filepath) {
+    if (/^\./.test(filepath)) {
+      return this.api.resolve(filepath);
+    }
+    return filepath;
   }
 };

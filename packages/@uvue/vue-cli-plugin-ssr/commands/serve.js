@@ -57,6 +57,9 @@ module.exports = (api, options) => {
         },
       });
 
+      // Install plugins
+      api.uvue.installServerPlugins(server);
+
       /**
        * Start server
        */

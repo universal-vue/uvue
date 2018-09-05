@@ -1,5 +1,6 @@
 import { RenderCache } from 'vue-server-renderer';
 import { IAdapterOptions } from './IAdapterOptions';
+import { IPlugin } from './IPlugin';
 
 /**
  * Options to init server
@@ -38,4 +39,7 @@ export interface IServerOptions {
     shouldPreload?: (file: string, type: string) => boolean;
     shouldPrefetch?: (file: string, type: string) => boolean;
   };
+
+  // Plugins to install
+  plugins?: IPlugin[];
 }

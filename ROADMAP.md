@@ -4,9 +4,9 @@
 
 - [x] Basic core package
 - [x] Basic server package
-  - [ ] Plugins system
-  - [ ] Can send options to plugins from config
-  - [ ] Base plugins middlewares (static files, gzip, cookies)
+  - [x] Plugins system
+  - [x] Can send options to plugins from config
+  - [x] Base plugins middlewares (static files, gzip, cookies)
 - [x] CLI plugin
   - [x] Base commands works
   - [x] Command: serve
