@@ -65,11 +65,9 @@ export class Server implements IServer {
   /**
    * Method to declare a plugin
    */
-  public addPlugin(plugin: any, ...args: any[]) {
+  public addPlugin(plugin: any, options: any) {
     this.plugins.push(plugin);
-    if (typeof plugin === 'object' && typeof plugin.install === 'function') {
-      plugin.install(this, ...args);
-    }
+    plugin.$options = options;
   }
 
   /**
@@ -78,7 +76,7 @@ export class Server implements IServer {
   public async callHook(name: string, ...args: any[]) {
     for (const plugin of this.plugins) {
       if (typeof plugin[name] === 'function') {
-        await plugin[name](...args);
+        await plugin[name].bind(plugin)(...args);
       }
     }
   }

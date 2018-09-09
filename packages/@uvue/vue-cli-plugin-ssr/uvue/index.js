@@ -112,10 +112,10 @@ module.exports = class {
   installServerPlugins(server) {
     const plugins = this.getServerConfig('plugins') || [];
     for (const plugin of plugins) {
-      const [src, ...args] = plugin;
+      const [src, options] = plugin;
 
       const module = require(src);
-      server.addPlugin(module.default || module, ...args);
+      server.addPlugin(module.default || module, options);
     }
   }
 
