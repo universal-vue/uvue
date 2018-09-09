@@ -36,11 +36,11 @@ module.exports = (api, options) => {
       const server = new Server({
         // Set files destinations
         paths: {
-          serverBundle: 'uvue/server-bundle.json',
-          clientManifest: 'uvue/client-manifest.json',
+          serverBundle: '.uvue/server-bundle.json',
+          clientManifest: '.uvue/client-manifest.json',
           templates: {
-            spa: 'uvue/spa.html',
-            ssr: 'uvue/ssr.html',
+            spa: '.uvue/spa.html',
+            ssr: '.uvue/ssr.html',
           },
         },
 
