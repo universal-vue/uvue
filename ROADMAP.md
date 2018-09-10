@@ -15,7 +15,7 @@
 - [x] UVue API
   - [x] Attach to Vue CLI API
   - [x] Read configs files from current project
-  - [ ] Start Webpack plugin & loader to overwrite project code
+  - [x] Start Webpack plugin & loader to overwrite project code
 - [ ] Write basic tests
   - [ ] Base project as a storybook
 - [x] Contribute guide
@@ -34,7 +34,7 @@
 
 ### Core plugins
 
-- [ ] Plugins system with hooks
+- [x] Plugins system with hooks
 - [ ] Vuex and `onHttpRequest` action
 - [ ] Error handler (without Vuex)
 - [ ] Middlewares system
