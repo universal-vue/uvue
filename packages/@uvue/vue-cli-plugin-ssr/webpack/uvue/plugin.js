@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
+const chokidar = require('chokidar');
 
 /**
  * Simple webpack plugin to generate main.js with imports
@@ -13,6 +14,7 @@ module.exports = class UVuePlugin {
   constructor({ api }) {
     this.api = api;
     this.uvue = api.uvue;
+    this.watcher = null;
   }
 
   /**
@@ -21,12 +23,20 @@ module.exports = class UVuePlugin {
   apply(compiler) {
     this.compiler = compiler;
 
+    // Build mode
     compiler.hooks.run.tapPromise('UVuePlugin', async () => {
       await this.writeMain();
     });
 
+    // Watch/Serve mode
     compiler.hooks.watchRun.tapPromise('UVuePlugin', async () => {
-      // TODO: Watch for uvue.config.js changes
+      // Watch for config file changes
+      if (!this.watcher) {
+        chokidar.watch(this.api.resolve('uvue.config.js')).on('all', () => {
+          // Write main.js and trigger a new build
+          this.writeMain();
+        });
+      }
       await this.writeMain();
     });
   }
@@ -45,11 +55,8 @@ module.exports = class UVuePlugin {
     // Handle imports defined in uvue config
     const { normal, noSSR } = this.uvue.getConfig('imports').reduce(
       (result, item) => {
-        if (item.ssr === false) {
-          result.noSSR.push(item.src);
-        } else {
-          result.normal.push(item.src);
-        }
+        if (item.ssr === false) result.noSSR.push(item.src);
+        else result.normal.push(item.src);
         return result;
       },
       { normal: [], noSSR: [] },
@@ -58,7 +65,7 @@ module.exports = class UVuePlugin {
     code += `${normal.map(item => `require("${item}");`).join(`\n`)}\n`;
     code += `if (process.client) {\n${noSSR.map(item => `require("${item}");`).join(`\n`)}\n}`;
 
-    // If file exists and content not updtaed
+    // If file exists and content not updated
     if ((await fs.exists(mainPath)) && (await fs.readFile(mainPath, 'utf-8')) == code) {
       // Stop generation of file
       return;
