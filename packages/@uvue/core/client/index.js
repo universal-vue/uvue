@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import { getVueOptions } from '../main';
+import { createApp } from '../main';
 
 // Enable HMR
 if (module.hot) {
@@ -10,22 +9,18 @@ if (module.hot) {
  * Vue start
  */
 (async () => {
-  // Get Vue options from project
-  const options = getVueOptions();
-  const { router, store } = options;
-
   // Create context object
-  const context = {
-    router,
-    store,
-  };
+  const context = {};
 
-  // Create Vue app
-  context.app = new Vue(options);
+  // Call app main
+  createApp(context);
+
+  // Get some vars from context
+  const { app, router } = context;
 
   // On router ready
   router.onReady(async () => {
     // Mount app
-    context.app.$mount('#app');
+    app.$mount('#app');
   });
 })();

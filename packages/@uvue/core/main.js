@@ -1,8 +1,3 @@
-/* eslint-disable */
-/* tslint:disable */
-
-/*__#MAIN__*/ import getVueOptions from '@/main'; /*__MAIN#__*/
-
-/*__IMPORTS__*/
-
-export { getVueOptions };
+// Default main from Vue CLI project
+import createApp from '@/main';
+export { createApp };

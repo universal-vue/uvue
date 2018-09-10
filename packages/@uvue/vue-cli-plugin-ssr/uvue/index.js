@@ -3,10 +3,12 @@
 require = require('esm')(module);
 
 // Imports
+const path = require('path');
 const fs = require('fs-extra');
 const { merge, get } = require('lodash');
 const webpack = require('webpack');
 const defineOptions = require('../webpack/defineOptions');
+const UVuePlugin = require('../webpack/uvue/plugin');
 
 /**
  * UVue API for Vue CLI
@@ -29,10 +31,35 @@ module.exports = class {
 
       // Add DefinePlugin
       chainConfig.plugin('uvue-defines').use(webpack.DefinePlugin, [defineOptions()]);
+
+      // Add UVue webpack plugin & loader
+      chainConfig.plugin('uvue-plugin').use(UVuePlugin, [{ api }]);
+      chainConfig.module
+        .rule('uvue-tranform')
+        .test([/(@|\.)uvue/, this.getMainPath()])
+        .use('uvue-loader')
+        .loader('@uvue/vue-cli-plugin-ssr/webpack/uvue/loader.js')
+        .options({
+          api,
+        });
     });
 
     // Core package need to be transpiled
     api.service.projectOptions.transpileDependencies.push(/@uvue(\\|\/)core/);
+  }
+
+  /**
+   * Get absolute path to project
+   */
+  getProjectPath() {
+    return this.api.service.context;
+  }
+
+  /**
+   * Get absolute path to main
+   */
+  getMainPath() {
+    return path.join(this.getProjectPath(), this.getConfig('paths.main'));
   }
 
   /**
