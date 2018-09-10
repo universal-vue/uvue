@@ -1,0 +1,18 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "inlineSourceMap": false,
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "lib",
+    "allowSyntheticDefaultImports": true,
+    "lib": ["es2018", "dom", "esnext.asynciterable"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
