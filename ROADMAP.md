@@ -42,17 +42,17 @@
 
 ### UVue API
 
-- [ ] Transform main `new Vue` code to return only constructor options
-- [ ] Load imports from project configuration
+- [x] Transform main `new Vue` code to return only constructor options
+- [x] Load imports from project configuration
 - [ ] Transorm Vue plugins instanciation with an export function (router, store)
   - [ ] Transform main.js to use these functions
-- [ ] Watch uvue config change to reload app
+- [x] Watch uvue config change to reload app
 
 ### Server
 
 - [ ] Handle HTTPS configuration
 - [ ] Handle correctly Vue meta plugin
-- [ ] Tools for CPU & RAM monotirong
+- [ ] Tools for CPU & RAM monitoring
 - [ ] Benchmarks
 - [ ] Docker start script
 
@@ -63,6 +63,8 @@
 - [ ] UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
 - [ ] `generate` command
 - [ ] Docker: prompt & dockerfile
+- [ ] Prompts to install server plugins
+- [ ] Prompts to install UVue plugins
 
 ### Webpack
 
@@ -72,7 +74,7 @@
 
 - [ ] Critical CSS
   - [ ] Critters
-  - [ ] Critical / Penthous (Puppeteer based)
+  - [ ] Critical / Penthouse (Puppeteer based)
   - [ ] Vue components styles (@akryum repo)
 - [ ] Modern build
 
@@ -83,13 +85,13 @@
 - [ ] Issue template for Github
 - [ ] Better contribution guide
 - [ ] Example repository
-- [ ] Discord Chat ?
+- [x] Discord Chat
 
 ## Alpha 2
 
 ### Vue CLI UI
 
-- [ ] CPU & RAM monitoring for `start` command
+- [ ] CPU & RAM monitoring for `ssr:start` command
 - [ ] Edit configuration files
 - [ ] `generate` command: List generated files & size
 
