@@ -200,10 +200,7 @@ export class Server implements IServer {
   private sendResponse(response: { body: string; status: number }, { res }) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Content-Length', response.body.length);
-
-    if (response.body.length) {
-      res.statusCode = response.status;
-    }
+    res.statusCode = response.status;
     res.end(response.body);
   }
 

@@ -42,7 +42,7 @@ module.exports = (api, options = {}) => {
       inject: true,
       templateParameters: {
         ...htmlOptions.templateParameters,
-        neue: {
+        uvue: {
           ssr: false,
           client: true,
         },

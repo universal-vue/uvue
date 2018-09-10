@@ -38,7 +38,7 @@ export default new Router({
 ### Code
 
 ```js
-import { Recast, RQuery } from '@vueneue/rquery';
+import { Recast, RQuery } from '@uvue/rquery';
 
 const doc = RQuery.parse(source);
 

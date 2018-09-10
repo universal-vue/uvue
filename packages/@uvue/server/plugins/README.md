@@ -29,8 +29,8 @@ Some plugins are available to start a production ready server with UVue
 ### Cookie
 
 Useful if your app have or need an authentication system. It will simply parse cookies
-from all HTTP requests and made theme available in your application. Cookies are a good
-system to share tokens between your server side and client side.
+from all HTTP requests and made them available in your application. Cookies are a good
+system to share auth tokens between your server side and client side.
 
 ```js
 export default {
@@ -107,7 +107,7 @@ A plugin is just an object with defined methods to act on different hooks:
 export default {
   // Act on server bootstrap: good place to define some server middlewares
   async beforeStart(app) {
-    app.use('/path', myMiddleware());
+    app.use('/path', myMiddleware(this.$options));
   },
 
   // Do an action before page will be rendered by Vue SSR
