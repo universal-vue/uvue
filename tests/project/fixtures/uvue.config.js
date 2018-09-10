@@ -1,3 +1,3 @@
 export default {
-  imports: [],
+  imports: ['@/plugins/sample'],
 };

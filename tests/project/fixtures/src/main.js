@@ -7,8 +7,8 @@ Vue.config.productionTip = false;
 export default () => {
   const router = createRouter();
 
-  return {
+  return new Vue({
     router,
     render: h => h(App),
-  };
+  });
 };
