@@ -17,7 +17,7 @@
   - [x] Read configs files from current project
   - [x] Start Webpack plugin & loader to overwrite project code
 - [ ] Write basic tests
-  - [ ] Base project as a storybook
+  - [x] Base project as a storybook
 - [x] Contribute guide
 
 ## Alpha 1
