@@ -2,6 +2,10 @@
 
 This project uses a monorepo setup that requires using [Yarn](https://yarnpkg.com) because it relies on [Yarn workspaces](https://yarnpkg.com/blog/2017/08/02/introducing-workspaces/).
 
+## Requirements
+
+Node @ \^6.14.0 || \^8.10.0 || >=9.10.0
+
 ## Clone and install dependencies
 
 ```bash
