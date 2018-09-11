@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
+import views from './shared/views';
 
 Vue.use(Router);
 
@@ -8,17 +8,9 @@ export default () => {
   return new Router({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes: [
-      {
-        path: '/',
-        name: 'home',
-        component: Home,
-      },
-      {
-        path: '/about',
-        name: 'about',
-        component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
-      },
-    ],
+    routes: views.reduce((routes, category) => {
+      routes.push(...category.children);
+      return routes;
+    }, []),
   });
 };
