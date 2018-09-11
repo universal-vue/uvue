@@ -4,7 +4,14 @@ import micromatch from 'micromatch';
 import { join } from 'path';
 import { ConnectAdapter } from './ConnectAdapter';
 import { setupDevMiddleware } from './devMiddleware';
-import { IAdapter, IRenderer, IRequestContext, IServer, IServerOptions } from './interfaces';
+import {
+  IAdapter,
+  IRenderer,
+  IRequestContext,
+  IResponseContext,
+  IServer,
+  IServerOptions,
+} from './interfaces';
 import { Renderer } from './Renderer';
 
 export class Server implements IServer {
@@ -58,22 +65,18 @@ export class Server implements IServer {
   /**
    * Method to declare a plugin
    */
-  public addPlugin(plugin: any, options?: any) {
-    this.plugins.push({
-      options,
-      plugin,
-    });
+  public addPlugin(plugin: any, options: any) {
+    this.plugins.push(plugin);
+    plugin.$options = options;
   }
 
   /**
    * Call hooks from plugins
    */
   public async callHook(name: string, ...args: any[]) {
-    for (const item of this.plugins) {
-      if (typeof item.plugin === 'function' && name === 'beforeStart') {
-        await item.plugin(...args);
-      } else if (typeof item.plugin[name] === 'function') {
-        await item.plugin[name](...args);
+    for (const plugin of this.plugins) {
+      if (typeof plugin[name] === 'function') {
+        await plugin[name].bind(plugin)(...args);
       }
     }
   }
@@ -121,7 +124,7 @@ export class Server implements IServer {
    * Simple middleware to render a page
    */
   private async renderMiddleware(req: IncomingMessage, res: ServerResponse) {
-    const response = {
+    const response: IResponseContext = {
       body: '',
       status: 200,
     };
@@ -197,10 +200,7 @@ export class Server implements IServer {
   private sendResponse(response: { body: string; status: number }, { res }) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Content-Length', response.body.length);
-
-    if (response.body.length) {
-      res.statusCode = response.status;
-    }
+    res.statusCode = response.status;
     res.end(response.body);
   }
 

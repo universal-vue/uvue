@@ -26,9 +26,9 @@ module.exports = (api, options) => {
        * Check files before start
        */
       try {
-        existsSync(api.resolve(join(options.outputDir, 'uvue/server-bundle.json')));
-        existsSync(api.resolve(join(options.outputDir, 'uvue/client-manifest.json')));
-        existsSync(api.resolve(join(options.outputDir, 'uvue/ssr.html')));
+        existsSync(api.resolve(join(options.outputDir, '.uvue/server-bundle.json')));
+        existsSync(api.resolve(join(options.outputDir, '.uvue/client-manifest.json')));
+        existsSync(api.resolve(join(options.outputDir, '.uvue/ssr.html')));
       } catch (err) {
         // eslint-disable-next-line
         console.error('Incorrect SSR build, did you run "ssr:build" command before ?');
@@ -57,11 +57,11 @@ module.exports = (api, options) => {
         // Set files destinations
         paths: {
           outputDir: api.resolve(options.outputDir),
-          serverBundle: 'uvue/server-bundle.json',
-          clientManifest: 'uvue/client-manifest.json',
+          serverBundle: '.uvue/server-bundle.json',
+          clientManifest: '.uvue/client-manifest.json',
           templates: {
-            spa: 'uvue/spa.html',
-            ssr: 'uvue/ssr.html',
+            spa: '.uvue/spa.html',
+            ssr: '.uvue/ssr.html',
           },
         },
 
@@ -72,13 +72,16 @@ module.exports = (api, options) => {
         },
       });
 
-      // eslint-disable-next-line
-      console.log(`Server listening: http://${host}:${port}`);
+      // Install plugins
+      api.uvue.installServerPlugins(server);
 
       /**
        * Start server
        */
       await server.start();
+
+      // eslint-disable-next-line
+      console.log(`Server listening: http://${host}:${port}`);
     },
   );
 };

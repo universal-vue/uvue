@@ -1,5 +1,5 @@
 /**
- *
+ * Options for HTTP Server adapter
  */
 export interface IAdapterOptions {
   host?: string;

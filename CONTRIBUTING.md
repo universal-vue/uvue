@@ -16,7 +16,7 @@ yarn install
 
 ## Create test project
 
-These commands will create a base Vue CLI project, then it will be clone to multiple projects for
+These commands will create a base Vue CLI project, then it will be cloned to multiple projects for
 testing purposes.
 
 ```

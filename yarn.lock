@@ -1417,38 +1417,26 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
-"@uvue/core@link:packages/@uvue/core":
-  version "0.4.0-alpha.0"
-
-"@uvue/server@link:packages/@uvue/server":
+"@uvue/rquery@link:packages/@uvue/rquery":
   version "0.4.0-alpha.0"
   dependencies:
-    "@types/compression" "^0.0.36"
-    "@types/connect" "^3.4.32"
-    "@types/cookie-parser" "^1.4.1"
+    "@babel/parser" "^7.0.0"
     "@types/node" "^10.5.2"
-    "@types/serve-static" "^1.13.2"
-    connect "^3.6.6"
-    cookie-parser "^1.4.3"
-    esm "^3.0.74"
-    fast-safe-stringify "^2.0.5"
-    fs-extra "^7.0.0"
-    lru-cache "^4.1.3"
-    memory-fs "^0.4.1"
-    micromatch "^3.1.10"
-    serve-static "^1.13.2"
-    vue "^2.5.17"
-    vue-server-renderer "^2.5.16"
-    webpack "^4.16.3"
-    webpack-dev-middleware "^3.1.3"
-    webpack-hot-middleware "^2.22.3"
+    lodash "^4.17.10"
+    prettier "^1.13.7"
+    recast "^0.15.2"
+    typescript "^2.9.2"
 
 "@uvue/vue-cli-plugin-ssr@link:packages/@uvue/vue-cli-plugin-ssr":
   version "0.4.0-alpha.0"
   dependencies:
+    "@uvue/rquery" "link:packages/@uvue/rquery"
+    chokidar "^2.0.4"
+    esm "^3.0.81"
     fs-extra "^7.0.0"
     html-webpack-plugin "^3.2.0"
     lodash "^4.17.10"
+    micromatch "^3.1.10"
     vue-server-renderer "^2.5.17"
     webpack "^4.17.1"
     webpack-bundle-analyzer "^2.13.1"
@@ -3050,7 +3038,7 @@ check-types@^7.3.0:
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/check-types/-/check-types-7.4.0.tgz#0378ec1b9616ec71f774931a3c6516fad8c152f4"
 
-chokidar@^2.0.0, chokidar@^2.0.2:
+chokidar@^2.0.0, chokidar@^2.0.2, chokidar@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.4.tgz#356ff4e2b0e8e43e322d18a372460bbcf3accd26"
   dependencies:
@@ -8651,7 +8639,7 @@ prettier@1.13.7:
   version "1.13.7"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.7.tgz#850f3b8af784a49a6ea2d2eaa7ed1428a34b7281"
 
-prettier@^1.12.1, prettier@^1.14.0:
+prettier@^1.12.1, prettier@^1.13.7, prettier@^1.14.0:
   version "1.14.2"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.14.2.tgz#0ac1c6e1a90baa22a62925f41963c841983282f9"
 
@@ -10404,6 +10392,10 @@ type-is@^1.6.16, type-is@~1.6.15, type-is@~1.6.16:
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
+
+typescript@^2.9.2:
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
 
 typescript@^3.0.1:
   version "3.0.3"

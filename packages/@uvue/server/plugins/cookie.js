@@ -2,6 +2,7 @@ import cookieParser from 'cookie-parser';
 
 export default {
   beforeStart(app) {
-    app.use(cookieParser(this.secret, this.options));
+    const { secret, options } = this.$options;
+    app.use(cookieParser(secret, options));
   },
 };
