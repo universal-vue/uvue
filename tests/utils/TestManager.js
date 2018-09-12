@@ -99,4 +99,15 @@ export class TestManager {
   async installFixtures(name, fixturesPath) {
     await fs.copy(fixturesPath, path.join(this.baseDir, name));
   }
+
+  /**
+   * Call a script on project
+   */
+  cliService(name, command, args = []) {
+    const projectPath = path.join(this.baseDir, name);
+    return execa('./node_modules/.bin/vue-cli-service', [command, ...args], {
+      cwd: projectPath,
+      stdio: 'inherit',
+    });
+  }
 }

@@ -17,6 +17,7 @@
           >
             <router-link
               :to="item.path"
+              :data-route-name="item.name"
             >
               {{ item.label }}
             </router-link>

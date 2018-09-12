@@ -4,10 +4,15 @@
 require = require('esm')(module);
 
 // Dependencies
+const os = require('os');
 const fs = require('fs');
+const { execSync } = require('child_process');
+const waitOn = require('wait-on');
+// const execa = require('execa');
 const { TestManager } = require('./utils/TestManager');
 const yargv = require('yargs').argv;
-const execa = require('execa');
+
+const waitOnPromise = options => new Promise(resolve => waitOn(options, resolve));
 
 (async () => {
   const tm = new TestManager('packages/tests');
@@ -52,11 +57,32 @@ const execa = require('execa');
      */
     case 'test':
     case 't':
-      const jest = execa('./node_modules/.bin/jest', ['--config', `tests/${name}/jest.config.js`], {
-        stdio: 'inherit',
+      await tm.cliService(name, 'ssr:build');
+
+      const server = tm.cliService(name, 'ssr:start');
+
+      await waitOnPromise({
+        resources: [`tcp:localhost:8080`],
+        timeout: 60 * 1000,
       });
 
+      const jest = require('execa')(
+        './node_modules/.bin/jest',
+        ['--config', `tests/${name}/jest.config.js`],
+        {
+          stdio: 'inherit',
+        },
+      );
+
       jest.on('exit', exitCode => {
+        if (server) {
+          if (os.platform() === 'win32') {
+            execSync(`taskkill /F /T /PID ${server.pid}`);
+          } else {
+            server.kill('SIGINT');
+          }
+        }
+
         console.log(`Exit code: ${exitCode}`);
         process.exit(exitCode);
       });

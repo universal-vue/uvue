@@ -9,6 +9,11 @@ html {
   box-sizing: border-box;
 }
 
+h1 {
+  margin-top: 0;
+  margin-bottom: 60px;
+}
+
 h1 .small {
   color: #666;
   font-weight: normal;
