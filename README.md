@@ -2,11 +2,10 @@
 
 ### UVue / Universal Vue
 
-*Create server rendered Vue applications with ease.*
+_Create server rendered Vue applications with ease._
 
 ### Goals
 
-- [ ] usage with or without vue cli
 - [ ] exposed ssr lifecycle hooks
 - [ ] unobtrusive non-destructive installation
 - [ ] rich plugin system supporting popular packages

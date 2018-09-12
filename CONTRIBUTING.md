@@ -14,16 +14,17 @@ cd uvue
 yarn install
 ```
 
-## Create test project
+Then you go to `packages/tests/project` and start test project with the command:
 
-These commands will create a base Vue CLI project, then it will be cloned to multiple projects for
-testing purposes.
-
-```
-./tests/cli install project
+```bash
+yarn ssr:serve
 ```
 
-Then you can go to `packages/tests/project` to start the application with UVue plugin installed.
+To run tests, go to root folder and start this command:
+
+```bash
+yarn test
+```
 
 ## Linting and formatting
 
