@@ -117,6 +117,18 @@ export class Server implements IServer {
     // Setup last middleware: renderer
     this.use((req: IncomingMessage, res: ServerResponse) => this.renderMiddleware(req, res));
 
+    // Handle kill
+    const signals = ['SIGINT', 'SIGTERM'];
+    for (const signal of signals) {
+      (process.on as any)(signal, () => {
+        // tslint:disable-next-line
+        console.log(`(${signal}) Stoping server...`);
+        this.adapter.getHttpServer().close(() => {
+          process.exit(0);
+        });
+      });
+    }
+
     return this.adapter.start();
   }
 
@@ -130,6 +142,7 @@ export class Server implements IServer {
     };
 
     const context: IRequestContext = {
+      data: {},
       redirected: false,
       req,
       res,

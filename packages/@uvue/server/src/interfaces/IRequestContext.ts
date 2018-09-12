@@ -18,8 +18,8 @@ export interface IRequestContext {
 
   // Vuex and components data
   data?: {
-    state: any;
-    components: any[];
+    state?: any;
+    components?: any[];
 
     // Dynamic data
     [name: string]: any;

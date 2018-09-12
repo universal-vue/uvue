@@ -36,7 +36,7 @@ export class Renderer implements IRenderer {
     let htmlAttrs = '';
 
     // Add Vuex and components data
-    body += `<script data-vue-ssr-data>window.__DATA__=${jsonEncode(context.data)}</script>`;
+    body += `<script data-vue-ssr-data>window.__DATA__=${jsonEncode(context.data || {})}</script>`;
 
     // Body additions
     if (typeof context.bodyAdd === 'string') {
