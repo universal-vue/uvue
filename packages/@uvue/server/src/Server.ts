@@ -135,13 +135,18 @@ export class Server implements IServer {
       (process.on as any)(signal, () => {
         // tslint:disable-next-line
         console.log(`(${signal}) Stoping server...`);
-        this.adapter.getHttpServer().close(() => {
-          process.exit(0);
-        });
+        this.stop().then(() => process.exit(0));
       });
     }
 
     return this.adapter.start();
+  }
+
+  /**
+   * Stop server
+   */
+  public async stop() {
+    return this.adapter.stop();
   }
 
   /**
@@ -197,8 +202,10 @@ export class Server implements IServer {
         this.sendResponse(response, context);
       }
     } catch (err) {
-      // tslint:disable-next-line
-      console.error(err);
+      if (process.env.NODE_ENV !== 'test') {
+        // tslint:disable-next-line
+        console.error(err);
+      }
 
       // Catch errors
       await this.callAsyncHook('routeError', err, response, context, this);

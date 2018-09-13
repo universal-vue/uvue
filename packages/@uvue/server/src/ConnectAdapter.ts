@@ -64,6 +64,20 @@ export class ConnectAdapter implements IAdapter {
   }
 
   /**
+   * Stop server
+   */
+  public stop(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.server.close(err => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
+  }
+
+  /**
    * Get server instance
    */
   public getHttpServer() {

@@ -7,8 +7,9 @@ export interface IAdapter {
   use(middleware: HandleFunction): any;
   use(path: string, middleware: HandleFunction): any;
 
-  // Start server
+  // Start/stop server
   start(): Promise<void>;
+  stop(): Promise<void>;
 
   // Getters
   getHttpServer(): http.Server | https.Server;

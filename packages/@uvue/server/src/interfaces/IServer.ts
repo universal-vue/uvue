@@ -15,6 +15,7 @@ export interface IServer {
   callHook(name: string, ...args: any[]): any;
   callAsyncHook(name: string, ...args: any[]): Promise<any>;
 
-  // Start server
+  // Start/stop server
   start(): Promise<void>;
+  stop(): Promise<void>;
 }
