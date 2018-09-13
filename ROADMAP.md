@@ -16,7 +16,7 @@
   - [x] Attach to Vue CLI API
   - [x] Read configs files from current project
   - [x] Start Webpack plugin & loader to overwrite project code
-- [ ] Write basic tests
+- [x] Write basic tests
   - [x] Base project as a storybook
 - [x] Contribute guide
 
@@ -26,96 +26,60 @@
 
 **Please comment you code !**
 
-### Core
-
-- [ ] Implements `asyncData()` on pages components
+- [ ] **Core**: Implements `asyncData()` on pages components
   - [ ] Handle hot reload
-- [ ] Implements `redirect()`
-
-### Core plugins
-
-- [x] Plugins system with hooks
-- [ ] Vuex and `onHttpRequest` action
-- [ ] Error handler (without Vuex)
-- [ ] Middlewares system
+- [ ] **Core**: Implements `redirect()`
+- [x] **Core plugins**: Plugins system with hooks
+- [ ] **Core plugins**: Vuex and `onHttpRequest` action
+- [ ] **Core plugins**: Error handler (without Vuex)
+- [ ] **Core plugins**: Middlewares system
   - [ ] Handle hot reload
-
-### UVue API
-
-- [x] Transform main `new Vue` code to return only constructor options
-- [x] Load imports from project configuration
-- [ ] Transorm Vue plugins instanciation with an export function (router, store)
+- [x] **UVue API**: Transform main `new Vue` code to return only constructor options
+- [x] **UVue API**: Load imports from project configuration
+- [ ] **UVue API**: Transorm Vue plugins instanciation with an export function (router, store)
   - [ ] Transform main.js to use these functions
-- [x] Watch uvue config change to reload app
-
-### Server
-
-- [ ] Handle HTTPS configuration
-- [ ] Handle correctly Vue meta plugin
-- [ ] Tools for CPU & RAM monitoring
-- [ ] Benchmarks
-- [ ] Docker start script
-
-### CLI plugin
-
-- [ ] Base template (configs, router, server with plugins)
-- [ ] Detect Vue plugins presence and transform code
-- [ ] UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
-- [ ] `generate` command
-- [ ] Docker: prompt & dockerfile
-- [ ] Prompts to install server plugins
-- [ ] Prompts to install UVue plugins
-
-### Webpack
-
-- [ ] CSS management
-
-### Killers features
-
-- [ ] Critical CSS
+- [x] **UVue API**: Watch uvue config change to reload app
+- [ ] **Server**: Handle HTTPS configuration
+- [ ] **Server**: Handle correctly Vue meta plugin
+- [ ] **Server**: Docker start script
+- [ ] **CLI plugin**: Base template (configs, router, server with plugins)
+- [ ] **CLI plugin**: Detect Vue plugins presence and transform code
+- [ ] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
+- [ ] **CLI plugin**: `generate` command
+- [ ] **CLI plugin**: Docker: prompt & dockerfile
+- [ ] **CLI plugin**: Prompts to install server plugins
+- [ ] **CLI plugin**: Prompts to install UVue plugins
+- [ ] **Webpack**: CSS management
+- [ ] **Killers features**: Critical CSS
   - [ ] Critters
   - [ ] Critical / Penthouse (Puppeteer based)
   - [ ] Vue components styles (@akryum repo)
-- [ ] Modern build
-
-### Common
-
-- [ ] New logo
-- [ ] Documentation with Vuepress with custom theme
-- [ ] Issue template for Github
-- [ ] Better contribution guide
-- [ ] Example repository
-- [x] Discord Chat
+- [ ] **Killers features**: Modern build
+- [ ] **Common**: New logo
+- [ ] **Common**: Documentation with Vuepress with custom theme
+- [ ] **Common**: Issue template for Github
+- [ ] **Common**: Better contribution guide
+- [ ] **Common**: Example repository
+- [x] **Common**: Discord Chat
 
 ## Alpha 2
 
 ### Vue CLI UI
 
-- [ ] CPU & RAM monitoring for `ssr:start` command
-- [ ] Edit configuration files
-- [ ] `generate` command: List generated files & size
-
-### Vue CLI plugin support
-
-- [ ] E2E tests with SSR mode
-- [ ] TypeScript
-- [ ] Vue i18n
-- [ ] Apollo
-
-### Vue CLI generator
-
-- [ ] Prompts to install core & server plugins
-
-### Server
-
-- [ ] Watch server config to reload server (implements nodemon)
-- [ ] Pages cache plugin
+- [ ] **Vue CLI UI**: CPU & RAM monitoring for `ssr:start` command
+- [ ] **Vue CLI UI**: Edit configuration files
+- [ ] **Vue CLI UI**: `generate` command: List generated files & size
+- [ ] **Vue CLI plugin support**: E2E tests with SSR mode
+- [ ] **Vue CLI plugin support**: TypeScript
+- [ ] **Vue CLI plugin support**: Vue i18n
+- [ ] **Vue CLI plugin support**: Apollo
+- [ ] **Server**: Watch server config to reload server (implements nodemon)
+- [ ] **Server**: Tools for CPU & RAM monitoring
+- [ ] **Server**: Benchmarks
+- [ ] **Server**: Pages cache plugin
   - [ ] Memory
   - [ ] Files
   - [ ] Redis
-- [ ] Server error plugin (to customize server error page)
-
-## Core
-
-- [ ] SPA loader plugin
-- [ ] Navigation loader plugin
+- [ ] **Server**: Server error plugin (to customize server error page)
+- [ ] **Core**: SPA loader plugin
+- [ ] **Core**: Navigation loader plugin
