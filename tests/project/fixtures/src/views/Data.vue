@@ -2,17 +2,10 @@
   <div class="page">
     <h1><span class="code">data()</span></h1>
 
-    <div class="test">
-      <div class="expected">
-        <span class="label">Expected:</span>
-        <pre class="value">bar</pre>
-      </div>
-
-      <div class="result">
-        <span class="label">Result:</span>
-        <pre class="value">{{ foo }}</pre>
-      </div>
-    </div>
+    <test-case
+      expected="bar"
+      :result="foo"
+    />
 
   </div>
 </template>
