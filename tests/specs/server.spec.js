@@ -99,29 +99,6 @@ describe('Server and Renderer', () => {
     expect(pluginStates.afterResponse).toBe(true);
   });
 
-  it('Server should start the adapter', async () => {
-    await serverMock.server.start()
-
-    const host = serverMock.server.adapter.getHost()
-    const port = serverMock.server.adapter.getPort()
-    const isHttps = serverMock.server.adapter.isHttps()
-
-    const uri = `${isHttps ? 'https' : 'http'}://${host}:${port}`
-    const { statusCode, body } = await request({
-      uri,
-      method: 'GET',
-      transform: function (body, response) {
-        return response;
-      }
-    })
-    const $ = cheerio.load(body);
-
-    expect($('h1').text()).toContain('UVue');
-    expect(statusCode).toEqual(200);
-
-    serverMock.server.adapter.getHttpServer().close();
-  });
-
   it('Plugin can hook route error', async () => {
     process.env.NODE_ENV = 'test';
 
@@ -136,5 +113,28 @@ describe('Server and Renderer', () => {
     const { response } = await server.renderMiddleware(req, res);
 
     expect(pluginStates.routeError).toBe(true);
+  });
+
+  it('Server should start the adapter', async () => {
+    await serverMock.server.start();
+
+    const host = serverMock.server.adapter.getHost();
+    const port = serverMock.server.adapter.getPort();
+    const isHttps = serverMock.server.adapter.isHttps();
+
+    const uri = `${isHttps ? 'https' : 'http'}://${host}:${port}`;
+    const { statusCode, body } = await request({
+      uri,
+      method: 'GET',
+      transform: function(body, response) {
+        return response;
+      },
+    });
+    const $ = cheerio.load(body);
+
+    expect($('h1').text()).toContain('UVue');
+    expect(statusCode).toEqual(200);
+
+    serverMock.server.stop();
   });
 });
