@@ -20,12 +20,6 @@ Then you go to `packages/tests/project` and start test project with the command:
 yarn ssr:serve
 ```
 
-To run tests, go to root folder and start this command:
-
-```bash
-yarn test
-```
-
 ## Linting and formatting
 
 Theses libs are mandatory to lint and format your code:
@@ -34,10 +28,32 @@ Theses libs are mandatory to lint and format your code:
 - ESLint for JavaScript
 - TSLint for TypeScript
 
+## Run linters
+
+In root folder:
+
+```bash
+yarn lint
+```
+
+## Run all tests
+
+In root folder:
+
+```bash
+yarn test
+```
+
 ## Run units tests
 
-@TODO
+In root folder:
+
+```bash
+./tests/cli test:unit project
+```
 
 ## Run E2E tests
 
-@TODO
+```bash
+./tests/cli test:e2e project
+```

@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "clean": "rimraf packages/tests",
+    "lint": "lerna run lint",
     "test": "./tests/cli test project",
     "postinstall": "scripts/postinstall.sh"
   },
