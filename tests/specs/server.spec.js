@@ -1,4 +1,5 @@
 const httpMocks = require('node-mocks-http');
+const request = require('request-promise-native');
 const cheerio = require('cheerio');
 const { mockServer, mockContext } = require('../utils/unit');
 
@@ -96,5 +97,28 @@ describe('Server and Renderer', () => {
 
   it('Plugin hooks should be invoked after response was sent', async () => {
     expect(pluginStates.afterResponse).toBe(true);
+  });
+
+  it('Server should start the adapter', async () => {
+    await serverMock.server.start()
+
+    const host = serverMock.server.adapter.getHost()
+    const port = serverMock.server.adapter.getPort()
+    const isHttps = serverMock.server.adapter.isHttps()
+
+    const uri = `${isHttps ? 'https' : 'http'}://${host}:${port}`
+    const { statusCode, body } = await request({
+      uri,
+      method: 'GET',
+      transform: function (body, response) {
+        return response;
+      }
+    })
+    const $ = cheerio.load(body);
+
+    expect($('h1').text()).toContain('UVue');
+    expect(statusCode).toEqual(200);
+
+    serverMock.server.adapter.getHttpServer().close();
   });
 });
