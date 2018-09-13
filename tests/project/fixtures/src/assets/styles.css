@@ -71,6 +71,11 @@ h2 {
   color: #000;
 }
 
+.current-url {
+  padding-left: 340px;
+  margin: 0;
+}
+
 .page {
   padding: 40px;
   padding-left: 340px;

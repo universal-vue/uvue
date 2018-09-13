@@ -33,7 +33,6 @@ const gotoSSR = async url => {
 
   const $ = cheerio.load(responseBody);
 
-  const dataTag = $('script[data-vue-ssr-data]');
   const scriptContent = $('script[data-vue-ssr-data]')
     .html()
     .replace(/^window\.__DATA__=/, '');

@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <pre class="current-url">{{ $route.fullPath }}</pre>
     <side-menu/>
     <router-view/>
     <div
