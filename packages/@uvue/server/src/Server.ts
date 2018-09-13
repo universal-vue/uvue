@@ -68,12 +68,24 @@ export class Server implements IServer {
   public addPlugin(plugin: any, options: any) {
     this.plugins.push(plugin);
     plugin.$options = options;
+    this.callHook('install', this);
   }
 
   /**
    * Call hooks from plugins
    */
-  public async callHook(name: string, ...args: any[]) {
+  public callHook(name: string, ...args: any[]) {
+    for (const plugin of this.plugins) {
+      if (typeof plugin[name] === 'function') {
+        plugin[name].bind(plugin)(...args);
+      }
+    }
+  }
+
+  /**
+   * Call hooks from plugins
+   */
+  public async callAsyncHook(name: string, ...args: any[]) {
     for (const plugin of this.plugins) {
       if (typeof plugin[name] === 'function') {
         await plugin[name].bind(plugin)(...args);
@@ -86,7 +98,7 @@ export class Server implements IServer {
    */
   public async start() {
     // Call beforeStart hook
-    await this.callHook('beforeStart', this);
+    await this.callAsyncHook('beforeStart', this);
 
     let readyPromise = Promise.resolve();
 
@@ -151,7 +163,7 @@ export class Server implements IServer {
 
     try {
       // Hook before render
-      await this.callHook('beforeRender', context, this);
+      await this.callAsyncHook('beforeRender', context, this);
 
       if (!res.finished) {
         const { spaPaths } = this.options;
@@ -172,14 +184,14 @@ export class Server implements IServer {
           }
 
           // Hook before building the page
-          await this.callHook('beforeBuild', response, context, this);
+          await this.callAsyncHook('beforeBuild', response, context, this);
 
           // Build page
           response.body = await this.renderer.renderSSRPage(response.body, context);
         }
 
         // Hook on rendered
-        await this.callHook('rendered', response, context, this);
+        await this.callAsyncHook('rendered', response, context, this);
 
         // Send response
         this.sendResponse(response, context);
@@ -189,7 +201,7 @@ export class Server implements IServer {
       console.error(err);
 
       // Catch errors
-      await this.callHook('routeError', err, response, context, this);
+      await this.callAsyncHook('routeError', err, response, context, this);
 
       if (!res.finished) {
         response.body = response.body || 'Server error';

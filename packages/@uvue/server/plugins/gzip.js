@@ -1,7 +1,7 @@
 import compression from 'compression';
 
 export default {
-  beforeStart(app) {
+  install(app) {
     app.use(compression(this.$options));
   },
 };
