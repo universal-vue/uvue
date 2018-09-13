@@ -97,4 +97,20 @@ describe('Server and Renderer', () => {
   it('Plugin hooks should be invoked after response was sent', async () => {
     expect(pluginStates.afterResponse).toBe(true);
   });
+
+  it('Plugin can hook route error', async () => {
+    process.env.NODE_ENV = 'test';
+
+    const { server } = serverMock;
+
+    const req = httpMocks.createRequest({
+      method: 'GET',
+      url: '/server-route-error',
+    });
+    const res = httpMocks.createResponse();
+
+    const { response } = await server.renderMiddleware(req, res);
+
+    expect(pluginStates.routeError).toBe(true);
+  });
 });
