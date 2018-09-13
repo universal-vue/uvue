@@ -21,7 +21,7 @@ const unitProject = async name => {
 
 const e2eProject = async (server, name) => {
   await waitOnPromise({
-    resources: [`tcp:localhost:8080`],
+    resources: [`tcp:localhost:7357`],
     timeout: 60 * 1000,
   });
 
@@ -94,7 +94,7 @@ const e2eProject = async (server, name) => {
 
     case 'test:e2e':
       {
-        const server = tm.cliService(name, 'ssr:start');
+        const server = tm.cliService(name, 'ssr:start', ['--port', '7357']);
         await e2eProject(server, name);
       }
       break;
@@ -109,7 +109,7 @@ const e2eProject = async (server, name) => {
         await unitProject(name);
 
         // E2E tests
-        const server = tm.cliService(name, 'ssr:start');
+        const server = tm.cliService(name, 'ssr:start', ['--port', '7357']);
         await e2eProject(server, name);
       }
       break;

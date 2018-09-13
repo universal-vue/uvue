@@ -1,7 +1,7 @@
 const request = require('request');
 const cheerio = require('cheerio');
 
-const baseURL = 'http://localhost:8080';
+const baseURL = 'http://localhost:7357';
 
 /**
  * Do a HTTP request
