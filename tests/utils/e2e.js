@@ -28,7 +28,7 @@ const doRequest = async (url, options) => {
  * Go to a page in SSR mode and get HTML content
  */
 const gotoSSR = async url => {
-  const response = await page.goto(url);
+  const response = await page.goto(`${baseURL}${url}`);
   const responseBody = await response.text();
 
   const $ = cheerio.load(responseBody);
@@ -48,6 +48,17 @@ const gotoSSR = async url => {
 };
 
 /**
+ * Do a SPA navigation
+ */
+const gotoSPA = async name => {
+  await page.goto(`${baseURL}/`);
+  await isMounted();
+  const link = await page.$(`a[data-route-name="${name}"]`);
+  await link.click();
+  await wait(100);
+};
+
+/**
  * Check the current page is in SPA mode
  */
 const isSPA = async () => {
@@ -62,15 +73,6 @@ const isMounted = async () => {
 };
 
 /**
- * Click on a link to go to page
- */
-const gotoClick = async name => {
-  const link = await page.$(`a[data-route-name="${name}"]`);
-  await link.click();
-  await wait(100);
-};
-
-/**
  * Check text in DOM element
  */
 const checkText = async (selector, value) => {
@@ -78,21 +80,33 @@ const checkText = async (selector, value) => {
 };
 
 /**
- * Run page test
+ * Run tests contained in page
  */
-const pageTest = async () => {
-  const expected = await page.$eval('.test .expected .value', el => el.textContent);
-  const value = await page.$eval('.test .result .value', el => el.textContent);
-  expect(value).toBe(expected);
+const pageRunTests = async (selector = '.test') => {
+  const tests = await page.evaluate(selector => {
+    const elements = Array.from(document.querySelectorAll(selector));
+    return elements.map(item => {
+      return {
+        expected: item.querySelector('.expected .value').textContent,
+        result: item.querySelector('.result .value').textContent,
+      };
+    });
+  }, selector);
+
+  for (const test of tests) {
+    expect(test.result).toBe(test.expected);
+  }
 };
 
 /**
- * Run page test on HTML (SSR)
+ * Run tests contained in page (SSR mode, with HTML source code)
  */
-const pageTestSSR = async $ => {
-  const expected = $('.test .expected .value').text();
-  const value = $('.test .result .value').text();
-  expect(value).toBe(expected);
+const pageRunTestsSSR = ($, selector = '.test') => {
+  $(selector).each((_, element) => {
+    const expected = $('.expected .value', element).text();
+    const result = $('.result .value', element).text();
+    expect(result).toBe(expected);
+  });
 };
 
 /**
@@ -101,14 +115,14 @@ const pageTestSSR = async $ => {
 const wait = time => new Promise(resolve => setTimeout(resolve, time));
 
 module.exports = {
+  wait,
   gotoSSR,
+  gotoSPA,
   baseURL,
   doRequest,
   isSPA,
   isMounted,
-  gotoClick,
   checkText,
-  pageTest,
-  pageTestSSR,
-  wait,
+  pageRunTests,
+  pageRunTestsSSR,
 };

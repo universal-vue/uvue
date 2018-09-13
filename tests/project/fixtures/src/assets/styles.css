@@ -20,6 +20,10 @@ h1 .small {
   font-size: 0.8em;
 }
 
+h2 {
+  margin-bottom: 40px 0;
+}
+
 .side-menu {
   position: fixed;
   z-index: 1;

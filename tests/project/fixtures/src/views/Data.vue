@@ -7,6 +7,7 @@
       :result="foo"
     />
 
+    <router-view/>
   </div>
 </template>
 

@@ -1,10 +1,10 @@
-const { baseURL, gotoSSR, checkText, pageTest, pageTestSSR } = require('../../utils/e2e');
+const { gotoSSR, isMounted, checkText, pageRunTests, pageRunTestsSSR } = require('../../utils/e2e');
 
 let $;
 
-describe('Project test sample', () => {
+describe('Basics', () => {
   beforeAll(async () => {
-    $ = await gotoSSR(baseURL);
+    $ = await gotoSSR('/');
   });
 
   it('Basics: Home is correctly rendered', async () => {
@@ -12,15 +12,17 @@ describe('Project test sample', () => {
   });
 
   it('Basics: Home is correctly mounted', async () => {
+    await isMounted();
     await checkText('h1', 'UVue - Test project');
   });
 
   it('Basics: data() is correctly rendered', async () => {
-    $ = await gotoSSR(baseURL + '/data');
-    pageTestSSR($);
+    $ = await gotoSSR('/data');
+    pageRunTestsSSR($);
   });
 
   it('Basics: data() is correctly mounted', async () => {
-    await pageTest();
+    await isMounted();
+    await pageRunTests();
   });
 });
