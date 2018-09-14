@@ -101,13 +101,15 @@ describe('Server and Renderer', () => {
   });
 
   it('Server should start the adapter', async () => {
-    await serverMock.server.start()
+    const { server } = serverMock;
+    await server.start();
+    const { adapter } = server;
 
-    const host = serverMock.server.adapter.getHost()
-    const port = serverMock.server.adapter.getPort()
-    const isHttps = serverMock.server.adapter.isHttps()
+    const host = adapter.getHost();
+    const port = adapter.getPort();
+    const isHttps = adapter.isHttps();
 
-    const uri = `${isHttps ? 'https' : 'http'}://${host}:${port}`
+    const uri = `${isHttps ? 'https' : 'http'}://${host}:${port}`;
     const { statusCode, body } = await request({
       uri,
       method: 'GET',
@@ -120,10 +122,10 @@ describe('Server and Renderer', () => {
     expect($('h1').text()).toContain('UVue');
     expect(statusCode).toEqual(200);
 
-    serverMock.server.adapter.getHttpServer().close();
+    adapter.getHttpServer().close();
   });
 
-  it('Server should add more plugins', async () => {
+  it('Server should add more plugins', () => {
     const { server, plugin } = serverMock;
 
     const pluginsCount = server.plugins.length;
