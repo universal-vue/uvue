@@ -1,6 +1,7 @@
 const httpMocks = require('node-mocks-http');
 const request = require('request-promise-native');
 const cheerio = require('cheerio');
+const EventEmitter = require('events');
 const { mockServer, mockContext } = require('../utils/unit');
 
 let serverMock;
@@ -113,7 +114,7 @@ describe('Server and Renderer', () => {
       transform: function (body, response) {
         return response;
       }
-    })
+    });
     const $ = cheerio.load(body);
 
     expect($('h1').text()).toContain('UVue');
@@ -121,4 +122,14 @@ describe('Server and Renderer', () => {
 
     serverMock.server.adapter.getHttpServer().close();
   });
+
+  it('Server should add more plugins', async () => {
+    const { server, plugin } = serverMock;
+
+    const pluginsCount = server.plugins.length;
+    server.addPlugin(plugin, {});
+
+    expect(server.plugins.length).toEqual(pluginsCount + 1);
+  });
+
 });
