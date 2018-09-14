@@ -1,7 +1,6 @@
 const httpMocks = require('node-mocks-http');
 const request = require('request-promise-native');
 const cheerio = require('cheerio');
-const EventEmitter = require('events');
 const { mockServer, mockContext } = require('../utils/unit');
 
 let serverMock;
