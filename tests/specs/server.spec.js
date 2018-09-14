@@ -112,9 +112,7 @@ describe('Server and Renderer', () => {
     const { statusCode, body } = await request({
       uri,
       method: 'GET',
-      transform: function (body, response) {
-        return response;
-      }
+      transform: (body, response) => response
     });
     const $ = cheerio.load(body);
 
@@ -126,7 +124,6 @@ describe('Server and Renderer', () => {
 
   it('Server should add more plugins', () => {
     const { server, plugin } = serverMock;
-
     const pluginsCount = server.plugins.length;
     server.addPlugin(plugin, {});
 
