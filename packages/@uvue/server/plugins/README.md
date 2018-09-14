@@ -106,8 +106,13 @@ A plugin is just an object with defined methods to act on different hooks:
 ```js
 export default {
   // Act on server bootstrap: good place to define some server middlewares
-  async beforeStart(app) {
+  install(app) {
     app.use('/path', myMiddleware(this.$options));
+  },
+
+  // Act before server is started
+  async beforeStart(app) {
+    // ...
   },
 
   // Do an action before page will be rendered by Vue SSR
@@ -131,7 +136,7 @@ export default {
   },
 
   // Page was sent to client
-  async afterResponse(context, app) {
+  afterResponse(context, app) {
     // Good place to log things
   },
 };

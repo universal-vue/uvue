@@ -29,7 +29,7 @@
 - [ ] **Core**: Implements `asyncData()` on pages components
   - [ ] Handle hot reload
 - [ ] **Core**: Implements `redirect()`
-- [x] **Core plugins**: Plugins system with hooks
+- [ ] **Core plugins**: Plugins system with hooks
 - [ ] **Core plugins**: Vuex and `onHttpRequest` action
 - [ ] **Core plugins**: Error handler (without Vuex)
 - [ ] **Core plugins**: Middlewares system
