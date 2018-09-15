@@ -12,7 +12,9 @@ if (module.hot) {
  */
 (async () => {
   // Create context object
-  const context = {};
+  const context = {
+    url: window.location.pathname + window.location.search,
+  };
 
   // Call app main
   createApp(context);

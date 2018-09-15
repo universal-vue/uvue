@@ -7,7 +7,12 @@ import routeResolve from '../lib/routeResolve';
  */
 export default async ssr => {
   // Create context object
-  const context = { ssr };
+  const context = {
+    ssr,
+    url: ssr.url,
+    req: ssr.req,
+    res: ssr.res,
+  };
 
   // Send router to server side
   ssr.router = router;
