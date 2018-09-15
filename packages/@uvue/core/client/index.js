@@ -1,4 +1,5 @@
 import { createApp } from '../main';
+import UVue from '@uvue/core';
 import routeResolve from '../lib/routeResolve';
 
 // Enable HMR
@@ -16,6 +17,9 @@ if (module.hot) {
   // Call app main
   createApp(context);
 
+  // Call created hook
+  await UVue.callAsyncHook('created', context);
+
   // Get some vars from context
   const { app, router } = context;
 
@@ -31,7 +35,16 @@ if (module.hot) {
       await routeResolve(context);
     }
 
+    // beforeReady hook
+    await UVue.callAsyncHook('beforeReady', context);
+
     // Mount app
     app.$mount('#app');
+
+    // Wait for next tick after mount
+    app.$nextTick(() => {
+      // Call ready hook
+      UVue.callHook('ready', context);
+    });
   });
 })();

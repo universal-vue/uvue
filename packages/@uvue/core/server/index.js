@@ -1,4 +1,5 @@
 import { createApp } from '../main';
+import UVue from '@uvue/core';
 import routeResolve from '../lib/routeResolve';
 
 /**
@@ -14,6 +15,9 @@ export default async ssr => {
   // Call app main
   createApp(context);
 
+  // Call created hook
+  await UVue.callAsyncHook('created', context);
+
   // Get some vars from context
   const { app, router } = context;
 
@@ -28,7 +32,14 @@ export default async ssr => {
   // On router ready
   return new Promise(resolve => {
     router.onReady(async () => {
+      // beforeReady hook
+      await UVue.callAsyncHook('beforeReady', context);
+
+      // Resolve app
       resolve(app);
+
+      // Call ready hook
+      UVue.callHook('ready', context);
     });
   });
 };

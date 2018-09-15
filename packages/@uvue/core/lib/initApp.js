@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import UVue from '../';
+import UVue from '@uvue/core';
 
 /**
  * Simple function to create main context with

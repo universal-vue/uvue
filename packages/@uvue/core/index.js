@@ -3,7 +3,6 @@
  */
 export default {
   plugins: [],
-  injects: {},
 
   /**
    * Method to install a plugin
