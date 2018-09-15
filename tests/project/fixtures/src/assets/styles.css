@@ -24,6 +24,10 @@ h2 {
   margin-bottom: 40px 0;
 }
 
+h3 {
+  margin-bottom: 30px 0;
+}
+
 .side-menu {
   position: fixed;
   z-index: 1;
@@ -33,6 +37,7 @@ h2 {
   width: 300px;
   background: #f9f9f9;
   padding: 40px;
+  overflow-y: auto;
 }
 
 .side-menu ul {
@@ -54,7 +59,7 @@ h2 {
   font-weight: bold;
   text-transform: uppercase;
   display: block;
-  padding-bottom: 10px;
+  padding: 10px 0;
 }
 
 .side-menu ul ul li {
@@ -92,4 +97,18 @@ pre {
   background: #f9f9f9;
   padding: 20px;
   font-size: 1.1em;
+}
+
+.test {
+  display: flex;
+}
+
+.test .label {
+  color: #666;
+}
+
+.test .expected,
+.test .result {
+  width: 50%;
+  padding-right: 10px;
 }

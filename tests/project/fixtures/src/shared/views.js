@@ -31,4 +31,27 @@ export default [
       },
     ],
   },
+  {
+    label: 'Core',
+    children: [
+      {
+        path: '/plugins-install',
+        name: 'plugins-install',
+        label: 'Plugins install',
+        component: () => import('@/views/plugins/Install.vue'),
+      },
+      {
+        path: '/plugins-hooks',
+        name: 'plugins-hooks',
+        label: 'Plugins hooks',
+        component: () => import('@/views/plugins/Hooks.vue'),
+      },
+      {
+        path: '/plugins-route-error',
+        name: 'plugins-route-error',
+        label: 'Plugins route error',
+        component: () => import('@/views/plugins/RouteError.vue'),
+      },
+    ],
+  },
 ];
