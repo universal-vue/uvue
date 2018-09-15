@@ -1,9 +1,10 @@
 import { createApp } from '../main';
+import routeResolve from '../lib/routeResolve';
 
 /**
  * Vue start
  */
-export default ssr => {
+export default async ssr => {
   // Create context object
   const context = { ssr };
 
@@ -15,6 +16,11 @@ export default ssr => {
 
   // Get some vars from context
   const { app, router } = context;
+
+  // Router resolve route
+  router.beforeResolve((to, _, next) => {
+    routeResolve(context, { to, next });
+  });
 
   // Init router with current URL
   router.push(ssr.url);
