@@ -25,9 +25,13 @@ const e2eProject = async (server, name) => {
     timeout: 60 * 1000,
   });
 
-  const jest = execa('./node_modules/.bin/jest', ['--config', `tests/${name}/jest.config.js`], {
-    stdio: 'inherit',
-  });
+  const jest = execa(
+    './node_modules/.bin/jest',
+    ['--config', `tests/${name}/jest.config.js`, '--verbose'],
+    {
+      stdio: 'inherit',
+    },
+  );
 
   jest.on('exit', exitCode => {
     if (server) {
