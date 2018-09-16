@@ -3,7 +3,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import UVue from '@uvue/core';
 import VueRouter from 'vue-router';
 
-const analyzeContext = context => {
+const analyzeContext = (context, hookName) => {
   const result = {};
 
   for (const key in context) {
@@ -34,6 +34,7 @@ const analyzeContext = context => {
 
   result.redirect = typeof context.redirect === 'function';
   result.route = {
+    hook: hookName,
     url: context.url,
     query: context.query,
     params: context.params,
@@ -69,20 +70,18 @@ const HooksPlugin = {
 
   async routeResolve(context) {
     this.vm.$data.routeResolve = true;
-    this.vm.$data.contexts.routeResolve = analyzeContext(context);
+    this.vm.$data.contexts.routeResolve = analyzeContext(context, 'routeResolve');
 
-    const { url, redirect } = context;
+    const { url } = context;
 
     if (url === '/plugins-route-error/bar?bar=baz') {
       throw new Error('RouteError');
-    } else if (url === '/redirect-route') {
-      redirect('/');
     }
   },
 
   async routeError(error, context) {
     this.vm.$data.routeError = true;
-    this.vm.$data.contexts.routeError = analyzeContext(context);
+    this.vm.$data.contexts.routeError = analyzeContext(context, 'routeError');
   },
 
   async beforeReady(context) {

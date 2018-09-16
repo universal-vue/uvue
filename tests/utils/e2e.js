@@ -72,6 +72,13 @@ const isMounted = async () => {
 };
 
 /**
+ * Get text in DOM element
+ */
+const getText = selector => {
+  return page.$eval(selector, el => el.textContent);
+};
+
+/**
  * Check text in DOM element
  */
 const checkText = async (selector, value) => {
@@ -108,6 +115,68 @@ const pageRunTestsSSR = ($, selector = '.test') => {
   });
 };
 
+const testContext = async path => {
+  const contexts = await page.evaluate(() => {
+    const elements = Array.from(document.querySelectorAll('.context'));
+    return elements.map(item => {
+      return JSON.parse(item.textContent);
+    });
+  });
+
+  for (const data of contexts) {
+    for (const key in data) {
+      if (key === 'route') {
+        const route = data[key];
+        if (route.hook && /^route/.test(route.hook)) {
+          if (route.url) {
+            expect(route.url).toBe(`${path}/bar?bar=baz`);
+          }
+          if (route.query) {
+            expect(route.query).toEqual({
+              bar: 'baz',
+            });
+          }
+          if (route.params) {
+            expect(route.params).toEqual({
+              foo: 'bar',
+            });
+          }
+        }
+      } else {
+        expect(data[key]).toBe(true);
+      }
+    }
+  }
+};
+
+const testContextSSR = ($, path) => {
+  $('.context').each((index, element) => {
+    const data = JSON.parse($(element).text());
+    for (const key in data) {
+      if (key === 'route') {
+        const route = data[key];
+        if (route.hook && /^route/.test(route.hook)) {
+          if (route.url) {
+            expect(route.url).toBe(`${path}/bar?bar=baz`);
+          }
+          if (route.query) {
+            expect(route.query).toEqual({
+              bar: 'baz',
+            });
+          }
+          if (route.params) {
+            expect(route.params).toEqual({
+              foo: 'bar',
+            });
+          }
+        }
+      } else {
+        expect(data[key]).toBe(true);
+      }
+    }
+  });
+};
+
 /**
  * Simple function to wait
  */
@@ -121,7 +190,10 @@ module.exports = {
   doRequest,
   isSPA,
   isMounted,
+  getText,
   checkText,
   pageRunTests,
   pageRunTestsSSR,
+  testContext,
+  testContextSSR,
 };

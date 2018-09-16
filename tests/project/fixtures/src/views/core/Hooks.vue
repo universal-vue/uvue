@@ -12,7 +12,7 @@
         :result="$hooksTest[hookName].toString()"
       />
       <h4>Context</h4>
-      <pre>{{ $hooksTest.contexts[hookName] }}</pre>
+      <pre class="context">{{ $hooksTest.contexts[hookName] }}</pre>
     </div>
 
   </div>

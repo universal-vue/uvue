@@ -1,3 +1,3 @@
 export default {
-  imports: ['@/plugins/hooks'],
+  imports: ['@/plugins/hooks', '@/plugins/redirect'],
 };
