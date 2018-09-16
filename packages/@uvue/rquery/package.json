@@ -21,11 +21,11 @@
   "license": "MIT",
   "dependencies": {
     "@babel/parser": "^7.0.0",
-    "@types/node": "^10.5.2",
-    "lodash": "^4.17.10",
-    "prettier": "^1.13.7",
-    "recast": "^0.15.2",
-    "typescript": "^2.9.2"
+    "@types/node": "^10.9.4",
+    "lodash": "^4.17.11",
+    "prettier": "^1.14.2",
+    "recast": "^0.15.5",
+    "typescript": "^3.0.3"
   },
   "devDependencies": {
     "rimraf": "^2.6.2",
