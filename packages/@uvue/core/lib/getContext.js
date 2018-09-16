@@ -1,3 +1,7 @@
+/**
+ * Return a new context based on app context with route informations
+ * Used in routeResolve
+ */
 export default (context, route) => {
   const { router } = context;
 

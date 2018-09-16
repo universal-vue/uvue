@@ -1,3 +1,7 @@
+/**
+ * Redirect error
+ * Will stop next executions to do a clean redirect
+ */
 export class RedirectError extends Error {
   constructor(location, statusCode = 301) {
     super('REDIRECT_ERROR');
@@ -6,6 +10,9 @@ export class RedirectError extends Error {
   }
 }
 
+/**
+ * Return redirect function for context
+ */
 export const getRedirect = ({ ssr }) => {
   return (location, statusCode = 301) => {
     const redirectError = new RedirectError(location, statusCode);
@@ -14,6 +21,10 @@ export const getRedirect = ({ ssr }) => {
   };
 };
 
+/**
+ * Simply do a redirect
+ * Distinct process for server & client side
+ */
 export const doRedirect = ({ res, ssr, router }, { location, statusCode }) => {
   if (process.client) {
     // Client side
