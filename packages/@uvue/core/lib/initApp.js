@@ -31,7 +31,7 @@ export default (options, context) => {
   context.app = new Vue(options);
 
   // Catch redirect in router
-  router.onError(err => {
+  context.router.onError(err => {
     if (err instanceof RedirectError) {
       doRedirect(context, err);
     }

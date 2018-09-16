@@ -1,6 +1,6 @@
-import { createApp } from '../main';
+import { createApp } from './main';
 import UVue from '@uvue/core';
-import routeResolve from '../lib/routeResolve';
+import routeResolve from './lib/routeResolve';
 
 /**
  * Vue start

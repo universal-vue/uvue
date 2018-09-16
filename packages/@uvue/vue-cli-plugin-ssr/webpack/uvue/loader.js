@@ -11,13 +11,13 @@ module.exports = async function(content, map, meta) {
   // Get UVue API
   const { uvue } = this.query.api;
 
-  if (mm.isMatch(this.resourcePath, '**/@uvue/core/(client|server)/index.js')) {
+  if (mm.isMatch(this.resourcePath, '**/@uvue/core/(client|server).js')) {
     // Get absolute path to generated main.js
     const dirPath = path.join(uvue.getProjectPath(), 'node_modules', '.uvue');
     const mainPath = path.join(dirPath, 'main.js');
 
     // Replace import main path to generated file by Webpack plugin
-    content = content.replace('../main', mainPath);
+    content = content.replace('./main', mainPath);
   } else if (this.resourcePath === uvue.getMainPath()) {
     // Replace new Vue by a simple return object
 
