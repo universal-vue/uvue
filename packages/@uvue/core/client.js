@@ -20,7 +20,7 @@ if (module.hot) {
   createApp(context);
 
   // Call created hook
-  await UVue.callAsyncHook('created', context);
+  await UVue.invokeAsync('created', context);
 
   // Get some vars from context
   const { app, router } = context;
@@ -38,7 +38,7 @@ if (module.hot) {
     }
 
     // beforeReady hook
-    await UVue.callAsyncHook('beforeReady', context);
+    await UVue.invokeAsync('beforeReady', context);
 
     // Mount app
     app.$mount('#app');
@@ -46,7 +46,7 @@ if (module.hot) {
     // Wait for next tick after mount
     app.$nextTick(() => {
       // Call ready hook
-      UVue.callHook('ready', context);
+      UVue.invoke('ready', context);
     });
   });
 })();

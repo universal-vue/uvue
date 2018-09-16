@@ -21,7 +21,7 @@ export default async ssr => {
   createApp(context);
 
   // Call created hook
-  await UVue.callAsyncHook('created', context);
+  await UVue.invokeAsync('created', context);
 
   // Get some vars from context
   const { app, router } = context;
@@ -38,13 +38,13 @@ export default async ssr => {
   return new Promise(resolve => {
     router.onReady(async () => {
       // beforeReady hook
-      await UVue.callAsyncHook('beforeReady', context);
+      await UVue.invokeAsync('beforeReady', context);
 
       // Resolve app
       resolve(app);
 
       // Call ready hook
-      UVue.callHook('ready', context);
+      UVue.invoke('ready', context);
     });
   });
 };

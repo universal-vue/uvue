@@ -15,7 +15,7 @@ export default {
   /**
    * Call hooks
    */
-  callHook(name, ...args) {
+  invoke(name, ...args) {
     for (const plugin of this.plugins) {
       if (typeof plugin[name] === 'function') {
         plugin[name].bind(plugin)(...args);
@@ -26,7 +26,7 @@ export default {
   /**
    * Call async hooks
    */
-  async callAsyncHook(name, ...args) {
+  async invokeAsync(name, ...args) {
     for (const plugin of this.plugins) {
       if (typeof plugin[name] === 'function') {
         await plugin[name].bind(plugin)(...args);

@@ -10,10 +10,10 @@ export default async (context, { to, next } = {}) => {
 
   try {
     // Call hooks on route resolve
-    await UVue.callAsyncHook('routeResolve', routeContext);
+    await UVue.invokeAsync('routeResolve', routeContext);
   } catch (error) {
     // Call hooks if there is an error
-    await UVue.callAsyncHook('routeError', error, routeContext);
+    await UVue.invokeAsync('routeError', error, routeContext);
   }
 
   // If inside navigation guard

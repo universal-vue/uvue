@@ -11,7 +11,7 @@ export default (options, context) => {
   context.router = options.router;
 
   // beforeCreate hook call
-  UVue.callHook('beforeCreate', context, (key, value) => {
+  UVue.invoke('beforeCreate', context, (key, value) => {
     if (!options[key]) options[key] = value;
   });
 
