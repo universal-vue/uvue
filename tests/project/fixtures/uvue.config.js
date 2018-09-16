@@ -1,3 +1,8 @@
 export default {
-  imports: ['@/plugins/hooks', '@/plugins/redirect'],
+  plugins: [
+    // Plugin to test hooks
+    ['@/plugins/hooks', { foo: 'bar' }],
+    // Plugin to test redirects
+    '@/plugins/redirect',
+  ],
 };

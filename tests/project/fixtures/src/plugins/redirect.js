@@ -1,6 +1,4 @@
-import UVue from '@uvue/core';
-
-const RedirectPlugin = {
+export default {
   async routeResolve(context) {
     const { url, redirect } = context;
 
@@ -9,5 +7,3 @@ const RedirectPlugin = {
     }
   },
 };
-
-UVue.use(RedirectPlugin);

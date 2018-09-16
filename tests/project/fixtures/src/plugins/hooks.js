@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import { IncomingMessage, ServerResponse } from 'http';
-import UVue from '@uvue/core';
 import VueRouter from 'vue-router';
 
 const analyzeContext = (context, hookName) => {
@@ -43,7 +42,7 @@ const analyzeContext = (context, hookName) => {
   return result;
 };
 
-const HooksPlugin = {
+export default {
   beforeCreate(context, inject) {
     this.vm = new Vue({
       data: () => ({
@@ -94,7 +93,3 @@ const HooksPlugin = {
     this.vm.$data.contexts.ready = analyzeContext(context);
   },
 };
-
-UVue.use(HooksPlugin, {
-  foo: 'bar',
-});

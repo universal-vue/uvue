@@ -1,9 +1,5 @@
 # Roadmap
 
-- Context tests
-- Redirect tests
-- Auto install UVue plugins with config
-
 ## Alpha 0
 
 - [x] Basic core package

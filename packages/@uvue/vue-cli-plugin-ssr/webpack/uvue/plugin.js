@@ -51,6 +51,22 @@ module.exports = class UVuePlugin {
 
     // Generate file content
     let code = `import createApp from '@/main';\nexport { createApp };\n`;
+    code += this.buildImports();
+    code += this.buildPlugins();
+
+    // If file exists and content not updated
+    if ((await fs.exists(mainPath)) && (await fs.readFile(mainPath, 'utf-8')) == code) {
+      // Stop generation of file
+      return;
+    }
+
+    // Write file
+    await fs.ensureDir(dirPath);
+    await fs.writeFile(mainPath, code);
+  }
+
+  buildImports() {
+    let result = '';
 
     // Handle imports defined in uvue config
     const { normal, noSSR } = this.uvue.getConfig('imports').reduce(
@@ -62,17 +78,43 @@ module.exports = class UVuePlugin {
       { normal: [], noSSR: [] },
     );
 
-    code += `${normal.map(item => `require("${item}");`).join(`\n`)}\n`;
-    code += `if (process.client) {\n${noSSR.map(item => `require("${item}");`).join(`\n`)}\n}`;
+    result += `${normal.map(item => `require("${item}");`).join(`\n`)}\n`;
+    result += `if (process.client) {\n${noSSR.map(item => `require("${item}");`).join(`\n`)}\n}`;
 
-    // If file exists and content not updated
-    if ((await fs.exists(mainPath)) && (await fs.readFile(mainPath, 'utf-8')) == code) {
-      // Stop generation of file
-      return;
+    return result;
+  }
+
+  buildPlugins() {
+    let result = '';
+
+    if (this.uvue.getConfig('plugins')) {
+      result = `
+        import UVue from '@uvue/core';
+        import uvueConfig from '@/../uvue.config';
+
+        const { plugins } = uvueConfig;
+        for (const index in plugins) {
+          if (typeof plugins[index] === 'string') {
+            plugins[index] = [plugins[index], {}];
+          }
+        }
+      `;
+
+      const plugins = this.uvue.getConfig('plugins');
+      for (const index in plugins) {
+        let plugin = plugins[index];
+
+        if (typeof plugin === 'string') {
+          plugin = [plugin, {}];
+        }
+
+        result += `
+          const plugin${index} = require('${plugin[0]}').default;
+          UVue.use(plugin${index}, plugins[${index}][1]);
+        `;
+      }
     }
 
-    // Write file
-    await fs.ensureDir(dirPath);
-    await fs.writeFile(mainPath, code);
+    return result;
   }
 };
