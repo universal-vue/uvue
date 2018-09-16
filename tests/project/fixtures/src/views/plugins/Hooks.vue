@@ -21,7 +21,7 @@
 <script>
 export default {
   data: () => ({
-    hooks: ['beforeCreate', 'created', 'routeResolve', 'beforeReady', 'ready'],
+    hooks: ['beforeCreate', 'beforeStart', 'routeResolve', 'beforeReady', 'ready'],
   }),
 };
 </script>

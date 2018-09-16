@@ -21,7 +21,7 @@ export default async ssr => {
   createApp(context);
 
   // Call created hook
-  await UVue.invokeAsync('created', context);
+  await UVue.invokeAsync('beforeStart', context);
 
   // Get some vars from context
   const { app, router } = context;

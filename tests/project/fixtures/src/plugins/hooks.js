@@ -18,7 +18,7 @@ const HooksPlugin = {
     this.vm = new Vue({
       data: () => ({
         beforeCreate: true,
-        created: false,
+        beforeStart: false,
         routeResolve: false,
         routeError: false,
         beforeReady: false,
@@ -33,9 +33,9 @@ const HooksPlugin = {
     this.vm.$data.contexts.beforeCreate = analyzeContext(context);
   },
 
-  async created(context) {
-    this.vm.$data.created = true;
-    this.vm.$data.contexts.created = analyzeContext(context);
+  async beforeStart(context) {
+    this.vm.$data.beforeStart = true;
+    this.vm.$data.contexts.beforeStart = analyzeContext(context);
   },
 
   async routeResolve(context) {
