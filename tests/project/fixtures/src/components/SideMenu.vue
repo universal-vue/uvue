@@ -16,8 +16,8 @@
             class="link"
           >
             <router-link
-              :to="item.path"
-              :data-route-name="item.name"
+              :to="item.testPath || item.path"
+              :data-route-name="item.testName || item.name"
             >
               {{ item.label }}
             </router-link>

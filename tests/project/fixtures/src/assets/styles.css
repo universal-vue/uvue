@@ -105,10 +105,21 @@ pre {
 
 .test .label {
   color: #666;
+  font-size: 0.9em;
 }
 
 .test .expected,
 .test .result {
   width: 50%;
   padding-right: 10px;
+}
+
+button {
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.05em;
+  background: #333;
+  color: #f9f9f9;
 }
