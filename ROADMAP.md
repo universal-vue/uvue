@@ -1,5 +1,9 @@
 # Roadmap
 
+- Context tests
+- Redirect tests
+- Auto install UVue plugins with config
+
 ## Alpha 0
 
 - [x] Basic core package
@@ -22,14 +26,10 @@
 
 ## Alpha 1
 
-**All tasks need to have a unit, intregration or e2e tests if possible !**
-
-**Please comment you code !**
-
-- [ ] **Core**: Implements `asyncData()` on pages components
+- [x] **Core**: Implements `redirect()`
+- [x] **Core plugins**: Plugins system with hooks
+- [ ] **Core plugins**: `asyncData()` on pages components
   - [ ] Handle hot reload
-- [ ] **Core**: Implements `redirect()`
-- [ ] **Core plugins**: Plugins system with hooks
 - [ ] **Core plugins**: Vuex and `onHttpRequest` action
 - [ ] **Core plugins**: Error handler (without Vuex)
 - [ ] **Core plugins**: Middlewares system
@@ -42,6 +42,7 @@
 - [ ] **Server**: Handle HTTPS configuration
 - [ ] **Server**: Handle correctly Vue meta plugin
 - [ ] **Server**: Docker start script
+- [ ] **Server**: Configure dev server
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
 - [ ] **CLI plugin**: Detect Vue plugins presence and transform code
 - [ ] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
@@ -56,15 +57,13 @@
   - [ ] Vue components styles (@akryum repo)
 - [ ] **Killers features**: Modern build
 - [ ] **Common**: New logo
-- [ ] **Common**: Documentation with Vuepress with custom theme
+- [ ] **Common**: Documentation with Vuepress and custom theme
 - [ ] **Common**: Issue template for Github
 - [ ] **Common**: Better contribution guide
 - [ ] **Common**: Example repository
 - [x] **Common**: Discord Chat
 
 ## Alpha 2
-
-### Vue CLI UI
 
 - [ ] **Vue CLI UI**: CPU & RAM monitoring for `ssr:start` command
 - [ ] **Vue CLI UI**: Edit configuration files
@@ -76,6 +75,7 @@
 - [ ] **Server**: Watch server config to reload server (implements nodemon)
 - [ ] **Server**: Tools for CPU & RAM monitoring
 - [ ] **Server**: Benchmarks
+- [ ] **Server**: Prod/Dev ready plugin
 - [ ] **Server**: Pages cache plugin
   - [ ] Memory
   - [ ] Files
