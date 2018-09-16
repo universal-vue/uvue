@@ -68,13 +68,13 @@ export class Server implements IServer {
   public addPlugin(plugin: any, options: any) {
     this.plugins.push(plugin);
     plugin.$options = options;
-    this.callHook('install', this);
+    this.invoke('install', this);
   }
 
   /**
    * Call hooks from plugins
    */
-  public callHook(name: string, ...args: any[]) {
+  public invoke(name: string, ...args: any[]) {
     for (const plugin of this.plugins) {
       if (typeof plugin[name] === 'function') {
         plugin[name].bind(plugin)(...args);
@@ -85,7 +85,7 @@ export class Server implements IServer {
   /**
    * Call hooks from plugins
    */
-  public async callAsyncHook(name: string, ...args: any[]) {
+  public async invokeAsync(name: string, ...args: any[]) {
     for (const plugin of this.plugins) {
       if (typeof plugin[name] === 'function') {
         await plugin[name].bind(plugin)(...args);
@@ -98,7 +98,7 @@ export class Server implements IServer {
    */
   public async start() {
     // Call beforeStart hook
-    await this.callAsyncHook('beforeStart', this);
+    await this.invokeAsync('beforeStart', this);
 
     let readyPromise = Promise.resolve();
 
@@ -168,7 +168,7 @@ export class Server implements IServer {
 
     try {
       // Hook before render
-      await this.callAsyncHook('beforeRender', context, this);
+      await this.invokeAsync('beforeRender', context, this);
 
       if (!res.finished) {
         const { spaPaths } = this.options;
@@ -189,14 +189,14 @@ export class Server implements IServer {
           }
 
           // Hook before building the page
-          await this.callAsyncHook('beforeBuild', response, context, this);
+          await this.invokeAsync('beforeBuild', response, context, this);
 
           // Build page
           response.body = await this.renderer.renderSSRPage(response.body, context);
         }
 
         // Hook on rendered
-        await this.callAsyncHook('rendered', response, context, this);
+        await this.invokeAsync('rendered', response, context, this);
 
         // Send response
         this.sendResponse(response, context);
@@ -208,7 +208,7 @@ export class Server implements IServer {
       }
 
       // Catch errors
-      await this.callAsyncHook('routeError', err, response, context, this);
+      await this.invokeAsync('routeError', err, response, context, this);
 
       if (!res.finished) {
         response.body = response.body || 'Server error';
@@ -218,7 +218,7 @@ export class Server implements IServer {
     }
 
     // Hook after response was sent
-    this.callHook('afterResponse', context, this);
+    this.invoke('afterResponse', context, this);
 
     return {
       context,

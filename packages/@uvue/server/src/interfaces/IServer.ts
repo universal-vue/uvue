@@ -12,8 +12,8 @@ export interface IServer {
 
   // Plugins system
   addPlugin(plugin: any, options?: any);
-  callHook(name: string, ...args: any[]): any;
-  callAsyncHook(name: string, ...args: any[]): Promise<any>;
+  invoke(name: string, ...args: any[]): any;
+  invokeAsync(name: string, ...args: any[]): Promise<any>;
 
   // Start/stop server
   start(): Promise<void>;
