@@ -36,7 +36,7 @@
   - [ ] Transform main.js to use these functions
 - [x] **UVue API**: Watch uvue config change to reload app
 - [x] **Server**: Handle HTTPS configuration
-- [ ] **Server**: Handle correctly Vue meta plugin
+- [x] **Server**: Handle correctly Vue meta plugin
 - [ ] **Server**: Docker start script
 - [ ] **Server**: Configure dev server
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
@@ -77,5 +77,6 @@
   - [ ] Files
   - [ ] Redis
 - [ ] **Server**: Server error plugin (to customize server error page)
+- [ ] **Plugin**: Vue meta as plugin ?
 - [ ] **Core**: SPA loader plugin
 - [ ] **Core**: Navigation loader plugin

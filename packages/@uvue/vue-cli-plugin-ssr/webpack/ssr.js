@@ -55,7 +55,7 @@ module.exports = (api, options = {}) => {
     const messages = [];
 
     if (host && port) {
-      const httpsConfig = this.uvue.getServerConfig('https');
+      const httpsConfig = api.uvue.getServerConfig('https');
       messages.push(
         `Server is running: ${
           httpsConfig.key && httpsConfig.cert ? 'https' : 'http'
