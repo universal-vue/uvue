@@ -32,6 +32,7 @@ module.exports = (api, options) => {
        */
       const { Server } = require('@uvue/server');
       const getWebpackConfig = require('../webpack/ssr');
+      const { https, devServer } = api.uvue.getServerConfig();
 
       const server = new Server({
         // Set files destinations
@@ -54,8 +55,11 @@ module.exports = (api, options) => {
         httpOptions: {
           host,
           port,
-          https: api.uvue.getServerConfig('https'),
+          https,
         },
+
+        // Dev server options
+        devServer,
       });
 
       // Install plugins

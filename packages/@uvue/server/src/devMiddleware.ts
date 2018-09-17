@@ -57,6 +57,7 @@ export const setupDevMiddleware = async (
       logLevel: 'silent',
       publicPath: client.output.publicPath,
       stats: false,
+      ...(app.options.devServer.middleware || {}),
     }),
   );
 
@@ -65,6 +66,7 @@ export const setupDevMiddleware = async (
     webpackHotMiddleware(compiler.compilers[0], {
       heartbeat: 10000,
       log: false,
+      ...(app.options.devServer.hot || {}),
     }),
   );
 

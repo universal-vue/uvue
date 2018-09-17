@@ -38,7 +38,7 @@
 - [x] **Server**: Handle HTTPS configuration
 - [x] **Server**: Handle correctly Vue meta plugin
 - [x] **Server**: Docker start script
-- [ ] **Server**: Configure dev server
+- [x] **Server**: Configure dev server
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
 - [ ] **CLI plugin**: Detect Vue plugins presence and transform code
 - [ ] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
