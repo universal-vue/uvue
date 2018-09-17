@@ -13,6 +13,10 @@
 
 <script>
 export default {
+  head: {
+    title: 'data()',
+  },
+
   data: () => ({
     foo: 'bar',
   }),
