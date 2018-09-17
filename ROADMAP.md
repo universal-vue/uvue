@@ -35,7 +35,7 @@
 - [ ] **UVue API**: Transorm Vue plugins instanciation with an export function (router, store)
   - [ ] Transform main.js to use these functions
 - [x] **UVue API**: Watch uvue config change to reload app
-- [ ] **Server**: Handle HTTPS configuration
+- [x] **Server**: Handle HTTPS configuration
 - [ ] **Server**: Handle correctly Vue meta plugin
 - [ ] **Server**: Docker start script
 - [ ] **Server**: Configure dev server

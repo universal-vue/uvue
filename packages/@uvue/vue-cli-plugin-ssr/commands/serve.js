@@ -54,6 +54,7 @@ module.exports = (api, options) => {
         httpOptions: {
           host,
           port,
+          https: api.uvue.getServerConfig('https'),
         },
       });
 

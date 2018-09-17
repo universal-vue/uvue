@@ -69,6 +69,7 @@ module.exports = (api, options) => {
         httpOptions: {
           host,
           port,
+          https: api.uvue.getServerConfig('https'),
         },
       });
 
@@ -81,7 +82,9 @@ module.exports = (api, options) => {
       await server.start();
 
       // eslint-disable-next-line
-      console.log(`Server listening: http://${host}:${port}`);
+      console.log(
+        `Server listening: ${server.getAdapter().isHttps() ? 'https' : 'http'}://${host}:${port}`,
+      );
     },
   );
 };

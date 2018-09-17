@@ -55,10 +55,12 @@ module.exports = (api, options = {}) => {
     const messages = [];
 
     if (host && port) {
-      // TODO: detect https
-
-      const protocol = 'http';
-      messages.push(`Server is running: ${protocol}://${host}:${port}`);
+      const httpsConfig = this.uvue.getServerConfig('https');
+      messages.push(
+        `Server is running: ${
+          httpsConfig.key && httpsConfig.cert ? 'https' : 'http'
+        }://${host}:${port}`,
+      );
     }
 
     args[0].compilationSuccessInfo = {
