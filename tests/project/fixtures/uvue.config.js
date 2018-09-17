@@ -4,5 +4,7 @@ export default {
     ['@/plugins/hooks', { foo: 'bar' }],
     // Plugin to test redirects
     '@/plugins/redirect',
+    // Core plugins
+    '@uvue/core/plugins/vuex',
   ],
 };

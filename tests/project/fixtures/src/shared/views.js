@@ -68,4 +68,15 @@ export default [
       },
     ],
   },
+  {
+    label: 'Core plugins',
+    children: [
+      {
+        path: '/plugin-vuex',
+        name: 'plugin-vuex',
+        label: 'Vuex',
+        component: () => import('@/views/plugins/Vuex.vue'),
+      },
+    ],
+  },
 ];
