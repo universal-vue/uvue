@@ -37,7 +37,7 @@
 - [x] **UVue API**: Watch uvue config change to reload app
 - [x] **Server**: Handle HTTPS configuration
 - [x] **Server**: Handle correctly Vue meta plugin
-- [ ] **Server**: Docker start script
+- [x] **Server**: Docker start script
 - [ ] **Server**: Configure dev server
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
 - [ ] **CLI plugin**: Detect Vue plugins presence and transform code
