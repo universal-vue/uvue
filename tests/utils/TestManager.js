@@ -21,6 +21,7 @@ export class TestManager {
     const preset = {
       router: true,
       routerHistoryMode: true,
+      vuex: true,
       plugins: {
         '@vue/cli-plugin-babel': {},
       },
@@ -32,7 +33,13 @@ export class TestManager {
     // Vue create command
     await vueCreate('base', preset, this.baseDir);
 
-    // Stup symlink
+    // Add some dependencies
+    await execa('yarn', ['add', 'vue-meta'], {
+      cwd: this.baseProjectPath,
+      stdio: 'inherit',
+    });
+
+    // Setup symlink
     await this.updatePackage('base', {
       devDependencies: {
         '@uvue/vue-cli-plugin-ssr': 'link:../../@uvue/vue-cli-plugin-ssr',
