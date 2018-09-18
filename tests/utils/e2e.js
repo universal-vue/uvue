@@ -115,13 +115,17 @@ const pageRunTestsSSR = ($, selector = '.test') => {
   });
 };
 
-const testContext = async path => {
-  const contexts = await page.evaluate(() => {
-    const elements = Array.from(document.querySelectorAll('.context'));
+const testContext = async (path, selector = '.context') => {
+  const contexts = await page.evaluate(selector => {
+    const elements = Array.from(document.querySelectorAll(selector));
     return elements.map(item => {
-      return JSON.parse(item.textContent);
+      try {
+        return JSON.parse(item.textContent);
+      } catch (err) {
+        return {};
+      }
     });
-  });
+  }, selector);
 
   for (const data of contexts) {
     for (const key in data) {
@@ -151,7 +155,14 @@ const testContext = async path => {
 
 const testContextSSR = ($, path) => {
   $('.context').each((index, element) => {
-    const data = JSON.parse($(element).text());
+    let data;
+
+    try {
+      data = JSON.parse($(element).text());
+    } catch (err) {
+      data = {};
+    }
+
     for (const key in data) {
       if (key === 'route') {
         const route = data[key];
