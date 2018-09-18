@@ -8,6 +8,12 @@ export default {
    * Method to install a plugin
    */
   use(plugin, options) {
+    const exists = this.plugins.indexOf(plugin);
+    if (exists >= 0) {
+      // Uninstall previous plugin (HMR)
+      this.plugins.splice(exists, 1);
+    }
+
     plugin.$options = options;
     this.plugins.push(plugin);
   },
