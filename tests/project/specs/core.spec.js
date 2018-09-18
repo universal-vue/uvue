@@ -43,7 +43,7 @@ describe('Core', () => {
 
   it('Plugins hooks are invoked (server -> client)', async () => {
     await isMounted();
-    await pageRunTests();
+    await pageRunTests('.test:not([ignore-server-client])');
   });
 
   it('Plugins hooks are invoked (client)', async () => {
@@ -60,7 +60,7 @@ describe('Core', () => {
 
   it('Plugins can hook route error (server -> client)', async () => {
     await isMounted();
-    await pageRunTests();
+    await pageRunTests('.test:not([ignore-server-client])');
   });
 
   it('Plugins can hook route error (client)', async () => {
@@ -77,7 +77,7 @@ describe('Core', () => {
 
   it('Plugins hooks have good context (server -> client)', async () => {
     await isMounted();
-    await testContext('/plugins-hooks');
+    await testContext('/plugins-hooks', '.context:not([ignore-server-client])');
   });
 
   it('Plugins hooks have good context (client)', async () => {
@@ -92,7 +92,7 @@ describe('Core', () => {
 
   it('Plugins routeError have good context (server -> client)', async () => {
     await isMounted();
-    await testContext('/plugins-route-error');
+    await testContext('/plugins-route-error', '.context:not([ignore-server-client])');
   });
 
   it('Plugins routeError have good context (client)', async () => {

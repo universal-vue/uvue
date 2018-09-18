@@ -10,9 +10,12 @@
       <test-case
         expected="true"
         :result="$hooksTest[hookName].toString()"
+        :ignore-server-client="hookName === 'routeResolve'"
       />
       <h4>Context</h4>
-      <pre class="context">{{ $hooksTest.contexts[hookName] }}</pre>
+      <pre
+        :ignore-server-client="hookName === 'routeResolve'"
+        class="context">{{ $hooksTest.contexts[hookName] }}</pre>
     </div>
 
   </div>
