@@ -1,6 +1,7 @@
 import { createApp } from './main';
 import UVue from '@uvue/core';
 import routeResolve from './lib/routeResolve';
+import onHotReload from './lib/onHotReload';
 
 // Enable HMR
 if (module.hot) {
@@ -48,5 +49,10 @@ if (module.hot) {
       // Call ready hook
       UVue.invoke('ready', context);
     });
+  });
+
+  // Handle HMR
+  onHotReload(() => {
+    routeResolve(context);
   });
 })();

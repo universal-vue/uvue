@@ -18,6 +18,11 @@ export default async (context, { to, next } = {}) => {
       doRedirect(context, error);
       return;
     } else {
+      if (process.env.NODE_ENV !== 'production') {
+        // eslint-disable-next-line
+        console.error(error);
+      }
+
       // Call hooks if there is an error
       await UVue.invokeAsync('routeError', error, routeContext);
     }

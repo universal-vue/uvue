@@ -23,9 +23,14 @@ export default (options, context) => {
   };
 
   // beforeCreate hook call
-  UVue.invoke('beforeCreate', context, (key, value) => {
-    if (!options[key]) options[key] = value;
-  });
+  UVue.invoke(
+    'beforeCreate',
+    context,
+    (key, value) => {
+      if (!options[key]) options[key] = value;
+    },
+    { ...options },
+  );
 
   // Create app and return it
   context.app = new Vue(options);
