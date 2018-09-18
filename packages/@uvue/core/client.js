@@ -54,5 +54,5 @@ if (module.hot) {
   // Handle HMR
   onHotReload(() => {
     routeResolve(context);
-  });
+  }, 'routeResolve');
 })();
