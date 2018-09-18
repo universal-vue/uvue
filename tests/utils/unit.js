@@ -43,6 +43,7 @@ const mockServer = () => {
 const mockContext = (url = '/') => {
   return {
     url,
+    data: {},
     renderStyles() {
       return '';
     },
