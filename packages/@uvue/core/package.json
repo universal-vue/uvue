@@ -20,5 +20,10 @@
     "uvue",
     "universal",
     "isomorphic"
-  ]
+  ],
+  "scripts": {
+    "lint": "eslint './**/*.js'",
+    "lint:fix": "eslint --fix './**/*.js'",
+    "format": "prettier --ignore-path .gitignore --write './**/*.js'"
+  }
 }
