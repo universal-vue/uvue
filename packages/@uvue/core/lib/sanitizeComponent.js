@@ -1,7 +1,10 @@
 import Vue from 'vue';
 
-// From Nuxt
-export const sanitizeComponent = Component => {
+/**
+ * Sanitize component
+ * From NuxtJS
+ */
+export default Component => {
   // If Component already sanitized
   if (Component.options && Component._Ctor === Component) {
     return Component;
