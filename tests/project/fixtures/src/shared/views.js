@@ -73,9 +73,27 @@ export default [
     children: [
       {
         path: '/plugin-vuex',
-        name: 'plugin-vuex',
         label: 'Vuex',
         component: () => import('@/views/plugins/Vuex.vue'),
+        children: [
+          {
+            path: '',
+            name: 'plugin-vuex',
+            component: () => import('@/views/plugins/VuexNested.vue'),
+          },
+        ],
+      },
+      {
+        path: '/plugin-async-data',
+        label: 'Async Data',
+        component: () => import('@/views/plugins/AsyncData.vue'),
+        children: [
+          {
+            path: '',
+            name: 'plugin-async-data',
+            component: () => import('@/views/plugins/AsyncDataNested.vue'),
+          },
+        ],
       },
     ],
   },

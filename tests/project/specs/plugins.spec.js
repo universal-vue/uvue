@@ -23,4 +23,21 @@ describe('Core plugins', () => {
     await gotoSPA('plugin-vuex');
     await pageRunTests();
   });
+
+  // ---
+
+  it('asyncData plugin is working (server)', async () => {
+    $ = await gotoSSR('/plugin-async-data');
+    pageRunTestsSSR($);
+  });
+
+  it('asyncData plugin is working (server -> client)', async () => {
+    await isMounted();
+    await pageRunTests();
+  });
+
+  it('asyncData plugin is working (client)', async () => {
+    await gotoSPA('plugin-async-data');
+    await pageRunTests();
+  });
 });
