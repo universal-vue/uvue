@@ -2,6 +2,10 @@ import UVue from '@uvue/core';
 import sanitizeComponent from '../lib/sanitizeComponent';
 
 export default {
+  /**
+   * Fetch middlewares from plugin options and other
+   * installed plugins
+   */
   beforeCreate() {
     this.$options = {
       middlewares: [],
@@ -19,6 +23,9 @@ export default {
     }
   },
 
+  /**
+   * On each route call middlewares
+   */
   async routeResolve(context) {
     const middlewares = [...this.$options.middlewares, ...this.getComponentsMiddlewares(context)];
     for (const m of middlewares) {
@@ -26,6 +33,9 @@ export default {
     }
   },
 
+  /**
+   * Get middlewares defined on pages components
+   */
   getComponentsMiddlewares(context) {
     const { router, route } = context;
     // Get pages components

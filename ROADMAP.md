@@ -58,8 +58,9 @@
 - [x] **Common**: Discord Chat
 - Tests
   - [ ] VueMeta plugin (e2e)
-  - [ ] HTTPS setup on server (unit)
+  - [ ] Redirects in plugins and navigation guards (e2e)
   - [ ] devServer config correctly sent to middlewares (unit)
+  - [ ] HTTPS setup on server (unit)
   - [ ] Docker start script (unit)
 
 ## Alpha 2
