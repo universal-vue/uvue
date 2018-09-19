@@ -17,5 +17,9 @@ module.exports = () => ({
     scanRouter: true,
     params: {},
   },
+  devServer: {
+    middleware: {},
+    hot: {},
+  },
   plugins: [],
 });

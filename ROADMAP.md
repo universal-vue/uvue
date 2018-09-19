@@ -33,10 +33,10 @@
 - [ ] **UVue API**: Transorm Vue plugins instanciation with an export function (router, store)
   - [ ] Transform main.js to use these functions
 - [x] **UVue API**: Watch uvue config change to reload app
-- [ ] **Server**: Handle HTTPS configuration
-- [ ] **Server**: Handle correctly Vue meta plugin
-- [ ] **Server**: Docker start script
-- [ ] **Server**: Configure dev server
+- [x] **Server**: Handle HTTPS configuration
+- [x] **Server**: Handle correctly Vue meta plugin
+- [x] **Server**: Docker start script
+- [x] **Server**: Configure dev server
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
 - [ ] **CLI plugin**: Detect Vue plugins presence and transform code
 - [ ] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
@@ -81,6 +81,7 @@
   - [ ] Files
   - [ ] Redis
 - [ ] **Server**: Server error plugin (to customize server error page)
+- [ ] **Plugin**: Vue meta as plugin ?
 - [ ] **Core**: SPA loader plugin
 - [ ] **Core**: Navigation loader plugin
 - [ ] **Core**: Stash plugin

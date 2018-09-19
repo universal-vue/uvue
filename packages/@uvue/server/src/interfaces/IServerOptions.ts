@@ -40,6 +40,12 @@ export interface IServerOptions {
     shouldPrefetch?: (file: string, type: string) => boolean;
   };
 
+  // Dev server options
+  devServer?: {
+    middleware?: any;
+    hot?: any;
+  };
+
   // Plugins to install
   plugins?: IPlugin[];
 }

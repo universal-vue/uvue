@@ -20,11 +20,16 @@ export default async ssr => {
   // Call app main
   createApp(context);
 
-  // Call created hook
-  await UVue.invokeAsync('beforeStart', context);
-
   // Get some vars from context
   const { app, router } = context;
+
+  // Handle VueMeta plugin
+  if (typeof app.$meta === 'function') {
+    ssr.meta = app.$meta();
+  }
+
+  // Call beforeStart hook
+  await UVue.invokeAsync('beforeStart', context);
 
   // Router resolve route
   router.beforeResolve((to, _, next) => {
