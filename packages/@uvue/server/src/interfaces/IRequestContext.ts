@@ -11,6 +11,7 @@ export interface IRequestContext {
 
   // Reponse variables
   redirected: boolean | number;
+  statusCode?: number;
 
   // Body and head addition from app
   bodyAdd?: string;
