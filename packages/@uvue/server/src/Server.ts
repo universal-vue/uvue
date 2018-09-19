@@ -229,10 +229,13 @@ export class Server implements IServer {
   /**
    * Send HTTP response
    */
-  private sendResponse(response: { body: string; status: number }, { res }) {
+  private sendResponse(
+    response: { body: string; status: number },
+    { res, statusCode }: IRequestContext,
+  ) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Content-Length', response.body.length);
-    res.statusCode = response.status;
+    res.statusCode = statusCode || response.status;
     res.end(response.body);
   }
 

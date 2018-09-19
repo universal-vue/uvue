@@ -24,12 +24,10 @@
 
 - [x] **Core**: Implements `redirect()`
 - [x] **Core plugins**: Plugins system with hooks
-- [ ] **Core plugins**: `asyncData()` on pages components
-  - [ ] Handle hot reload
-- [ ] **Core plugins**: Vuex and `onHttpRequest` action
-- [ ] **Core plugins**: Error handler (without Vuex)
-- [ ] **Core plugins**: Middlewares system
-  - [ ] Handle hot reload
+- [x] **Core plugins**: `asyncData()` on pages components
+- [x] **Core plugins**: Vuex and `onHttpRequest` action
+- [x] **Core plugins**: Middlewares system
+- [x] **Core plugins**: Error handler (without Vuex)
 - [x] **UVue API**: Transform main `new Vue` code to return only constructor options
 - [x] **UVue API**: Load imports from project configuration
 - [ ] **UVue API**: Transorm Vue plugins instanciation with an export function (router, store)
@@ -60,8 +58,9 @@
 - [x] **Common**: Discord Chat
 - Tests
   - [ ] VueMeta plugin (e2e)
-  - [ ] HTTPS setup on server (unit)
+  - [ ] Redirects in plugins and navigation guards (e2e)
   - [ ] devServer config correctly sent to middlewares (unit)
+  - [ ] HTTPS setup on server (unit)
   - [ ] Docker start script (unit)
 
 ## Alpha 2
@@ -84,3 +83,4 @@
 - [ ] **Server**: Server error plugin (to customize server error page)
 - [ ] **Core**: SPA loader plugin
 - [ ] **Core**: Navigation loader plugin
+- [ ] **Core**: Stash plugin

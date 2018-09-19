@@ -68,4 +68,60 @@ export default [
       },
     ],
   },
+  {
+    label: 'Core plugins',
+    children: [
+      {
+        path: '/plugin-vuex',
+        label: 'Vuex',
+        testName: 'plugin-vuex',
+        component: () => import('@/views/plugins/Vuex.vue'),
+        children: [
+          {
+            path: '',
+            name: 'plugin-vuex',
+            component: () => import('@/views/plugins/VuexNested.vue'),
+          },
+        ],
+      },
+      {
+        path: '/plugin-async-data',
+        label: 'Async Data',
+        testName: 'plugin-async-data',
+        component: () => import('@/views/plugins/AsyncData.vue'),
+        children: [
+          {
+            path: '',
+            name: 'plugin-async-data',
+            component: () => import('@/views/plugins/AsyncDataNested.vue'),
+          },
+        ],
+      },
+      {
+        path: '/plugin-middlewares',
+        label: 'Middlewares',
+        testName: 'plugin-middlewares',
+        component: () => import('@/views/plugins/Middlewares.vue'),
+        children: [
+          {
+            path: '',
+            name: 'plugin-middlewares',
+            component: () => import('@/views/plugins/MiddlewaresNested.vue'),
+          },
+        ],
+      },
+      {
+        path: '/plugin-error-methods',
+        label: 'Error handler (methods)',
+        name: 'plugin-error-methods',
+        component: () => import('@/views/plugins/ErrorMethods.vue'),
+      },
+      {
+        path: '/plugin-error-route',
+        label: 'Error handler (route)',
+        name: 'plugin-error-route',
+        component: () => import('@/views/plugins/ErrorRoute.vue'),
+      },
+    ],
+  },
 ];
