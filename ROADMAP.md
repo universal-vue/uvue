@@ -27,7 +27,7 @@
 - [x] **Core plugins**: `asyncData()` on pages components
 - [x] **Core plugins**: Vuex and `onHttpRequest` action
 - [x] **Core plugins**: Middlewares system
-- [ ] **Core plugins**: Error handler (without Vuex)
+- [x] **Core plugins**: Error handler (without Vuex)
 - [x] **UVue API**: Transform main `new Vue` code to return only constructor options
 - [x] **UVue API**: Load imports from project configuration
 - [ ] **UVue API**: Transorm Vue plugins instanciation with an export function (router, store)
