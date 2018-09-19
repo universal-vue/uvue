@@ -15,5 +15,6 @@ export default {
     ],
     '@uvue/core/plugins/vuex',
     '@uvue/core/plugins/asyncData',
+    '@uvue/core/plugins/errorHandler',
   ],
 };

@@ -110,6 +110,18 @@ export default [
           },
         ],
       },
+      {
+        path: '/plugin-error-methods',
+        label: 'Error handler (methods)',
+        name: 'plugin-error-methods',
+        component: () => import('@/views/plugins/ErrorMethods.vue'),
+      },
+      {
+        path: '/plugin-error-route',
+        label: 'Error handler (route)',
+        name: 'plugin-error-route',
+        component: () => import('@/views/plugins/ErrorRoute.vue'),
+      },
     ],
   },
 ];
