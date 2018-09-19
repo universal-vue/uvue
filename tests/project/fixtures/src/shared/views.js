@@ -74,6 +74,7 @@ export default [
       {
         path: '/plugin-vuex',
         label: 'Vuex',
+        testName: 'plugin-vuex',
         component: () => import('@/views/plugins/Vuex.vue'),
         children: [
           {
@@ -86,6 +87,7 @@ export default [
       {
         path: '/plugin-async-data',
         label: 'Async Data',
+        testName: 'plugin-async-data',
         component: () => import('@/views/plugins/AsyncData.vue'),
         children: [
           {

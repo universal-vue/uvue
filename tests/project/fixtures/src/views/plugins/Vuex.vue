@@ -5,13 +5,13 @@
     <h3 class="code">fetch()</h3>
     <test-case
       expected="bar"
-      :result="result"
+      :result="$store.state.vuexPlugin"
     />
 
     <h3 class="code">onHttpRequest()</h3>
     <test-case
       expected="bar"
-      :result="init"
+      :result="$store.state.initData"
     />
 
     <router-view/>
@@ -25,16 +25,6 @@ export default {
   async fetch({ store }) {
     const value = await promiseData('bar');
     store.commit('setVuexPlugin', value);
-  },
-
-  computed: {
-    result() {
-      return this.$store.state.vuexPlugin;
-    },
-
-    init() {
-      return this.$store.state.initData;
-    },
   },
 };
 </script>

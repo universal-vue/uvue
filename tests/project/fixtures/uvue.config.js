@@ -6,5 +6,6 @@ export default {
     '@/plugins/redirect',
     // Core plugins
     '@uvue/core/plugins/vuex',
+    '@uvue/core/plugins/asyncData',
   ],
 };
