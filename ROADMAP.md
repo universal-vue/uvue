@@ -24,12 +24,10 @@
 
 - [x] **Core**: Implements `redirect()`
 - [x] **Core plugins**: Plugins system with hooks
-- [ ] **Core plugins**: `asyncData()` on pages components
-  - [ ] Handle hot reload
+- [x] **Core plugins**: `asyncData()` on pages components
 - [x] **Core plugins**: Vuex and `onHttpRequest` action
+- [x] **Core plugins**: Middlewares system
 - [ ] **Core plugins**: Error handler (without Vuex)
-- [ ] **Core plugins**: Middlewares system
-  - [ ] Handle hot reload
 - [x] **UVue API**: Transform main `new Vue` code to return only constructor options
 - [x] **UVue API**: Load imports from project configuration
 - [ ] **UVue API**: Transorm Vue plugins instanciation with an export function (router, store)
@@ -79,3 +77,4 @@
 - [ ] **Server**: Server error plugin (to customize server error page)
 - [ ] **Core**: SPA loader plugin
 - [ ] **Core**: Navigation loader plugin
+- [ ] **Core**: Stash plugin
