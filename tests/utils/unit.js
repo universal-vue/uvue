@@ -1,6 +1,6 @@
-const path = require('path');
-const { Server, Renderer } = require('@uvue/server');
-const EventEmitter = require('events');
+import path from 'path';
+import { Server, Renderer } from '@uvue/server';
+import EventEmitter from 'events';
 
 const mockServer = () => {
   const server = new Server({

@@ -1,4 +1,4 @@
-const {
+import {
   gotoSSR,
   gotoSPA,
   getText,
@@ -8,7 +8,7 @@ const {
   testContext,
   testContextSSR,
   wait,
-} = require('../../utils/e2e');
+} from '../../utils/e2e';
 
 let $;
 

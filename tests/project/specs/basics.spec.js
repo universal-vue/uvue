@@ -1,11 +1,11 @@
-const {
+import {
   gotoSSR,
   gotoSPA,
   isMounted,
   checkText,
   pageRunTests,
   pageRunTestsSSR,
-} = require('../../utils/e2e');
+} from '../../utils/e2e';
 
 let $;
 

@@ -1,7 +1,7 @@
-const httpMocks = require('node-mocks-http');
-const request = require('request-promise-native');
-const cheerio = require('cheerio');
-const { mockServer, mockContext } = require('../utils/unit');
+import httpMocks from 'node-mocks-http';
+import request from 'request-promise-native';
+import cheerio from 'cheerio';
+import { mockServer, mockContext } from '../utils/unit';
 
 let serverMock;
 let bodyHtml;
