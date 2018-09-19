@@ -5,7 +5,7 @@
     <h3 class="code">fetch()</h3>
     <test-case
       expected="bar"
-      :result="$store.state.vuexPlugin"
+      :result="$store.state.vuexPluginNested"
     />
 
   </div>
@@ -17,7 +17,7 @@ import { promiseData } from '@/shared/utils';
 export default {
   async fetch({ store }) {
     const value = await promiseData('bar');
-    store.commit('setVuexPlugin', value);
+    store.commit('setVuexPluginNested', value);
   },
 };
 </script>

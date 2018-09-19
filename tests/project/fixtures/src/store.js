@@ -8,6 +8,7 @@ export default () => {
   return new Vuex.Store({
     state: () => ({
       vuexPlugin: 'default',
+      vuexPluginNested: 'default',
       initData: 'default',
       middlewareGlobal: 'default',
       middlewareRoute: 'default',
@@ -17,6 +18,9 @@ export default () => {
     mutations: {
       setVuexPlugin(state, value) {
         state.vuexPlugin = value;
+      },
+      setVuexPluginNested(state, value) {
+        state.vuexPluginNested = value;
       },
       setInitData(state, value) {
         state.initData = value;
