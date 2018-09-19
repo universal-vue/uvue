@@ -56,6 +56,11 @@
 - [ ] **Common**: Better contribution guide
 - [ ] **Common**: Example repository
 - [x] **Common**: Discord Chat
+- Tests
+  - [ ] VueMeta plugin (e2e)
+  - [ ] HTTPS setup on server (unit)
+  - [ ] devServer config correctly sent to middlewares (unit)
+  - [ ] Docker start script (unit)
 
 ## Alpha 2
 
