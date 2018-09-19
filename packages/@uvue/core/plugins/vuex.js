@@ -37,7 +37,12 @@ export default {
   /**
    * Read data from SSR to hydrate store
    */
-  beforeStart({ store }) {
+  async beforeStart(context) {
+    const { store } = context;
+
+    // onHttpRequest
+    await this.resolveOnHttpRequest(context);
+
     if (store && process.client && process.ssr && window.__DATA__) {
       const { state } = window.__DATA__;
       store.replaceState(state);
@@ -54,12 +59,8 @@ export default {
   /**
    * Call onHttpRequest action and send data to __DATA__
    */
-  async beforeReady(context) {
+  beforeReady(context) {
     const { store, ssr } = context;
-
-    // onHttpRequest
-    await this.resolveOnHttpRequest(context);
-
     if (store && process.server) {
       // Inject store data in __DATA__ on server side
       ssr.data.state = store.state;

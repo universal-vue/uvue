@@ -76,7 +76,7 @@ if (process.client) {
   Vue.mixin({
     created() {
       if (process.ssr) {
-        if (this.$router && window.__DATA__) {
+        if (this.$router && window.__DATA__ && window.__DATA__.components) {
           const matched = this.$router.getMatchedComponents();
           if (!matched.length) return;
 
@@ -86,7 +86,7 @@ if (process.client) {
               Component.extendOptions.__DATA__ = window.__DATA__.components[i];
             }
           });
-          window.__DATA__ = null;
+          window.__DATA__.components = null;
         }
       }
 
