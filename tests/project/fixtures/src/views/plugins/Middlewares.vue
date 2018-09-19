@@ -4,19 +4,19 @@
 
     <h3>Global middleware</h3>
     <test-case
-      expected="bar"
+      expected="global"
       :result="$store.state.middlewareGlobal"
     />
 
     <h3>Route middleware</h3>
     <test-case
-      expected="bar"
+      expected="route"
       :result="$store.state.middlewareRoute"
     />
 
     <h3>Plugin middleware</h3>
     <test-case
-      expected="bar"
+      expected="plugin"
       :result="$store.state.middlewareFromPlugin"
     />
 

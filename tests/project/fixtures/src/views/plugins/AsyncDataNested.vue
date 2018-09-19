@@ -3,7 +3,7 @@
     <h2>Nested route</h2>
 
     <test-case
-      expected="bar"
+      expected="nested"
       :result="foo"
     />
   </div>
@@ -15,7 +15,7 @@ import { promiseData } from '@/shared/utils';
 export default {
   async asyncData() {
     return {
-      foo: await promiseData('bar'),
+      foo: await promiseData('nested'),
     };
   },
 };

@@ -1,7 +1,7 @@
 export default {
   middlewares: () => [
     async ({ store }) => {
-      store.commit('setMiddlewareFromPlugin', 'bar');
+      store.commit('setMiddlewareFromPlugin', 'plugin');
     },
   ],
 };

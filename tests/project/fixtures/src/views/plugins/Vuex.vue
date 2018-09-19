@@ -4,13 +4,13 @@
 
     <h3 class="code">fetch()</h3>
     <test-case
-      expected="bar"
+      expected="fetch"
       :result="$store.state.vuexPlugin"
     />
 
     <h3 class="code">onHttpRequest()</h3>
     <test-case
-      expected="bar"
+      expected="onHttpRequest"
       :result="$store.state.initData"
     />
 
@@ -23,7 +23,7 @@ import { promiseData } from '@/shared/utils';
 
 export default {
   async fetch({ store }) {
-    const value = await promiseData('bar');
+    const value = await promiseData('fetch');
     store.commit('setVuexPlugin', value);
   },
 };

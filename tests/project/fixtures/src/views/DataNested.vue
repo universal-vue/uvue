@@ -3,7 +3,7 @@
     <h2>Nested route</h2>
 
     <test-case
-      expected="baz"
+      expected="nested"
       :result="bar"
     />
 
@@ -13,7 +13,7 @@
 <script>
 export default {
   data: () => ({
-    bar: 'baz',
+    bar: 'nested',
   }),
 };
 </script>

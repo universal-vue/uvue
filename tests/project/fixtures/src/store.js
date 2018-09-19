@@ -40,7 +40,7 @@ export default () => {
     },
     actions: {
       async onHttpRequest({ commit }) {
-        const value = await promiseData('bar');
+        const value = await promiseData('onHttpRequest');
         commit('setInitData', value);
       },
     },
