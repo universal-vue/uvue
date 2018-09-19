@@ -1,10 +1,18 @@
+import { global } from './src/shared/middlewares';
+
 export default {
   plugins: [
-    // Plugin to test hooks
+    // Tests plugins
     ['@/plugins/hooks', { foo: 'bar' }],
-    // Plugin to test redirects
     '@/plugins/redirect',
+    '@/plugins/middleware',
     // Core plugins
+    [
+      '@uvue/core/plugins/middlewares',
+      {
+        middlewares: [global],
+      },
+    ],
     '@uvue/core/plugins/vuex',
     '@uvue/core/plugins/asyncData',
   ],

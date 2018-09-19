@@ -40,4 +40,21 @@ describe('Core plugins', () => {
     await gotoSPA('plugin-async-data');
     await pageRunTests();
   });
+
+  // ---
+
+  it('Middlewares plugin is working (server)', async () => {
+    $ = await gotoSSR('/plugin-middlewares');
+    pageRunTestsSSR($);
+  });
+
+  it('Middlewares plugin is working (server -> client)', async () => {
+    await isMounted();
+    await pageRunTests();
+  });
+
+  it('Middlewares plugin is working (client)', async () => {
+    await gotoSPA('plugin-middlewares');
+    await pageRunTests();
+  });
 });

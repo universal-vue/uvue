@@ -97,6 +97,19 @@ export default [
           },
         ],
       },
+      {
+        path: '/plugin-middlewares',
+        label: 'Middlewares',
+        testName: 'plugin-middlewares',
+        component: () => import('@/views/plugins/Middlewares.vue'),
+        children: [
+          {
+            path: '',
+            name: 'plugin-middlewares',
+            component: () => import('@/views/plugins/MiddlewaresNested.vue'),
+          },
+        ],
+      },
     ],
   },
 ];

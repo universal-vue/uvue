@@ -9,6 +9,10 @@ export default () => {
     state: () => ({
       vuexPlugin: 'default',
       initData: 'default',
+      middlewareGlobal: 'default',
+      middlewareRoute: 'default',
+      middlewareRouteNested: 'default',
+      middlewareFromPlugin: 'default',
     }),
     mutations: {
       setVuexPlugin(state, value) {
@@ -16,6 +20,18 @@ export default () => {
       },
       setInitData(state, value) {
         state.initData = value;
+      },
+      setMiddlewareGlobal(state, value) {
+        state.middlewareGlobal = value;
+      },
+      setMiddlewareRoute(state, value) {
+        state.middlewareRoute = value;
+      },
+      setMiddlewareRouteNested(state, value) {
+        state.middlewareRouteNested = value;
+      },
+      setMiddlewareFromPlugin(state, value) {
+        state.middlewareFromPlugin = value;
       },
     },
     actions: {
