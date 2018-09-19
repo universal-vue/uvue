@@ -12,5 +12,5 @@ export const route = async context => {
 
 export const routeNested = async context => {
   const { store } = context;
-  store.commit('setMiddlewareNested', await promiseData('bar'));
+  store.commit('setMiddlewareRouteNested', await promiseData('bar'));
 };
