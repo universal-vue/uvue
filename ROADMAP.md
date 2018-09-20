@@ -37,6 +37,12 @@
 - [x] **Server**: Handle correctly Vue meta plugin
 - [x] **Server**: Docker start script
 - [x] **Server**: Configure dev server
+- [ ] **Webpack**: CSS management
+- [ ] **Killers features**: Critical CSS
+  - [ ] Critters
+  - [ ] Critical / Penthouse (Puppeteer based)
+  - [ ] Vue components styles (@akryum repo)
+- [ ] **Killers features**: Modern build
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
 - [ ] **CLI plugin**: Detect Vue plugins presence and transform code
 - [ ] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
@@ -44,12 +50,6 @@
 - [ ] **CLI plugin**: Docker: prompt & dockerfile
 - [ ] **CLI plugin**: Prompts to install server plugins
 - [ ] **CLI plugin**: Prompts to install UVue plugins
-- [ ] **Webpack**: CSS management
-- [ ] **Killers features**: Critical CSS
-  - [ ] Critters
-  - [ ] Critical / Penthouse (Puppeteer based)
-  - [ ] Vue components styles (@akryum repo)
-- [ ] **Killers features**: Modern build
 - [ ] **Common**: New logo
 - [ ] **Common**: Documentation with Vuepress and custom theme
 - [ ] **Common**: Issue template for Github
@@ -67,9 +67,6 @@
 
 ## Alpha 2
 
-- [ ] **Vue CLI UI**: CPU & RAM monitoring for `ssr:start` command
-- [ ] **Vue CLI UI**: Edit configuration files
-- [ ] **Vue CLI UI**: `generate` command: List generated files & size
 - [ ] **Vue CLI plugin support**: E2E tests with SSR mode
 - [ ] **Vue CLI plugin support**: TypeScript
 - [ ] **Vue CLI plugin support**: Vue i18n
@@ -87,3 +84,6 @@
 - [ ] **Core**: SPA loader plugin
 - [ ] **Core**: Navigation loader plugin
 - [ ] **Core**: Stash plugin
+- [ ] **Vue CLI UI**: CPU & RAM monitoring for `ssr:start` command
+- [ ] **Vue CLI UI**: Edit configuration files
+- [ ] **Vue CLI UI**: `generate` command: List generated files & size
