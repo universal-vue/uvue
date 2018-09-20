@@ -36,6 +36,7 @@
     "@types/serve-static": "^1.13.2",
     "connect": "^3.6.6",
     "cookie-parser": "^1.4.3",
+    "escape-string-regexp": "^1.0.5",
     "esm": "^3.0.82",
     "fast-safe-stringify": "^2.0.6",
     "fs-extra": "^7.0.0",

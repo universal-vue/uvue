@@ -8,14 +8,13 @@ module.exports = (api, chainConfig) => {
     .clear()
     .add(require.resolve('@uvue/core/server'));
 
-  const isLegacyBuild = !process.env.VUE_CLI_MODERN_MODE || !process.env.VUE_CLI_MODERN_BUILD;
-
-  // Add Vue SSR plugin
-  chainConfig
-    .plugin('vue-ssr-plugin')
-    .use(VueSSRServerPlugin, [
-      { filename: isLegacyBuild ? '.uvue/server-bundle.json' : '.uvue/server-bundle-modern.json' },
-    ]);
+  // Only include Vue SSR plugin in legacy mode
+  if (!process.env.VUE_CLI_MODERN_MODE || !process.env.VUE_CLI_MODERN_BUILD) {
+    // Add Vue SSR plugin
+    chainConfig
+      .plugin('vue-ssr-plugin')
+      .use(VueSSRServerPlugin, [{ filename: '.uvue/server-bundle.json' }]);
+  }
 
   // Server needs
   chainConfig

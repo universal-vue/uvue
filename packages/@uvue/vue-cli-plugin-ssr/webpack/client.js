@@ -8,10 +8,15 @@ module.exports = (api, chainConfig) => {
     .clear()
     .add(require.resolve('@uvue/core/client'));
 
+  // Add Vue SSR plugin
+  let clientManifestFilename = '.uvue/client-manifest.json';
+
   // Modern build
   if (process.env.VUE_CLI_MODERN_MODE) {
     if (!process.env.VUE_CLI_MODERN_BUILD) {
-      // Inject plugin to extract build stats and write to disk
+      clientManifestFilename = '.uvue/client-manifest-legacy.json';
+
+      // Use ModernModePlugin to update SPA template
       chainConfig.plugin('modern-mode-legacy').use(ModernModePlugin, [
         {
           targetDir: api.service.projectOptions.outputDir,
@@ -19,6 +24,7 @@ module.exports = (api, chainConfig) => {
         },
       ]);
     } else {
+      // Use ModernModePlugin to update SPA template
       chainConfig.plugin('modern-mode-modern').use(ModernModePlugin, [
         {
           targetDir: api.service.projectOptions.outputDir,
@@ -28,12 +34,10 @@ module.exports = (api, chainConfig) => {
     }
   }
 
-  const isLegacyBuild = !process.env.VUE_CLI_MODERN_MODE || !process.env.VUE_CLI_MODERN_BUILD;
-
-  // Add Vue SSR plugin
+  // Vue SSR plugin
   chainConfig.plugin('vue-ssr-plugin').use(VueSSRClientPlugin, [
     {
-      filename: isLegacyBuild ? '.uvue/client-manifest-legacy.json' : '.uvue/client-manifest.json',
+      filename: clientManifestFilename,
     },
   ]);
 

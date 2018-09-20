@@ -1,73 +1,66 @@
 import path from 'path';
 import fs from 'fs';
 import ModernModePlugin from '@uvue/vue-cli-plugin-ssr/webpack/uvue/ModernModePlugin';
+import escapeStringRegexp from 'escape-string-regexp';
 
 export default {
-  async beforeStart(app) {
-    // Check modern-legacy-assets.json exists
+  beforeStart(app) {
     const { outputDir } = app.options.paths;
-    const legacyAssetsPath = path.join(outputDir, '.uvue/modern-legacy-assets.json');
 
-    if (fs.existsSync(legacyAssetsPath)) {
-      this.legacyAssets = JSON.parse(fs.readFileSync(legacyAssetsPath, 'utf-8'));
+    const modernPath = path.join(outputDir, '.uvue/client-manifest.json');
+    const legacyPath = path.join(outputDir, '.uvue/client-manifest-legacy.json');
+
+    if (fs.existsSync(legacyPath)) {
+      this.legacyManifest = JSON.parse(fs.readFileSync(legacyPath, 'utf-8'));
+      this.modernManifest = JSON.parse(fs.readFileSync(modernPath, 'utf-8'));
     }
   },
 
-  async rendered(response) {
-    // There are legacy assets, so consider current build as modern
-    if (this.legacyAssets) {
-      response.body = this.replacePreloadLink(response.body);
-      response.body = this.replaceScripts(response.body);
-      response.body = this.injectAssets(response.body);
+  rendered(response) {
+    if (this.legacyManifest) {
+      response.body = this.replaceAssetsTags(response.body);
+      response.body = this.injectLegacyAndFixes(response.body);
     }
   },
 
-  replacePreloadLink(html) {
-    const regLinks = /<link\s.*as=("|')?script("|')?.*\/?>/gm;
-    const items = [];
+  replaceAssetsTags(html) {
+    const assets = [...this.modernManifest.initial, ...this.modernManifest.async];
 
-    // Get tags
-    let result = regLinks.exec(html);
-    while (result != null) {
-      if (result[0].indexOf('preload') > 0) {
-        items.push(result);
+    for (const asset of assets) {
+      if (path.extname(asset) !== '.js') continue;
+
+      const regAsset = new RegExp(
+        `<(link|script)\\s[^>]*${escapeStringRegexp(asset)}[^>]*\/?>`,
+        'gm',
+      );
+
+      let result = regAsset.exec(html);
+      while (result != null) {
+        console.log(result);
+        switch (result[1]) {
+          case 'link':
+            if (result[0].indexOf('preload') > 0) {
+              const newTag = result[0].replace('preload', 'modulepreload');
+              html = html.replace(result[0], newTag);
+            }
+            break;
+          case 'script':
+            const newTag = result[0].replace(/(\/?>)$/, ' type="module"$1');
+            html = html.replace(result[0], newTag);
+            break;
+        }
+        result = regAsset.exec(html);
       }
-      result = regLinks.exec(html);
-    }
-
-    // Replace them
-    for (const item of items) {
-      html = html.replace(item[0], item[0].replace('preload', 'modulepreload'));
     }
 
     return html;
   },
 
-  replaceScripts(html) {
-    const regScripts = /<script\s[^>]*\/?>/gm;
-    const items = [];
-
-    // Get tags
-    let result = regScripts.exec(html);
-    while (result != null) {
-      items.push(result);
-      result = regScripts.exec(html);
-    }
-
-    // Replace them
-    for (const item of items) {
-      html = html.replace(item[0], item[0].replace(/(\/?>)$/, ' type="module"$1'));
-    }
-
-    return html;
-  },
-
-  injectAssets(html) {
+  injectLegacyAndFixes(html) {
     let code = `<script>${ModernModePlugin.safariFix}</script>`;
-    for (const asset of this.legacyAssets) {
-      code += `<script src="${asset.attributes.src}" type="text/javascript" nomodule></script>`;
+    for (const asset of this.legacyManifest.initial) {
+      code += `<script src="${asset}" type="text/javascript" nomodule></script>`;
     }
-
     return html.replace('</body>', `${code}</body>`);
   },
 };
