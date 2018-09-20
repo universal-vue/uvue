@@ -61,6 +61,8 @@
   - [ ] Redirects in plugins and navigation guards (e2e)
   - [ ] Error handler in asyncData, fetch and navigation guards (e2e)
   - [ ] UVue plugins system (unit)
+  - [ ] SPA paths (e2e)
+  - [ ] Normal build in SPA mode (e2e)
   - [ ] devServer config correctly sent to middlewares (unit)
   - [ ] HTTPS setup on server (unit)
   - [ ] Docker start script (unit)
