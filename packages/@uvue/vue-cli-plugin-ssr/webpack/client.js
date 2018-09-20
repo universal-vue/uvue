@@ -1,5 +1,5 @@
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
-const ModernModePlugin = require('@vue/cli-service/lib/webpack/ModernModePlugin');
+const ModernModePlugin = require('./uvue/ModernModePlugin');
 
 module.exports = (api, chainConfig) => {
   // Change main entry
@@ -7,11 +7,6 @@ module.exports = (api, chainConfig) => {
     .get('app')
     .clear()
     .add(require.resolve('@uvue/core/client'));
-
-  // Add Vue SSR plugin
-  chainConfig
-    .plugin('vue-ssr-plugin')
-    .use(VueSSRClientPlugin, [{ filename: '.uvue/client-manifest.json' }]);
 
   // Modern build
   if (process.env.VUE_CLI_MODERN_MODE) {
@@ -32,6 +27,15 @@ module.exports = (api, chainConfig) => {
       ]);
     }
   }
+
+  const isLegacyBuild = !process.env.VUE_CLI_MODERN_MODE || !process.env.VUE_CLI_MODERN_BUILD;
+
+  // Add Vue SSR plugin
+  chainConfig.plugin('vue-ssr-plugin').use(VueSSRClientPlugin, [
+    {
+      filename: isLegacyBuild ? '.uvue/client-manifest-legacy.json' : '.uvue/client-manifest.json',
+    },
+  ]);
 
   return api.resolveWebpackConfig(chainConfig);
 };
