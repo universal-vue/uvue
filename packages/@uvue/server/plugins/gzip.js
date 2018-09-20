@@ -1,7 +1,7 @@
-import compression from 'compression';
+import shrinkRay from 'shrink-ray-current';
 
 export default {
   install(app) {
-    app.use(compression(this.$options));
+    app.use(shrinkRay(this.$options));
   },
 };

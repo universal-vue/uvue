@@ -36,7 +36,6 @@ export default {
 
       let result = regAsset.exec(html);
       while (result != null) {
-        console.log(result);
         switch (result[1]) {
           case 'link':
             if (result[0].indexOf('preload') > 0) {
