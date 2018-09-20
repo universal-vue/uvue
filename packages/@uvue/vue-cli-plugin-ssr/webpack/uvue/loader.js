@@ -27,19 +27,21 @@ module.exports = async function(content, map, meta) {
     // Inject context to export default function arguments
     const exportDefault = doc.find('exportDefault').get(0);
 
-    exportDefault.node.declaration.params = [RQuery.createIdentifier('context')];
+    if (exportDefault) {
+      exportDefault.node.declaration.params = [RQuery.createIdentifier('context')];
 
-    // Convert new Vue -> initApp
-    const newVue = exportDefault.find('new#Vue').get(0);
-    const initFunc = RQuery.parse(`initApp()`)
-      .findOne('id#initApp')
-      .parent();
+      // Convert new Vue -> initApp
+      const newVue = exportDefault.find('new#Vue').get(0);
+      const initFunc = RQuery.parse(`initApp()`)
+        .findOne('id#initApp')
+        .parent();
 
-    initFunc.node.arguments = [newVue.node.arguments[0], RQuery.createIdentifier('context')];
+      initFunc.node.arguments = [newVue.node.arguments[0], RQuery.createIdentifier('context')];
 
-    newVue.replace(initFunc);
+      newVue.replace(initFunc);
 
-    content = `import initApp from '@uvue/core/lib/initApp';\n${doc.print()}`;
+      content = `import initApp from '@uvue/core/lib/initApp';\n${doc.print()}`;
+    }
   }
 
   callback(null, content, map, meta);
