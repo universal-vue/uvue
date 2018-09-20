@@ -42,7 +42,7 @@
   - [ ] Critters
   - [ ] Critical / Penthouse (Puppeteer based)
   - [ ] Vue components styles (@akryum repo)
-- [ ] **Killers features**: Modern build
+- [x] **Killers features**: Modern build
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
 - [ ] **CLI plugin**: Detect Vue plugins presence and transform code
 - [ ] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
