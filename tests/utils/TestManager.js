@@ -104,7 +104,9 @@ export class TestManager {
    * Install fictures on project
    */
   async installFixtures(name, fixturesPath) {
-    await fs.copy(fixturesPath, path.join(this.baseDir, name));
+    if (await fs.exists(fixturesPath)) {
+      await fs.copy(fixturesPath, path.join(this.baseDir, name));
+    }
   }
 
   /**
