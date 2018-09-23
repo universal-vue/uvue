@@ -7,4 +7,7 @@ module.exports = () => ({
     main: './src/main.js',
   },
   imports: [],
+  css: {
+    extract: true,
+  },
 });

@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import ModernModePlugin from '@uvue/vue-cli-plugin-ssr/webpack/uvue/ModernModePlugin';
+import ModernModePlugin from '@uvue/vue-cli-plugin-ssr/webpack/plugins/ModernModePlugin';
 import escapeStringRegexp from 'escape-string-regexp';
 
 export default {

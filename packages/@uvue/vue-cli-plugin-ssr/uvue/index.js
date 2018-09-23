@@ -66,7 +66,7 @@ module.exports = class {
    * Get config data or variable from uvue.config.js
    */
   getConfig(selector) {
-    let config = require('./defaultConfig')();
+    let config = require('./uvueConfig')();
 
     // Load config in project if exists
     const configPath = this.api.resolve('uvue.config.js');

@@ -1377,6 +1377,7 @@
     memory-fs "^0.4.1"
     micromatch "^3.1.10"
     serve-static "^1.13.2"
+    shrink-ray-current "^2.1.2"
     vue "^2.5.17"
     vue-server-renderer "^2.5.17"
     webpack "^4.19.0"

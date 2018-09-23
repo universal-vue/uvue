@@ -1,5 +1,5 @@
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
-const ModernModePlugin = require('./uvue/ModernModePlugin');
+const ModernModePlugin = require('./plugins/ModernModePlugin');
 
 module.exports = (api, chainConfig) => {
   // Change main entry
