@@ -4,11 +4,14 @@ import ModernModePlugin from '@uvue/vue-cli-plugin-ssr/webpack/uvue/ModernModePl
 import escapeStringRegexp from 'escape-string-regexp';
 
 export default {
+  /**
+   * Check if there is a legacy bundle
+   */
   beforeStart(app) {
     const { outputDir } = app.options.paths;
 
     const modernPath = path.join(outputDir, '.uvue/client-manifest.json');
-    const legacyPath = path.join(outputDir, '.uvue/client-manifest-legacy.json');
+    const legacyPath = path.join(outputDir, '.uvue/legacy-manifest.json');
 
     if (fs.existsSync(legacyPath)) {
       this.legacyManifest = JSON.parse(fs.readFileSync(legacyPath, 'utf-8'));
@@ -16,6 +19,9 @@ export default {
     }
   },
 
+  /**
+   * Legacy bundle present: assume this is a modern mode
+   */
   rendered(response) {
     if (this.legacyManifest) {
       response.body = this.replaceAssetsTags(response.body);
@@ -23,6 +29,9 @@ export default {
     }
   },
 
+  /**
+   * Replace scripts & links tags to insert appropriate attributes on them
+   */
   replaceAssetsTags(html) {
     const assets = [...this.modernManifest.initial, ...this.modernManifest.async];
 
@@ -35,7 +44,7 @@ export default {
       );
 
       let result = regAsset.exec(html);
-      while (result != null) {
+      while (result !== null) {
         switch (result[1]) {
           case 'link':
             if (result[0].indexOf('preload') > 0) {
@@ -55,6 +64,9 @@ export default {
     return html;
   },
 
+  /**
+   * Inject legacy code for old browsers
+   */
   injectLegacyAndFixes(html) {
     let code = `<script>${ModernModePlugin.safariFix}</script>`;
     for (const asset of this.legacyManifest.initial) {

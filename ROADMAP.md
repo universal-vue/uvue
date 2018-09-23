@@ -41,7 +41,6 @@
 - [ ] **Killers features**: Critical CSS
   - [ ] Critters
   - [ ] Critical / Penthouse (Puppeteer based)
-  - [ ] Vue components styles (@akryum repo)
 - [x] **Killers features**: Modern build
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
 - [ ] **CLI plugin**: Detect Vue plugins presence and transform code
@@ -56,16 +55,6 @@
 - [ ] **Common**: Better contribution guide
 - [ ] **Common**: Example repository
 - [x] **Common**: Discord Chat
-- Tests
-  - [ ] VueMeta plugin (e2e)
-  - [ ] Redirects in plugins and navigation guards (e2e)
-  - [ ] Error handler in asyncData, fetch and navigation guards (e2e)
-  - [ ] UVue plugins system (unit)
-  - [ ] SPA paths (e2e)
-  - [ ] Normal build in SPA mode (e2e)
-  - [ ] devServer config correctly sent to middlewares (unit)
-  - [ ] HTTPS setup on server (unit)
-  - [ ] Docker start script (unit)
 
 ## Alpha 2
 
@@ -89,3 +78,16 @@
 - [ ] **Vue CLI UI**: CPU & RAM monitoring for `ssr:start` command
 - [ ] **Vue CLI UI**: Edit configuration files
 - [ ] **Vue CLI UI**: `generate` command: List generated files & size
+
+## Beta
+
+- Tests
+  - [ ] VueMeta plugin (e2e)
+  - [ ] Redirects in plugins and navigation guards (e2e)
+  - [ ] Error handler in plugins and navigation guards (e2e)
+  - [ ] UVue plugins system (unit)
+  - [ ] SPA paths (e2e)
+  - [ ] Normal build in SPA mode (e2e)
+  - [ ] devServer config correctly sent to middlewares (unit)
+  - [ ] HTTPS setup on server (unit)
+  - [ ] Docker start script (unit)

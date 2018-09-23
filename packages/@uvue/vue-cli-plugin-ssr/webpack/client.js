@@ -14,7 +14,7 @@ module.exports = (api, chainConfig) => {
   // Modern build
   if (process.env.VUE_CLI_MODERN_MODE) {
     if (!process.env.VUE_CLI_MODERN_BUILD) {
-      clientManifestFilename = '.uvue/client-manifest-legacy.json';
+      clientManifestFilename = '.uvue/legacy-manifest.json';
 
       // Use ModernModePlugin to update SPA template
       chainConfig.plugin('modern-mode-legacy').use(ModernModePlugin, [
