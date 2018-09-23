@@ -37,6 +37,8 @@
 - [x] **Server**: Handle correctly Vue meta plugin
 - [x] **Server**: Docker start script
 - [x] **Server**: Configure dev server
+- [ ] **Server**: Tools for CPU & RAM monitoring
+- [ ] **Server**: Benchmarks
 - [ ] **Webpack**: CSS management
 - [ ] **Killers features**: Critical CSS
   - [ ] Critters
@@ -63,8 +65,6 @@
 - [ ] **Vue CLI plugin support**: Vue i18n
 - [ ] **Vue CLI plugin support**: Apollo
 - [ ] **Server**: Watch server config to reload server (implements nodemon)
-- [ ] **Server**: Tools for CPU & RAM monitoring
-- [ ] **Server**: Benchmarks
 - [ ] **Server**: Prod/Dev ready plugin
 - [ ] **Server**: Pages cache plugin
   - [ ] Memory
