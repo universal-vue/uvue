@@ -1,13 +1,11 @@
-module.exports = (api, chainConfig) => {
+const CssContextLoader = require.resolve('./plugins/CssContext');
+
+module.exports = (api, chainConfig, isClient) => {
   // CSS rules names
   const cssRulesNames = ['css', 'postcss', 'scss', 'sass', 'less', 'stylus'];
-  const oneOfsNames = [];
+  const oneOfsNames = ['normal', 'normal-modules', 'vue', 'vue-modules'];
 
-  // No extract: All CSS will be inlined
-  oneOfsNames.push('normal', 'normal-modules', 'vue', 'vue-modules');
-
-  // Replace extract css loader by vue style loader
-  if (oneOfsNames.length) {
+  if (!api.uvue.getConfig('css.extract')) {
     for (const ruleName of cssRulesNames) {
       const rule = chainConfig.module.rules.get(ruleName);
       if (rule) {
@@ -30,6 +28,24 @@ module.exports = (api, chainConfig) => {
           }
         }
       }
+    }
+  } else {
+    // Extract CSS
+    if (!isClient) {
+      for (const lang of cssRulesNames) {
+        for (const type of oneOfsNames) {
+          const rule = chainConfig.module.rule(lang).oneOf(type);
+          if (rule.uses.has('extract-css-loader')) {
+            rule.uses.delete('extract-css-loader');
+            // Critical CSS
+            rule
+              .use('css-context')
+              .loader(CssContextLoader)
+              .before('css-loader');
+          }
+        }
+      }
+      chainConfig.plugins.delete('extract-css');
     }
   }
 };

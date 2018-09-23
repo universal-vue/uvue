@@ -80,7 +80,7 @@ module.exports = (api, options = {}) => {
     .before('vue-loader');
 
   // CSS management
-  cssConfig(api, chainConfig);
+  cssConfig(api, chainConfig, client);
 
   // Replace define plugin configuration
   chainConfig.plugin('uvue-defines').tap(args => {
