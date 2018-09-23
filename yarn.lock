@@ -1391,9 +1391,12 @@
     chokidar "^2.0.4"
     esm "^3.0.82"
     fs-extra "^7.0.0"
+    hash-sum "^1.0.2"
     html-webpack-plugin "^3.2.0"
+    loader-utils "^1.1.0"
     lodash "^4.17.11"
     micromatch "^3.1.10"
+    querystring "^0.2.0"
     vue-server-renderer "^2.5.17"
     webpack "^4.19.0"
     webpack-bundle-analyzer "^3.0.2"
@@ -4819,6 +4822,10 @@ fd-slicer@~1.1.0:
   resolved "https://registry.yarnpkg.com/fd-slicer/-/fd-slicer-1.1.0.tgz#25c7c89cb1f9077f8891bbe61d8f390eae256f1e"
   dependencies:
     pend "~1.2.0"
+
+fg-loadcss@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/fg-loadcss/-/fg-loadcss-2.0.1.tgz#71c00e470a57f7739d0736124dfc8791995e8af1"
 
 figgy-pudding@^3.1.0, figgy-pudding@^3.2.1, figgy-pudding@^3.4.1, figgy-pudding@^3.5.1:
   version "3.5.1"
