@@ -39,10 +39,8 @@
 - [x] **Server**: Configure dev server
 - [ ] **Server**: Tools for CPU & RAM monitoring
 - [ ] **Server**: Benchmarks
-- [ ] **Webpack**: CSS management
-- [ ] **Killers features**: Critical CSS
-  - [ ] Critters
-  - [ ] Critical / Penthouse (Puppeteer based)
+- [x] **Webpack**: CSS management
+- [x] **Killers features**: Critical CSS
 - [x] **Killers features**: Modern build
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
 - [ ] **CLI plugin**: Detect Vue plugins presence and transform code
@@ -78,6 +76,9 @@
 - [ ] **Vue CLI UI**: CPU & RAM monitoring for `ssr:start` command
 - [ ] **Vue CLI UI**: Edit configuration files
 - [ ] **Vue CLI UI**: `generate` command: List generated files & size
+- [ ] **CSS**: Critters on each page
+- [ ] **CSS**: Global Critters
+- [ ] **CSS**: Critical auto generation
 
 ## Beta
 
