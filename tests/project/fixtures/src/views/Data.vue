@@ -23,3 +23,9 @@ export default {
 };
 </script>
 
+<style scoped>
+h1 {
+  position: relative;
+}
+</style>
+

@@ -17,4 +17,8 @@ export default {
     '@uvue/core/plugins/asyncData',
     '@uvue/core/plugins/errorHandler',
   ],
+  css: {
+    normal: 'inline',
+    vue: 'inline',
+  },
 };

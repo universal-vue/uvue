@@ -8,6 +8,7 @@ module.exports = () => ({
   },
   imports: [],
   css: {
-    extract: true,
+    normal: 'inline',
+    vue: 'inline',
   },
 });
