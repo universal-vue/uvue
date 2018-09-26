@@ -116,19 +116,19 @@ describe('Server and Renderer', () => {
   });
 
   it('Server should start the adapter', async () => {
-    await serverMock.server.start();
+    const { server } = serverMock;
+    await server.start();
+    const { adapter } = server;
 
-    const host = serverMock.server.adapter.getHost();
-    const port = serverMock.server.adapter.getPort();
-    const isHttps = serverMock.server.adapter.isHttps();
+    const host = adapter.getHost();
+    const port = adapter.getPort();
+    const isHttps = adapter.isHttps();
 
     const uri = `${isHttps ? 'https' : 'http'}://${host}:${port}`;
     const { statusCode, body } = await request({
       uri,
       method: 'GET',
-      transform: function(body, response) {
-        return response;
-      },
+      transform: (body, response) => response
     });
     const $ = cheerio.load(body);
 
@@ -137,4 +137,13 @@ describe('Server and Renderer', () => {
 
     serverMock.server.stop();
   });
+
+  it('Server should add more plugins', () => {
+    const { server, plugin } = serverMock;
+    const pluginsCount = server.plugins.length;
+    server.addPlugin(plugin, {});
+
+    expect(server.plugins.length).toEqual(pluginsCount + 1);
+  });
+
 });
