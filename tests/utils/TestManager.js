@@ -91,11 +91,15 @@ export class TestManager {
       stdio: 'inherit',
     });
 
-    // Setup syminlks
+    // Setup symlinks
     await this.updatePackage(name, {
       dependencies: {
         '@uvue/server': 'link:../../@uvue/server',
         '@uvue/core': 'link:../../@uvue/core',
+      },
+      scripts: {
+        devtools: 'uvue-devtools',
+        start: 'uvue-start',
       },
     });
   }

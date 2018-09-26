@@ -31,19 +31,22 @@
 - [x] **UVue API**: Transform main `new Vue` code to return only constructor options
 - [x] **UVue API**: Load imports from project configuration
 - [ ] **UVue API**: Transorm Vue plugins instanciation with an export function (router, store)
-  - [ ] Transform main.js to use these functions
 - [x] **UVue API**: Watch uvue config change to reload app
 - [x] **Server**: Handle HTTPS configuration
 - [x] **Server**: Handle correctly Vue meta plugin
 - [x] **Server**: Docker start script
 - [x] **Server**: Configure dev server
-- [ ] **Server**: Tools for CPU & RAM monitoring
-- [ ] **Server**: Benchmarks
+- [ ] **Server**: Dockerfile
+- [ ] **Server**: Docker Compose with Nginx
+- [ ] **Server**: Watch server config to reload server (implements nodemon)
+- [x] **DevTools**: Tools for CPU & RAM monitoring
+- [x] **DevTools**: Benchmarks with scenario
 - [x] **Webpack**: CSS management
 - [x] **Killers features**: Critical CSS
 - [x] **Killers features**: Modern build
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
-- [ ] **CLI plugin**: Detect Vue plugins presence and transform code
+- [ ] **CLI plugin**: (Generator) manage main.js
+- [ ] **CLI plugin**: (Generator) Detect Vue plugins presence and transform code
 - [ ] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
 - [ ] **CLI plugin**: `generate` command
 - [ ] **CLI plugin**: Docker: prompt & dockerfile
@@ -55,30 +58,30 @@
 - [ ] **Common**: Better contribution guide
 - [ ] **Common**: Example repository
 - [x] **Common**: Discord Chat
-
-## Alpha 2
-
 - [ ] **Vue CLI plugin support**: E2E tests with SSR mode
 - [ ] **Vue CLI plugin support**: TypeScript
 - [ ] **Vue CLI plugin support**: Vue i18n
 - [ ] **Vue CLI plugin support**: Apollo
-- [ ] **Server**: Watch server config to reload server (implements nodemon)
+
+## Next / Ideas / Future
+
 - [ ] **Server**: Prod/Dev ready plugin
 - [ ] **Server**: Pages cache plugin
   - [ ] Memory
   - [ ] Files
   - [ ] Redis
 - [ ] **Server**: Server error plugin (to customize server error page)
-- [ ] **Plugin**: Vue meta as plugin ?
-- [ ] **Core**: SPA loader plugin
-- [ ] **Core**: Navigation loader plugin
-- [ ] **Core**: Stash plugin
+- [ ] **Core Plugin**: Vue meta as plugin ?
+- [ ] **Core Plugin**: SPA loader
+- [ ] **Core Plugin**: Navigation loader
+- [ ] **Core Plugin**: Stash
 - [ ] **Vue CLI UI**: CPU & RAM monitoring for `ssr:start` command
 - [ ] **Vue CLI UI**: Edit configuration files
 - [ ] **Vue CLI UI**: `generate` command: List generated files & size
 - [ ] **CSS**: Critters on each page
 - [ ] **CSS**: Global Critters
 - [ ] **CSS**: Critical auto generation
+- [ ] **DevTools**: Scenatio with auth
 
 ## Beta
 
