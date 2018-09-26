@@ -50,7 +50,8 @@
     "vue-server-renderer": "^2.5.17",
     "webpack": "^4.19.0",
     "webpack-dev-middleware": "^3.3.0",
-    "webpack-hot-middleware": "^2.24.0"
+    "webpack-hot-middleware": "^2.24.0",
+    "yargs": "^12.0.2"
   },
   "devDependencies": {
     "prettier": "^1.14.2",
@@ -58,5 +59,8 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "typescript": "^3.0.3"
+  },
+  "bin": {
+    "uvue-start": "./start.js"
   }
 }
