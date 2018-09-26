@@ -10,12 +10,14 @@ export default {
   beforeStart(app) {
     const { outputDir } = app.options.paths;
 
-    const modernPath = path.join(outputDir, '.uvue/client-manifest.json');
-    const legacyPath = path.join(outputDir, '.uvue/legacy-manifest.json');
+    if (outputDir) {
+      const modernPath = path.join(outputDir, '.uvue/client-manifest.json');
+      const legacyPath = path.join(outputDir, '.uvue/legacy-manifest.json');
 
-    if (fs.existsSync(legacyPath)) {
-      this.legacyManifest = JSON.parse(fs.readFileSync(legacyPath, 'utf-8'));
-      this.modernManifest = JSON.parse(fs.readFileSync(modernPath, 'utf-8'));
+      if (fs.existsSync(legacyPath)) {
+        this.legacyManifest = JSON.parse(fs.readFileSync(legacyPath, 'utf-8'));
+        this.modernManifest = JSON.parse(fs.readFileSync(modernPath, 'utf-8'));
+      }
     }
   },
 
