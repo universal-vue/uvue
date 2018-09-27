@@ -36,9 +36,9 @@
 - [x] **Server**: Handle correctly Vue meta plugin
 - [x] **Server**: Docker start script
 - [x] **Server**: Configure dev server
+- [ ] **Server**: Watch server config to reload server (implements nodemon)
 - [ ] **Server**: Dockerfile
 - [ ] **Server**: Docker Compose with Nginx
-- [ ] **Server**: Watch server config to reload server (implements nodemon)
 - [x] **DevTools**: Tools for CPU & RAM monitoring
 - [x] **DevTools**: Benchmarks with scenario
 - [x] **Webpack**: CSS management
@@ -81,7 +81,8 @@
 - [ ] **CSS**: Critters on each page
 - [ ] **CSS**: Global Critters
 - [ ] **CSS**: Critical auto generation
-- [ ] **DevTools**: Scenatio with auth
+- [ ] **DevTools**: Better autocannon logs (status, low-high)
+- [ ] **DevTools**: Scenario with auth
 
 ## Beta
 

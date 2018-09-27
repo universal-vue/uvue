@@ -1,0 +1,16 @@
+repeat: 2
+
+autocannon:
+  connections: 500
+  duration: 5
+
+steps:
+  - path: /
+  - path: /async-data
+  - path: /vuex
+  - path: /on-http-request
+  - path: /middleware
+  - path: /redirect
+  - path: /error-handler
+  - path: /server-error
+  - path: /all

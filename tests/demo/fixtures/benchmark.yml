@@ -1,9 +1,0 @@
-repeat: 2
-
-autocannon:
-  connections: 500
-  duration: 10
-
-steps:
-  - path: /
-  - path: /about
