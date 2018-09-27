@@ -4,6 +4,27 @@ import execa from 'execa';
 import vueCreate from '@vue/cli-test-utils/createTestProject';
 import deepMerge from 'deepmerge';
 
+const uvuePlugins = ['vuex', 'asyncData', 'errorHandler', 'middlewares'];
+const vuexOptions = ['fetch', 'onHttpRequest'];
+const serverPlugins = ['static', 'gzip', 'modernBuild', 'cookie'];
+
+const invokePrompts = [
+  ...uvuePlugins.reduce((results, item) => {
+    results.push('--uvuePlugins', item);
+    return results;
+  }, []),
+  ...vuexOptions.reduce((results, item) => {
+    results.push('--vuexOptions', item);
+    return results;
+  }, []),
+  ...serverPlugins.reduce((results, item) => {
+    results.push('--serverPlugins', item);
+    return results;
+  }, []),
+  '--cookieSecret',
+  'secret',
+];
+
 export class TestManager {
   constructor(baseDir = process.cwd()) {
     this.baseDir = baseDir;
@@ -86,10 +107,14 @@ export class TestManager {
     const projectPath = path.join(this.baseDir, name);
 
     // Vue invoke command
-    await execa(require.resolve('@vue/cli/bin/vue'), ['invoke', '@uvue/vue-cli-plugin-ssr'], {
-      cwd: projectPath,
-      stdio: 'inherit',
-    });
+    await execa(
+      require.resolve('@vue/cli/bin/vue'),
+      ['invoke', '@uvue/vue-cli-plugin-ssr', ...invokePrompts],
+      {
+        cwd: projectPath,
+        stdio: 'inherit',
+      },
+    );
 
     // Setup symlinks
     await this.updatePackage(name, {

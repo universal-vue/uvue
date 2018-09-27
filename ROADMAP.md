@@ -53,13 +53,14 @@
 - [ ] **CLI plugin**: (Generator) Detect Vue plugins presence and transform code
 - [ ] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
 - [ ] **CLI plugin**: `generate` command
-- [ ] **CLI plugin**: Docker: prompt & dockerfile
-- [ ] **CLI plugin**: Prompts to install server plugins
-- [ ] **CLI plugin**: Prompts to install UVue plugins
-- [ ] **Vue CLI plugin support**: E2E tests with SSR mode
+- [x] **CLI plugin**: Docker prompt
+- [x] **CLI plugin**: Prompts to install server plugins
+- [x] **CLI plugin**: Prompts to install UVue plugins
 - [ ] **Vue CLI plugin support**: TypeScript
 - [ ] **Vue CLI plugin support**: Vue i18n
+- [ ] **Vue CLI plugin support**: PWA
 - [ ] **Vue CLI plugin support**: Apollo
+- [ ] **Vue CLI plugin support**: E2E tests with SSR mode
 - [ ] **Common**: New logo
 - [ ] **Common**: Documentation with Vuepress and custom theme
 - [ ] **Common**: Issue template for Github
@@ -70,12 +71,11 @@
 
 ## Next / Ideas / Future
 
-- [ ] **Server**: Prod/Dev ready plugin
+- [ ] **Server**: Server error plugin (to customize server error page)
 - [ ] **Server**: Pages cache plugin
   - [ ] Memory
   - [ ] Files
   - [ ] Redis
-- [ ] **Server**: Server error plugin (to customize server error page)
 - [ ] **Core Plugin**: Vue meta as plugin ?
 - [ ] **Core Plugin**: SPA loader
 - [ ] **Core Plugin**: Navigation loader
