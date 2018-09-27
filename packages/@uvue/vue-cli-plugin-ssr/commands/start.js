@@ -1,4 +1,5 @@
 const fs = require('fs-extra');
+const consola = require('consola');
 const { join } = require('path');
 
 const defaults = {
@@ -31,7 +32,7 @@ module.exports = (api, options) => {
         existsSync(api.resolve(join(options.outputDir, '.uvue/ssr.html')));
       } catch (err) {
         // eslint-disable-next-line
-        console.error('Incorrect SSR build, did you run "ssr:build" command before ?');
+        consola.fatal('Incorrect SSR build, did you run "ssr:build" command before ?');
         process.exit(1);
       }
 
@@ -82,7 +83,7 @@ module.exports = (api, options) => {
       await server.start();
 
       // eslint-disable-next-line
-      console.log(
+      consola.ready(
         `Server listening: ${server.getAdapter().isHttps() ? 'https' : 'http'}://${host}:${port}`,
       );
     },

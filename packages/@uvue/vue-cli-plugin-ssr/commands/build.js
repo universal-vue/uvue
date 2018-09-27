@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const webpack = require('webpack');
+const consola = require('consola');
 const formatStats = require('@vue/cli-service/lib/commands/build/formatStats');
 
 const modifyConfig = (config, fn) => {
@@ -32,12 +33,10 @@ module.exports = (api, options) => {
         process.env.VUE_CLI_MODERN_MODE = true;
         delete process.env.VUE_CLI_MODERN_BUILD;
 
-        // eslint-disable-next-line
-        console.log('Building legacy bundle...');
+        consola.start('Building legacy bundle...');
         await build(api, options, args);
 
-        // eslint-disable-next-line
-        console.log('Building modern bundle...');
+        consola.start('Building modern bundle...');
         process.env.VUE_CLI_MODERN_BUILD = true;
         await build(api, options, args);
 
@@ -87,7 +86,7 @@ function build(api, options, args) {
     const onCompilationComplete = (err, stats) => {
       if (err) {
         // eslint-disable-next-line
-        console.error(err);
+        consola.error(err);
         return reject(err);
       }
 

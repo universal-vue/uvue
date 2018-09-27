@@ -37,6 +37,7 @@
   "dependencies": {
     "@uvue/rquery": "link:../rquery",
     "chokidar": "^2.0.4",
+    "consola": "^1.4.3",
     "esm": "^3.0.82",
     "fs-extra": "^7.0.0",
     "hash-sum": "^1.0.2",

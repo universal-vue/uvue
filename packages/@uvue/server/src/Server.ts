@@ -1,4 +1,5 @@
-import { existsSync, readFileSync } from 'fs-extra';
+import * as consola from 'consola';
+import { readFileSync } from 'fs-extra';
 import { IncomingMessage, ServerResponse } from 'http';
 import micromatch from 'micromatch';
 import { join } from 'path';
@@ -134,7 +135,7 @@ export class Server implements IServer {
     for (const signal of signals) {
       (process.on as any)(signal, () => {
         // tslint:disable-next-line
-        console.log(`(${signal}) Stoping server...`);
+        consola.info(`Stoping server...`);
         this.stop().then(() => process.exit(0));
       });
     }
@@ -204,7 +205,7 @@ export class Server implements IServer {
     } catch (err) {
       if (process.env.NODE_ENV !== 'test') {
         // tslint:disable-next-line
-        console.error(err);
+        consola.error(err);
       }
 
       // Catch errors
