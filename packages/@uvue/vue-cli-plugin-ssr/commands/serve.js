@@ -1,5 +1,5 @@
 const defaults = {
-  host: '127.0.0.1',
+  host: 'localhost',
   port: 8080,
 };
 
@@ -16,59 +16,92 @@ module.exports = (api, options) => {
       },
     },
     async function(args) {
+      let server;
+
+      const consola = require('consola');
+      const chokidar = require('chokidar');
+
+      const { watch } = api.uvue.getServerConfig();
       const projectDevServerOptions = options.devServer || {};
 
-      /**
-       * Gettings host & port
-       */
+      // Gettings host & port
       const portfinder = require('portfinder');
       const host = args.host || process.env.HOST || projectDevServerOptions.host || defaults.host;
       portfinder.basePort =
         args.port || process.env.PORT || projectDevServerOptions.port || defaults.port;
       const port = await portfinder.getPortPromise();
 
-      /**
-       * Create server
-       */
-      const { Server } = require('@uvue/server');
-      const getWebpackConfig = require('../webpack/ssr');
-      const { https, devServer } = api.uvue.getServerConfig();
+      // Setup a watcher
+      const watcher = chokidar.watch(['server.config.js', ...(watch || [])]);
 
-      const server = new Server({
-        // Set files destinations
-        paths: {
-          serverBundle: '.uvue/server-bundle.json',
-          clientManifest: '.uvue/client-manifest.json',
-          templates: {
-            spa: '.uvue/spa.html',
-            ssr: '.uvue/ssr.html',
-          },
-        },
+      // Start server
+      server = await startServer({ api, host, port });
 
-        // Set webpakc config for webpack compiler
-        webpack: {
-          client: getWebpackConfig(api, { client: true, host, port }),
-          server: getWebpackConfig(api, { client: false, host, port }),
-        },
-
-        // Set server configuration
-        httpOptions: {
-          host,
-          port,
-          https,
-        },
-
-        // Dev server options
-        devServer,
+      // Restart server on changes
+      watcher.on('all', async () => {
+        consola.info('Changes detected: restarting server...');
+        if (server) {
+          await server.stop();
+          server = null;
+        }
+        server = await startServer({ api, host, port });
       });
 
-      // Install plugins
-      api.uvue.installServerPlugins(server);
-
-      /**
-       * Start server
-       */
-      await server.start();
+      // Restart on user input
+      var stdin = process.openStdin();
+      stdin.addListener('data', async d => {
+        if (d.toString().trim() == 'rs') {
+          consola.info('Restarting server...');
+          if (server) {
+            await server.stop();
+            server = null;
+          }
+          server = await startServer({ api, host, port });
+        }
+      });
     },
   );
 };
+
+async function startServer({ api, host, port }) {
+  const { Server } = require('@uvue/server');
+  const getWebpackConfig = require('../webpack/ssr');
+  const { https, devServer } = api.uvue.getServerConfig();
+
+  // Create server
+  const server = new Server({
+    // Set files destinations
+    paths: {
+      serverBundle: '.uvue/server-bundle.json',
+      clientManifest: '.uvue/client-manifest.json',
+      templates: {
+        spa: '.uvue/spa.html',
+        ssr: '.uvue/ssr.html',
+      },
+    },
+
+    // Set webpakc config for webpack compiler
+    webpack: {
+      client: getWebpackConfig(api, { client: true, host, port }),
+      server: getWebpackConfig(api, { client: false, host, port }),
+    },
+
+    // Set server configuration
+    httpOptions: {
+      host,
+      port,
+      https,
+    },
+
+    // Dev server options
+    devServer,
+  });
+
+  // Install plugins
+  api.uvue.installServerPlugins(server);
+
+  // Start server
+  await server.start();
+
+  return server;
+}

@@ -110,6 +110,8 @@ module.exports = class {
     if (fs.existsSync(configPath)) {
       const module = require(configPath);
       config = merge(config, module.default || module);
+      // For HMR
+      delete require.cache[configPath];
     }
 
     // Plugins

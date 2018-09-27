@@ -22,4 +22,5 @@ module.exports = () => ({
     hot: {},
   },
   plugins: [],
+  watch: [],
 });
