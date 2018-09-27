@@ -8,7 +8,7 @@ import {
   testContext,
   testContextSSR,
   wait,
-} from '../../utils/e2e';
+} from '../../../utils/e2e';
 
 let $;
 

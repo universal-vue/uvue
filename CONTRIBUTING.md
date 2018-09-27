@@ -4,7 +4,7 @@ This project uses a monorepo setup that requires using [Yarn](https://yarnpkg.co
 
 ## Requirements
 
-Node @ \^6.14.0 || \^8.10.0 || >=9.10.0
+Node >= 8.10 || >= 10.6.0
 
 ## Clone and install dependencies
 
@@ -14,7 +14,7 @@ cd uvue
 yarn install
 ```
 
-Then you go to `packages/tests/project` and start test project with the command:
+Then you go to `packages/tests/suite` and start test project with the command:
 
 ```bash
 yarn ssr:serve
@@ -44,16 +44,8 @@ In root folder:
 yarn test
 ```
 
-## Run units tests
-
-In root folder:
-
-```bash
-./tests/cli test:unit project
-```
-
 ## Run E2E tests
 
 ```bash
-./tests/cli test:e2e project
+./tests/cli test:e2e suite
 ```

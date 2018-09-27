@@ -5,4 +5,4 @@ yarn build
 cd ../rquery
 yarn build
 cd ../../..
-./tests/cli i project
+./tests/cli install suite

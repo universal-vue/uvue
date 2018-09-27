@@ -5,7 +5,7 @@ import {
   checkText,
   pageRunTests,
   pageRunTestsSSR,
-} from '../../utils/e2e';
+} from '../../../utils/e2e';
 
 let $;
 

@@ -5,7 +5,7 @@ import EventEmitter from 'events';
 const mockServer = () => {
   const server = new Server({
     paths: {
-      outputDir: path.resolve('packages/tests/project/dist'),
+      outputDir: path.resolve('packages/tests/suite/dist'),
       serverBundle: '.uvue/server-bundle.json',
       clientManifest: '.uvue/client-manifest.json',
       templates: {

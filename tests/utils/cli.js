@@ -27,7 +27,7 @@ const e2eProject = async (server, name) => {
 
   const jest = execa(
     './node_modules/.bin/jest',
-    ['--config', `tests/${name}/jest.config.js`, '--verbose'],
+    ['--config', `tests/projects/${name}/jest.config.js`, '--verbose'],
     {
       stdio: 'inherit',
     },
@@ -65,7 +65,7 @@ const e2eProject = async (server, name) => {
      */
     case 'install:fixtures':
     case 'if':
-      await tm.installFixtures(name, `tests/${name}/fixtures`);
+      await tm.installFixtures(name, `tests/projects/${name}/fixtures`);
       break;
 
     /**
@@ -81,7 +81,7 @@ const e2eProject = async (server, name) => {
      */
     case 'install':
     case 'i':
-      await tm.installFixtures(name, `tests/${name}/fixtures`);
+      await tm.installFixtures(name, `tests/projects/${name}/fixtures`);
       await tm.invoke(name, arg0);
       break;
 

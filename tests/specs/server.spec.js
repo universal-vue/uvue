@@ -45,14 +45,8 @@ describe('Server and Renderer', () => {
 
     expect($('html').length).toBe(1);
     expect($('head').length).toBe(1);
+    expect($('body').length).toBe(1);
     expect($('script[data-vue-ssr-data]').length).toBe(1);
-
-    const body = $('body');
-    $('body')
-      .find('script')
-      .remove();
-
-    expect(body.html()).toBe(bodyHtml);
   });
 
   it('Renderer render SPA page correctly', async () => {
@@ -128,7 +122,7 @@ describe('Server and Renderer', () => {
     const { statusCode, body } = await request({
       uri,
       method: 'GET',
-      transform: (body, response) => response
+      transform: (body, response) => response,
     });
     const $ = cheerio.load(body);
 
@@ -145,5 +139,4 @@ describe('Server and Renderer', () => {
 
     expect(server.plugins.length).toEqual(pluginsCount + 1);
   });
-
 });

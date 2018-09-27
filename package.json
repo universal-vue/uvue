@@ -8,7 +8,7 @@
   "scripts": {
     "clean": "rimraf packages/tests",
     "lint": "lerna run lint",
-    "test": "./tests/cli install project && ./tests/cli test project",
+    "test": "./tests/cli install suite && ./tests/cli test suite",
     "postinstall": "scripts/postinstall.sh"
   },
   "workspaces": [
