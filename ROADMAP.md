@@ -31,16 +31,11 @@
 - [x] **UVue API**: Transform main `new Vue` code to return only constructor options
 - [x] **UVue API**: Load imports from project configuration
 - [x] **UVue API**: Watch uvue config change to reload app
-- **Code Fixer**
-  - [ ] Manage main.js
-  - [ ] File finder
-  - [ ] Manage base plugins: router & store
-  - [ ] Manage side plugins: i18n, pwa, apollo
 - [x] **Server**: Handle HTTPS configuration
 - [x] **Server**: Handle correctly Vue meta plugin
 - [x] **Server**: Docker start script
 - [x] **Server**: Configure dev server
-- [ ] **Server**: Watch server config to reload server (implements nodemon)
+- [x] **Server**: Watch server config to reload server
 - [ ] **Server**: Dockerfile
 - [ ] **Server**: Docker Compose with Nginx
 - [x] **DevTools**: Tools for CPU & RAM monitoring
@@ -48,6 +43,11 @@
 - [x] **Webpack**: CSS management
 - [x] **Killers features**: Critical CSS
 - [x] **Killers features**: Modern build
+- **Code Fixer**
+  - [ ] Manage main.js
+  - [ ] File finder
+  - [ ] Manage base plugins: router & store
+  - [ ] Manage side plugins: i18n, pwa, apollo
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
 - [ ] **CLI plugin**: (Generator) manage main.js
 - [ ] **CLI plugin**: (Generator) Detect Vue plugins presence and transform code
@@ -56,16 +56,16 @@
 - [ ] **CLI plugin**: Docker: prompt & dockerfile
 - [ ] **CLI plugin**: Prompts to install server plugins
 - [ ] **CLI plugin**: Prompts to install UVue plugins
+- [ ] **Vue CLI plugin support**: E2E tests with SSR mode
+- [ ] **Vue CLI plugin support**: TypeScript
+- [ ] **Vue CLI plugin support**: Vue i18n
+- [ ] **Vue CLI plugin support**: Apollo
 - [ ] **Common**: New logo
 - [ ] **Common**: Documentation with Vuepress and custom theme
 - [ ] **Common**: Issue template for Github
 - [ ] **Common**: Better contribution guide
 - [ ] **Common**: Example repository
 - [x] **Common**: Discord Chat
-- [ ] **Vue CLI plugin support**: E2E tests with SSR mode
-- [ ] **Vue CLI plugin support**: TypeScript
-- [ ] **Vue CLI plugin support**: Vue i18n
-- [ ] **Vue CLI plugin support**: Apollo
 
 ## Next / Ideas / Future
 
