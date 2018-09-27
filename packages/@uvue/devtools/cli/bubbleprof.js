@@ -1,3 +1,4 @@
+import consola from 'consola';
 import { applyServerOptions, clinicRun } from './utils';
 
 export default [
@@ -10,6 +11,8 @@ export default [
     });
   },
   argv => {
+    consola.start('Starting Node Clinic: BubbleProf...');
+
     const ClinicBubbleprof = require('@nearform/bubbleprof');
     const bubbleprof = new ClinicBubbleprof();
     return clinicRun(argv, bubbleprof);

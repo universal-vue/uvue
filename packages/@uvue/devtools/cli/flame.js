@@ -1,3 +1,4 @@
+import consola from 'consola';
 import { applyServerOptions, clinicRun } from './utils';
 
 export default [
@@ -10,6 +11,8 @@ export default [
     });
   },
   argv => {
+    consola.start('Starting Node Clinic: Flame...');
+
     const ClinicFlame = require('@nearform/flame');
     const flame = new ClinicFlame();
     return clinicRun(argv, flame);

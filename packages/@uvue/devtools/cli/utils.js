@@ -3,8 +3,8 @@ import fs from 'fs-extra';
 import autocannon from 'autocannon';
 import yaml from 'js-yaml';
 import waitOn from 'wait-on';
-import signale from 'signale';
 import opn from 'opn';
+import consola from 'consola';
 
 const waitOnPromise = options =>
   new Promise((resolve, reject) =>
@@ -28,14 +28,16 @@ export const executeScenario = async (filepath, { host, port }) => {
     ...(scenario.autocannon || {}),
   };
 
-  signale.await(`server is ready`);
+  consola.info('Waiting server is listening...');
+
   await waitOnPromise({
     resources: [`tcp:${host}:${port}`],
     timeout: 60 * 1000,
   });
 
   const httpBenchmark = (config, path = '/') => {
-    signale.await(`Benchmarking: ${path}`);
+    consola.info(`Benchmarking: ${path}`);
+
     return new Promise((resolve, reject) => {
       autocannon(
         {
@@ -44,7 +46,7 @@ export const executeScenario = async (filepath, { host, port }) => {
         },
         (err, results) => {
           if (err) return reject(err);
-          signale.complete(`${results.requests.average} req/s`);
+          consola.success(`${results.requests.average} req/s`);
           resolve(results);
         },
       );
@@ -64,7 +66,7 @@ export const executeScenario = async (filepath, { host, port }) => {
   const repeat = scenario.repeat || 1;
 
   for (let i = 0; i < repeat; i++) {
-    signale.start(`Run ${i + 1}/${repeat}`);
+    consola.start(`Run ${i + 1}/${repeat}`);
 
     for (const stepIndex in scenario.steps) {
       const step = scenario.steps[stepIndex];
