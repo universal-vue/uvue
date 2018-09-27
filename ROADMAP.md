@@ -36,8 +36,8 @@
 - [x] **Server**: Docker start script
 - [x] **Server**: Configure dev server
 - [x] **Server**: Watch server config to reload server
-- [ ] **Server**: Dockerfile
-- [ ] **Server**: Docker Compose with Nginx
+- [x] **Server**: Dockerfile
+- [x] **Server**: Docker Compose with Nginx
 - [x] **DevTools**: Tools for CPU & RAM monitoring
 - [x] **DevTools**: Benchmarks with scenario
 - [x] **Webpack**: CSS management
@@ -65,6 +65,7 @@
 - [ ] **Common**: Issue template for Github
 - [ ] **Common**: Better contribution guide
 - [ ] **Common**: Example repository
+- [ ] **Common**: CodeSandbox template
 - [x] **Common**: Discord Chat
 
 ## Next / Ideas / Future

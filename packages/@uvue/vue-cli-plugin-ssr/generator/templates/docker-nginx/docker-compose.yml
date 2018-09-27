@@ -1,0 +1,19 @@
+version: '3'
+
+volumes:
+  app-dist: {}
+
+services:
+  app:
+    build: .
+    restart: always
+    volumes:
+      - app-dist:/home/node/app/dist
+
+  nginx:
+    image: nginx:1.15-alpine
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - app-dist:/var/www/html
