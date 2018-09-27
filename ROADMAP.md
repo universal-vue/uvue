@@ -30,8 +30,12 @@
 - [x] **Core plugins**: Error handler (without Vuex)
 - [x] **UVue API**: Transform main `new Vue` code to return only constructor options
 - [x] **UVue API**: Load imports from project configuration
-- [ ] **UVue API**: Transorm Vue plugins instanciation with an export function (router, store)
 - [x] **UVue API**: Watch uvue config change to reload app
+- **Code Fixer**
+  - [ ] Manage main.js
+  - [ ] File finder
+  - [ ] Manage base plugins: router & store
+  - [ ] Manage side plugins: i18n, pwa, apollo
 - [x] **Server**: Handle HTTPS configuration
 - [x] **Server**: Handle correctly Vue meta plugin
 - [x] **Server**: Docker start script
@@ -82,6 +86,7 @@
 - [ ] **CSS**: Global Critters
 - [ ] **CSS**: Critical auto generation
 - [ ] **DevTools**: Better autocannon logs (status, low-high)
+- [ ] **DevTools**: Benchmark heapdump
 - [ ] **DevTools**: Scenario with auth
 
 ## Beta

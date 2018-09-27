@@ -135,7 +135,7 @@ export class Server implements IServer {
     for (const signal of signals) {
       (process.on as any)(signal, () => {
         // tslint:disable-next-line
-        consola.info(`Stoping server...`);
+        consola.info(`Stopping server...`);
         this.stop().then(() => process.exit(0));
       });
     }

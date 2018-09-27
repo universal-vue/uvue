@@ -12,8 +12,10 @@ yargs
     'Start a node Clinic BubbleProf against server',
     ...require('./bubbleprof').default,
   )
-  // NDB
+  // ndb
   .command('ndb', 'Start server with ndb', ...require('./ndb').default)
   // Benchmark
   .command('benchmark <scenario>', 'Run a benchmark scenario', ...require('./benchmark').default)
+  // Clean
+  .command('clean', 'Clean node clinic reports', ...require('./clean').default)
   .argv;
