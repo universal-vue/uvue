@@ -8,10 +8,19 @@ export default {
     const { router } = context;
 
     // Create error hanlder object to store current error
-    Vue.util.defineReactive(Vue.prototype, '$errorHandler', {
-      error: null,
-      statusCode: null,
-    });
+    if (process.server) {
+      // On server side: create simple object
+      Vue.prototype.$errorHandler = {
+        error: null,
+        statusCode: null,
+      };
+    } else {
+      // On client side: create a reactive object
+      Vue.util.defineReactive(Vue.prototype, '$errorHandler', {
+        error: null,
+        statusCode: null,
+      });
+    }
 
     // Take this object to use later
     this.errorHandler = Vue.prototype.$errorHandler;

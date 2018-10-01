@@ -4,6 +4,6 @@ export default {
     ['@uvue/server/plugins/gzip'],
     ['@uvue/server/plugins/static'],
     ['@uvue/server/plugins/modernBuild'],
-    ['@uvue/server/plugins/cssPreload'],
+    // ['@uvue/server/plugins/cssPreload'],
   ],
 };
