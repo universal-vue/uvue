@@ -12,6 +12,7 @@ export default (context, route) => {
   return {
     ...context,
     route,
+    routeComponents: router.getMatchedComponents(route),
     params: route.params,
     query: route.query,
     url: route.fullPath,

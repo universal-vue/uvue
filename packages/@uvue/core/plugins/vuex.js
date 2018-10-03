@@ -68,15 +68,13 @@ export default {
   },
 
   async resolveFetch(context) {
-    const { router, route, store } = context;
+    const { routeComponents, store } = context;
 
     if (store && this.$options.fetch) {
       // Get pages components
-      const matchedComponents = router.getMatchedComponents(route);
-
-      if (matchedComponents.length) {
+      if (routeComponents.length) {
         await Promise.all(
-          matchedComponents.map(c => {
+          routeComponents.map(c => {
             const Component = sanitizeComponent(c);
             // For each component lookup for fetch() method
             if (Component.options.fetch) {

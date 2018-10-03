@@ -37,11 +37,10 @@ export default {
    * Get middlewares defined on pages components
    */
   getComponentsMiddlewares(context) {
-    const { router, route } = context;
+    const { routeComponents } = context;
     // Get pages components
-    const matchedComponents = router.getMatchedComponents(route);
-    if (matchedComponents.length) {
-      return matchedComponents
+    if (routeComponents.length) {
+      return routeComponents
         .map(c => {
           const Component = sanitizeComponent(c);
           const { middlewares } = Component.options;
@@ -56,5 +55,6 @@ export default {
           return results;
         }, []);
     }
+    return [];
   },
 };
