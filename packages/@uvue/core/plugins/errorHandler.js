@@ -10,20 +10,26 @@ export default {
     // Create error hanlder object to store current error
     if (process.server) {
       // On server side: create simple object
-      Vue.prototype.$errorHandler = {
+      context.$errorHandler = {
         error: null,
         statusCode: null,
       };
     } else {
       // On client side: create a reactive object
-      Vue.util.defineReactive(Vue.prototype, '$errorHandler', {
+      Vue.util.defineReactive(context, '$errorHandler', {
         error: null,
         statusCode: null,
       });
     }
 
-    // Take this object to use later
-    this.errorHandler = Vue.prototype.$errorHandler;
+    // Getter to use it in Vue render
+    Object.defineProperty(Vue.prototype, '$errorHandler', {
+      configurable: true,
+      enumerable: false,
+      get() {
+        return context.$errorHandler;
+      },
+    });
 
     // Create error helper function and add it to context
     context.error = (error, statusCode = 500) => {
@@ -31,30 +37,37 @@ export default {
         error = new Error(error);
       }
       error.statusCode = statusCode;
+      // Throw this error
       throw error;
     };
 
     // Attach a way to clear error to this helper
-    context.error.clear = () => this.clearError();
+    context.error.clear = () => this.clearError(context);
 
     // Attach error helper function to components and Vue object
     Vue.error = Vue.prototype.$error = (error, statusCode = 500) => {
-      this.setError({
-        error,
-        statusCode,
-      });
+      this.setError(
+        {
+          error,
+          statusCode,
+        },
+        context,
+      );
     };
 
-    Vue.error.clear = () => this.clearError();
+    Vue.error.clear = () => this.clearError(context);
 
     if (process.client) {
       // Catch Vue errors
       Vue.config.errorHandler = (error, vm, info) => {
-        this.setError({
-          error,
-          info,
-          vm,
-        });
+        this.setError(
+          {
+            error,
+            info,
+            vm,
+          },
+          context,
+        );
       };
     }
 
@@ -68,38 +81,41 @@ export default {
    * If we have an error during SSR process fetch it
    * and hydrate client with it
    */
-  beforeStart() {
+  beforeStart({ $errorHandler }) {
     if (process.client && process.ssr && window.__DATA__.errorHandler) {
       const { error, statusCode } = window.__DATA__.errorHandler;
-      this.errorHandler.error = error;
-      this.errorHandler.statusCode = statusCode;
+      $errorHandler.error = error;
+      $errorHandler.statusCode = statusCode;
     }
   },
 
   /**
    * On route error populate our error handler
    */
-  routeError(error) {
-    this.setError({
-      error,
-    });
+  routeError(error, context) {
+    this.setError(
+      {
+        error,
+      },
+      context,
+    );
   },
 
   /**
    * Before SSR process finish: get current state for error handler
    * and set status code if needed
    */
-  beforeReady({ ssr }) {
-    if (process.server && this.errorHandler.error) {
-      ssr.data.errorHandler = this.errorHandler;
-      ssr.statusCode = this.errorHandler.statusCode || 500;
+  beforeReady({ ssr, $errorHandler }) {
+    if (process.server && $errorHandler.error) {
+      ssr.data.errorHandler = $errorHandler;
+      ssr.statusCode = $errorHandler.statusCode || 500;
     }
   },
 
   /**
    * Main function to process current error
    */
-  setError(data) {
+  setError(data, { $errorHandler }) {
     let { error, info, statusCode, vm } = data;
 
     if (!error) return;
@@ -119,15 +135,15 @@ export default {
     }
 
     // Set data to error handler store
-    this.errorHandler.error = error;
-    this.errorHandler.statusCode = error.statusCode || statusCode || 500;
+    $errorHandler.error = error;
+    $errorHandler.statusCode = error.statusCode || statusCode || 500;
   },
 
   /**
    * Clear current error
    */
-  clearError() {
-    this.errorHandler.error = null;
-    this.errorHandler.statusCode = null;
+  clearError({ $errorHandler }) {
+    $errorHandler.error = null;
+    $errorHandler.statusCode = null;
   },
 };
