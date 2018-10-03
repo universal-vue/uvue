@@ -59,6 +59,11 @@ module.exports = (api, options) => {
           server = await startServer({ api, host, port });
         }
       });
+
+      process.on('exit', () => {
+        watcher.close();
+        stdin.removeAllListeners();
+      });
     },
   );
 };

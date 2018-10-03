@@ -36,6 +36,10 @@ module.exports = class UVuePlugin {
           // Write main.js and trigger a new build
           this.writeMain();
         });
+
+        process.on('exit', () => {
+          this.watcher.close();
+        });
       }
       await this.writeMain();
     });
