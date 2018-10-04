@@ -12,7 +12,8 @@ COPY . /home/node/app
 
 RUN yarn ssr:build && \
   yarn --production && \
-  yarn cache clean
+  yarn cache clean && \
+  rm -rf /home/node/app/{src,public}
 
 FROM node:10-alpine
 
