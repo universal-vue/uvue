@@ -5,48 +5,39 @@ import sanitizeComponent from '../lib/sanitizeComponent';
 const noopData = () => ({});
 
 /**
+ * Get components with asyncData defined
+ */
+const getAsyncDataComponents = (components = []) => {
+  return components
+    .map(component => {
+      return sanitizeComponent(component);
+    })
+    .filter(Component => (Component.options.asyncData ? true : false));
+};
+
+/**
  * This will take all pages components in current route and
  * call and apply asyncData on them
  */
-export const resolveComponentsAsyncData = (context, route, components) => {
+const resolveComponentsAsyncData = (context, route, components) => {
   const { router } = context;
   if (!route) route = router.currentRoute;
   if (!components) components = router.getMatchedComponents(route);
 
   return Promise.all(
-    components.map(component => {
-      const Component = sanitizeComponent(component);
-      if (Component.options.asyncData) {
-        return getComponentAsyncData(Component, {
-          ...context,
-          route,
-          params: route.params,
-        }).then(data => {
-          if (data) applyAsyncData(Component, data);
-          return data;
-        });
-      }
+    getAsyncDataComponents(components).map(Component => {
+      return Component.options.asyncData(context).then(data => {
+        if (data) applyAsyncData(Component, data);
+        return data;
+      });
     }),
   );
 };
 
 /**
- * Simply call asyncData on component and attach data to it
- */
-const getComponentAsyncData = async (Component, context) => {
-  let value;
-  if (Component.options.asyncData) {
-    value = await Component.options.asyncData({
-      ...context,
-    });
-  }
-  return value;
-};
-
-/**
  * Method to inject asyncData results to $data on component
  */
-export const applyAsyncData = (Component, asyncData) => {
+const applyAsyncData = (Component, asyncData) => {
   const ComponentData = Component.options.data || noopData;
 
   if (!asyncData || Component.options.hasAsyncData) {
@@ -142,15 +133,15 @@ export default {
 
   async beforeReady({ router }) {
     if (process.client && window.__DATA__.components) {
-      const components = router.getMatchedComponents(router.currentRoute);
-      components.map((component, index) => {
-        const Component = sanitizeComponent(component);
-        if (Component.options.asyncData && window.__DATA__.components[index]) {
-          applyAsyncData(Component, window.__DATA__.components[index]);
-        }
-      });
+      const asyncDataComponents = getAsyncDataComponents(
+        router.getMatchedComponents(router.currentRoute),
+      );
 
-      window.__DATA__.components = null;
+      for (const index in asyncDataComponents) {
+        if (window.__DATA__.components[index]) {
+          applyAsyncData(asyncDataComponents[index], window.__DATA__.components[index]);
+        }
+      }
     }
   },
 
