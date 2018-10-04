@@ -3,23 +3,23 @@ module.exports = [
     name: 'uvuePlugins',
     type: 'checkbox',
     message: 'Install UVue plugins?',
-    default: ['vuex', 'asyncData', 'errorHandler'],
+    default: ['vuex', 'asyncData', 'errorHandler', 'middlewares'],
     choices: [
+      {
+        name: 'Async Data method',
+        value: 'asyncData',
+      },
       {
         name: 'Vuex',
         value: 'vuex',
       },
       {
-        name: 'Async Data',
-        value: 'asyncData',
+        name: 'Middlewares system',
+        value: 'middlewares',
       },
       {
         name: 'Error handler',
         value: 'errorHandler',
-      },
-      {
-        name: 'Middlewares',
-        value: 'middlewares',
       },
     ],
   },
@@ -27,17 +27,18 @@ module.exports = [
     name: 'vuexOptions',
     type: 'checkbox',
     message: 'Enable Vuex behaviors',
+    default: ['onHttpRequest'],
     when(input) {
       return input.uvuePlugins.indexOf('vuex') >= 0;
     },
     choices: [
       {
-        name: 'Use fetch() methods on components',
-        value: 'fetch',
-      },
-      {
         name: 'Use onHttpRequest() Vuex actions',
         value: 'onHttpRequest',
+      },
+      {
+        name: 'Use fetch() methods on components',
+        value: 'fetch',
       },
     ],
   },
@@ -47,6 +48,10 @@ module.exports = [
     message: 'Install server plugins?',
     default: ['static', 'gzip', 'modernBuild'],
     choices: [
+      {
+        name: 'Cookie parser',
+        value: 'cookie',
+      },
       {
         name: 'Static files serving',
         value: 'static',
@@ -58,10 +63,6 @@ module.exports = [
       {
         name: 'Modern build',
         value: 'modernBuild',
-      },
-      {
-        name: 'Cookie parser',
-        value: 'cookie',
       },
     ],
   },
@@ -84,11 +85,11 @@ module.exports = [
         value: null,
       },
       {
-        name: 'Add production ready Dockerfile',
+        name: 'Add a production ready Dockerfile',
         value: 'dockerfile',
       },
       {
-        name: 'Addd Dockerfile and docker-composer.yml to use with NGINX',
+        name: 'Add a Dockerfile and docker-compose.yml (with NGINX)',
         value: 'docker-compose',
       },
     ],
