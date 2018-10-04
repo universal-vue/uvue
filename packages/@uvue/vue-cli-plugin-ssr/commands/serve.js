@@ -31,7 +31,7 @@ module.exports = (api, options) => {
         args.port || process.env.PORT || projectDevServerOptions.port || defaults.port;
       const port = await portfinder.getPortPromise();
 
-      // Setup a watcher
+      // Start watcher to reboot server
       const watcher = chokidar.watch(['server.config.js', ...(watch || [])]);
 
       // Start server
@@ -61,6 +61,7 @@ module.exports = (api, options) => {
       });
 
       const onCloseServer = () => {
+        stdin.pause();
         stdin.removeAllListeners();
       };
       process.on('SIGINT', onCloseServer);
