@@ -60,10 +60,11 @@ module.exports = (api, options) => {
         }
       });
 
-      process.on('exit', () => {
-        watcher.close();
+      const onCloseServer = () => {
         stdin.removeAllListeners();
-      });
+      };
+      process.on('SIGINT', onCloseServer);
+      process.on('SIGTERM', onCloseServer);
     },
   );
 };
