@@ -54,7 +54,7 @@ module.exports = (api, options) => {
     }
 
     fs.writeFileSync(
-      api.resolve('server.config.js'),
+      api.resolve('uvue.config.js'),
       `export default ${stringify(uvueConfig, null, 2)}`,
     );
 
@@ -81,7 +81,7 @@ module.exports = (api, options) => {
     }
 
     fs.writeFileSync(
-      api.resolve('uvue.config.js'),
+      api.resolve('server.config.js'),
       `export default ${stringify(serverConfig, null, 2)}`,
     );
   }

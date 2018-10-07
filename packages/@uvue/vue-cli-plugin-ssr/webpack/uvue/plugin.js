@@ -1,6 +1,5 @@
 const fs = require('fs-extra');
 const path = require('path');
-const chokidar = require('chokidar');
 
 /**
  * Simple webpack plugin to generate main.js with imports
@@ -14,7 +13,6 @@ module.exports = class UVuePlugin {
   constructor({ api }) {
     this.api = api;
     this.uvue = api.uvue;
-    this.watcher = null;
   }
 
   /**
@@ -30,17 +28,6 @@ module.exports = class UVuePlugin {
 
     // Watch/Serve mode
     compiler.hooks.watchRun.tapPromise('UVuePlugin', async () => {
-      // Watch for config file changes
-      if (!this.watcher) {
-        chokidar.watch(this.api.resolve('uvue.config.js')).on('all', () => {
-          // Write main.js and trigger a new build
-          this.writeMain();
-        });
-
-        process.on('exit', () => {
-          this.watcher.close();
-        });
-      }
       await this.writeMain();
     });
   }
@@ -54,7 +41,10 @@ module.exports = class UVuePlugin {
     const mainPath = path.join(dirPath, 'main.js');
 
     // Generate file content
-    let code = `import createApp from '@/main';\nexport { createApp };\n`;
+    let code = ``;
+    code += `/* eslint-disable */`;
+    code += '/* tslint:disable */';
+    code += `import createApp from '@/main';\nexport { createApp };\n`;
     code += this.buildImports();
     code += this.buildPlugins();
 
