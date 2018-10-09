@@ -45,8 +45,8 @@
 - [x] **Killers features**: Modern build
 - **Code Fixer**
   - [ ] Manage main.js
-  - [ ] File finder
-  - [ ] Manage base plugins: router & store
+  - [x] File finder
+  - [x] Manage base plugins: router & store
   - [ ] Manage side plugins: i18n, pwa, apollo
 - [ ] **CLI plugin**: Base template (configs, router, server with plugins)
 - [ ] **CLI plugin**: (Generator) manage main.js

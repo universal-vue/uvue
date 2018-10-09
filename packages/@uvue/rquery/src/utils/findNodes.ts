@@ -7,6 +7,10 @@ const traversableProps = [
   'callee',
   'value',
   'object',
+  'consequent',
+  'test',
+  'left',
+  'right',
 ];
 
 export const getTraversableProps = (node: any) => {

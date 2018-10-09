@@ -8,7 +8,7 @@ const uvuePlugins = ['vuex', 'asyncData', 'errorHandler', 'middlewares'];
 const vuexOptions = ['fetch', 'onHttpRequest'];
 const serverPlugins = ['static', 'gzip', 'modernBuild', 'cookie'];
 
-const invokePrompts = [
+export const uvueInvokePrompts = [
   ...uvuePlugins.reduce((results, item) => {
     results.push('--uvuePlugins', item);
     return results;
@@ -101,20 +101,29 @@ export class TestManager {
   }
 
   /**
-   * Invoke a plugin generator
+   * Add a Vue CLI plugin
    */
-  async invoke(name, plugin = '@uvue/ssr') {
+  async add(name, plugin = '@uvue/vue-cli-plugin-ssr', invokePrompts = []) {
     const projectPath = path.join(this.baseDir, name);
 
     // Vue invoke command
-    await execa(
-      require.resolve('@vue/cli/bin/vue'),
-      ['invoke', '@uvue/vue-cli-plugin-ssr', ...invokePrompts],
-      {
-        cwd: projectPath,
-        stdio: 'inherit',
-      },
-    );
+    await execa(require.resolve('@vue/cli/bin/vue'), ['add', plugin, ...invokePrompts], {
+      cwd: projectPath,
+      stdio: 'inherit',
+    });
+  }
+
+  /**
+   * Invoke a plugin generator
+   */
+  async invoke(name, plugin = '@uvue/vue-cli-plugin-ssr', invokePrompts = []) {
+    const projectPath = path.join(this.baseDir, name);
+
+    // Vue invoke command
+    await execa(require.resolve('@vue/cli/bin/vue'), ['invoke', plugin, ...invokePrompts], {
+      cwd: projectPath,
+      stdio: 'inherit',
+    });
 
     // Setup symlinks
     await this.updatePackage(name, {
@@ -130,7 +139,21 @@ export class TestManager {
   }
 
   /**
-   * Install fictures on project
+   * Install plugins on project
+   */
+  async installPlugins(name, installPath) {
+    if (await fs.exists(path.join(__dirname, installPath))) {
+      const deps = require(installPath)(this);
+      if (deps.plugins) {
+        for (const pluginName in deps.plugins) {
+          await this.add(name, pluginName, deps.plugins[pluginName]);
+        }
+      }
+    }
+  }
+
+  /**
+   * Install fixtures on project
    */
   async installFixtures(name, fixturesPath) {
     if (await fs.exists(fixturesPath)) {

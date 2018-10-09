@@ -4,7 +4,7 @@ import { execSync } from 'child_process';
 import waitOn from 'wait-on';
 import { argv as yargv } from 'yargs';
 import execa from 'execa';
-import { TestManager } from './TestManager';
+import { TestManager, uvueInvokePrompts } from './TestManager';
 
 const waitOnPromise = options => new Promise(resolve => waitOn(options, resolve));
 
@@ -69,20 +69,13 @@ const e2eProject = async (server, name) => {
       break;
 
     /**
-     * Invoke a Vue CLI plugin on project
-     */
-    case 'install:invoke':
-    case 'ii':
-      await tm.invoke(name, arg0);
-      break;
-
-    /**
      * Create a full test project
      */
     case 'install':
     case 'i':
+      await tm.installPlugins(name, `../projects/${name}/install.js`);
+      await tm.invoke(name, '@uvue/vue-cli-plugin-ssr', uvueInvokePrompts);
       await tm.installFixtures(name, `tests/projects/${name}/fixtures`);
-      await tm.invoke(name, arg0);
       break;
 
     /**

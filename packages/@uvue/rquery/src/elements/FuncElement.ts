@@ -6,11 +6,13 @@ export class FuncElement extends AstElement {
     return {
       type: 'FunctionDeclaration',
       fromSelector(selector: string) {
-        const results = /^func#?(.*)/.exec(selector);
+        const results = /^func(Arrow)?#?(.*)/.exec(selector);
         if (results) {
+          const type = results[1] ? 'ArrowFunctionExpression' : 'FunctionDeclaration';
           return {
             ...this,
-            name: results[1],
+            name: results[2],
+            type,
             is(node: any) {
               if (node.type === this.type) {
                 if (this.name) {
@@ -23,7 +25,7 @@ export class FuncElement extends AstElement {
         }
       },
       fromNode(node: any, parents: any[]) {
-        if (this.type === node.type) {
+        if (node.type === 'FunctionDeclaration' || node.type === 'ArrowFunctionExpression') {
           return new FuncElement(node, parents);
         }
       },
