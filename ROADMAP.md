@@ -44,20 +44,20 @@
 - [x] **Killers features**: Critical CSS
 - [x] **Killers features**: Modern build
 - **Code Fixer**
-  - [ ] Manage main.js
+  - [x] Manage main.js
   - [x] File finder
   - [x] Manage base plugins: router & store
-  - [ ] Manage side plugins: i18n, pwa, apollo
-- [ ] **CLI plugin**: Base template (configs, router, server with plugins)
-- [ ] **CLI plugin**: (Generator) manage main.js
-- [ ] **CLI plugin**: (Generator) Detect Vue plugins presence and transform code
+  - [x] Manage side plugins: i18n, pwa
+- [x] **CLI plugin**: Base template (configs, router, server with plugins)
+- [x] **CLI plugin**: (Generator) manage main.js
+- [x] **CLI plugin**: (Generator) Detect Vue plugins presence and transform code
 - [ ] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
 - [ ] **CLI plugin**: `generate` command
 - [x] **CLI plugin**: Docker prompt
 - [x] **CLI plugin**: Prompts to install server plugins
 - [x] **CLI plugin**: Prompts to install UVue plugins
-- [ ] **Vue CLI plugin support**: TypeScript
-- [ ] **Vue CLI plugin support**: Vue i18n
+- [x] **Vue CLI plugin support**: TypeScript
+- [x] **Vue CLI plugin support**: Vue i18n
 - [ ] **Vue CLI plugin support**: PWA
 - [ ] **Vue CLI plugin support**: Apollo
 - [ ] **Vue CLI plugin support**: E2E tests with SSR mode
