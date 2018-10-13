@@ -42,9 +42,9 @@ module.exports = class UVuePlugin {
 
     // Generate file content
     let code = ``;
-    code += `/* eslint-disable */`;
-    code += '/* tslint:disable */';
-    code += `import createApp from '@/main';\nexport { createApp };\n`;
+    code += `/* eslint-disable */\n`;
+    code += `/* tslint:disable */\n`;
+    code += `import createApp from '${this.uvue.getMainPath()}';\nexport { createApp };\n`;
     code += this.buildImports();
     code += this.buildPlugins();
 
@@ -83,15 +83,15 @@ module.exports = class UVuePlugin {
 
     if (this.uvue.getConfig('plugins')) {
       result = `
-        import UVue from '@uvue/core';
-        import uvueConfig from '@/../uvue.config';
+import UVue from '@uvue/core';
+import uvueConfig from '@/../uvue.config';
 
-        const { plugins } = uvueConfig;
-        for (const index in plugins) {
-          if (typeof plugins[index] === 'string') {
-            plugins[index] = [plugins[index], {}];
-          }
-        }
+const { plugins } = uvueConfig;
+for (const index in plugins) {
+  if (typeof plugins[index] === 'string') {
+    plugins[index] = [plugins[index], {}];
+  }
+}
       `;
 
       const plugins = this.uvue.getConfig('plugins');
@@ -103,8 +103,8 @@ module.exports = class UVuePlugin {
         }
 
         result += `
-          const plugin${index} = require('${plugin[0]}').default;
-          UVue.use(plugin${index}, plugins[${index}][1]);
+const plugin${index} = require('${plugin[0]}');
+UVue.use(plugin${index}.default || plugin${index}, plugins[${index}][1]);
         `;
       }
     }

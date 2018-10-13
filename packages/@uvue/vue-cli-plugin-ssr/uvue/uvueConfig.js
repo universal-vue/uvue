@@ -3,8 +3,8 @@
  */
 module.exports = () => ({
   paths: {
-    template: './src/index.html',
-    main: './src/main.js',
+    template: 'src/index.html',
+    main: 'src/main',
   },
   imports: [],
   css: {

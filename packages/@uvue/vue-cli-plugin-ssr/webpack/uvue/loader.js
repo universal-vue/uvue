@@ -10,6 +10,7 @@ module.exports = async function(content, map, meta) {
 
   // Get UVue API
   const { uvue } = this.query.api;
+  const mainPath = uvue.getMainPath();
 
   if (mm.isMatch(this.resourcePath, '**/@uvue/core/(client|server).js')) {
     // Get absolute path to generated main.js
@@ -18,7 +19,7 @@ module.exports = async function(content, map, meta) {
 
     // Replace import main path to generated file by Webpack plugin
     content = content.replace('./main', mainPath);
-  } else if (this.resourcePath === uvue.getMainPath()) {
+  } else if (this.resourcePath === `${mainPath}.js` || this.resourcePath === `${mainPath}.ts`) {
     // Replace new Vue by a simple return object
 
     // Parse source code
