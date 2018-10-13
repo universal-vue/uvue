@@ -1,6 +1,11 @@
+// ESM module for Node
+// eslint-disable-next-line
+require = require('esm')(module);
+
 const fs = require('fs-extra');
 const path = require('path');
 const stringify = require('javascript-stringify');
+const CodeFixer = require('../uvue/CodeFixer');
 
 module.exports = (api, options) => {
   api.extendPackage({
@@ -13,6 +18,7 @@ module.exports = (api, options) => {
       'ssr:serve': 'vue-cli-service ssr:serve',
       'ssr:build': 'vue-cli-service ssr:build',
       'ssr:start': 'vue-cli-service ssr:start',
+      'ssr:fix': 'vue-cli-service ssr:fix',
     },
   });
 
@@ -86,22 +92,20 @@ module.exports = (api, options) => {
     );
   }
 
-  // Post process files
-  api.postProcessFiles(files => {
-    // Add missing files
-    const filesExt = api.hasPlugin('typescript') ? 'ts' : 'js';
-    if (!files[`src/router.${filesExt}`]) {
-      files[`src/router.${filesExt}`] = fs.readFileSync(
-        path.join(__dirname, 'templates/router.js'),
-        'utf-8',
-      );
+  api.onCreateComplete(async () => {
+    const configPath = api.resolve('uvue.config.js');
+
+    let config = { path: { main: './src/main' } };
+    if (fs.existsSync(configPath)) {
+      config = require(api.resolve('uvue.config.js'));
+      if (!config.paths) {
+        config.paths = {};
+      }
     }
 
-    if (!files[`src/store.${filesExt}`] && api.hasPlugin('vuex')) {
-      files[`src/store.${filesExt}`] = fs.readFileSync(
-        path.join(__dirname, 'templates/store.js'),
-        'utf-8',
-      );
-    }
+    const mainPath = config.paths.main || './src/main';
+
+    const cf = new CodeFixer(path.join(api.generator.context, 'src'));
+    await cf.run(api, mainPath);
   });
 };
