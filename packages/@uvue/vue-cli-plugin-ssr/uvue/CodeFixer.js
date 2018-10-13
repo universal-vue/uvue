@@ -1,9 +1,10 @@
-import fs from 'fs-extra';
-import rreaddir from 'recursive-readdir';
-import findInFiles from 'find-in-files';
-import escapeStringRegexp from 'escape-string-regexp';
-import prettier from 'prettier';
-import { RQuery } from '@uvue/rquery';
+const fs = require('fs-extra');
+const rreaddir = require('recursive-readdir');
+const findInFiles = require('find-in-files');
+const escapeStringRegexp = require('escape-string-regexp');
+const prettier = require('prettier');
+const { RQuery } = require('@uvue/rquery');
+const consola = require('consola');
 
 const fileSearchFilter = filename => {
   const regexp = new RegExp(`${filename}.(js|ts)$`);
@@ -13,9 +14,75 @@ const fileSearchFilter = filename => {
   };
 };
 
-export default class CodeFixer {
+module.exports = class CodeFixer {
   constructor(basePath = process.cwd()) {
     this.basePath = basePath;
+  }
+
+  async run(api, mainPath) {
+    const fixPlugin = async (name, search, methodName) => {
+      consola.start(`Searching ${name} file...`);
+
+      const files = await this.findFiles(search);
+      if (!files.length) {
+        consola.error(`No ${name} file detected!`);
+      } else {
+        for (const file of files) {
+          const code = await fs.readFile(file, 'utf-8');
+          const result = this[methodName](code);
+
+          if (code !== result) {
+            consola.success(`${name} file fixed!`);
+            await fs.writeFile(file, result);
+          } else {
+            consola.info(`${name} file doesn't need to be fixed`);
+          }
+        }
+      }
+    };
+
+    // Router
+    await fixPlugin('Router', ['code:new Router'], 'fixRouter');
+
+    // Vuex
+    if (api.hasPlugin('vuex')) {
+      await fixPlugin('Vuex', ['code:new Vuex.Store'], 'fixVuex');
+    }
+
+    // i18n
+    if (api.hasPlugin('i18n')) {
+      await fixPlugin('I18n', ['code:new VueI18n'], 'fixI18n');
+    }
+
+    // Main
+    {
+      consola.start(`Try to fix main file...`);
+
+      if (fs.existsSync(mainPath + '.ts')) {
+        mainPath += '.ts';
+      } else {
+        mainPath += '.js';
+      }
+
+      const code = await fs.readFile(mainPath, 'utf-8');
+      let result = this.fixNewVue(code);
+      result = this.fixPluginVueOption(result, 'router');
+
+      if (api.hasPlugin('vuex')) {
+        result = this.fixPluginVueOption(result, 'store');
+      }
+
+      if (api.hasPlugin('i18n')) {
+        result = this.fixPluginVueOption(result, 'i18n');
+      }
+
+      if (code !== result) {
+        consola.success(`Main file fixed!`);
+        await fs.writeFile(mainPath, result);
+      } else {
+        consola.info(`Main file doesn't need to be fixed`);
+      }
+    }
   }
 
   async findFiles(checks = []) {
@@ -72,28 +139,24 @@ export default class CodeFixer {
       this.prettierOptions = prettier.resolveConfig.sync(this.basePath) || {
         singleQuote: true,
         bracketSpacing: true,
+        ...this.detecteCodingStyle(code),
       };
-
-      // Detect coding style from main.js
-      const simpleQuoteCount = code.split("'").length;
-      const doubleQuoteCount = code.split('"').length;
-      const semiCount = code.split(';').length;
-      const tabCount = code.split(`\t`).length;
-
-      if (doubleQuoteCount > simpleQuoteCount) {
-        this.prettierOptions.singleQuote = false;
-      }
-
-      if (semiCount >= 3) {
-        this.prettierOptions.semi = true;
-      }
-
-      if (tabCount >= 3) {
-        this.prettierOptions.useTabs = true;
-      }
     }
 
     return this.prettierOptions;
+  }
+
+  detecteCodingStyle(code) {
+    const simpleQuoteCount = code.split("'").length;
+    const doubleQuoteCount = code.split('"').length;
+    const semiCount = code.split(';').length;
+    const tabCount = code.split(`\t`).length;
+
+    return {
+      singleQuote: doubleQuoteCount < simpleQuoteCount,
+      semi: semiCount >= 3,
+      useTabs: tabCount >= 3,
+    };
   }
 
   fixRouter(code) {
@@ -223,4 +286,4 @@ export default class CodeFixer {
 
     return code;
   }
-}
+};

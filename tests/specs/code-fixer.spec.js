@@ -11,6 +11,30 @@ describe('CodeFixer', () => {
     expect(files.length).toBe(4);
   });
 
+  it('Should dectect coding style', async () => {
+    const testA = await fs.readFile(
+      path.resolve(__dirname, '../mocks/code-fixer/detectStyle/testA.js'),
+      'utf-8',
+    );
+
+    const testB = await fs.readFile(
+      path.resolve(__dirname, '../mocks/code-fixer/detectStyle/testB.js'),
+      'utf-8',
+    );
+
+    expect(cf.detecteCodingStyle(testA)).toEqual({
+      singleQuote: true,
+      semi: true,
+      useTabs: false,
+    });
+
+    expect(cf.detecteCodingStyle(testB)).toEqual({
+      singleQuote: false,
+      semi: false,
+      useTabs: true,
+    });
+  });
+
   it('Should fix router.js', async () => {
     const filePath = path.resolve(__dirname, '../mocks/code-fixer/transform/router.js');
     const fixedPath = path.resolve(__dirname, '../mocks/code-fixer/transform/routerFixed.js');
