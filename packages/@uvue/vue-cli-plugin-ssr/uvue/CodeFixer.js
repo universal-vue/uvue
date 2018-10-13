@@ -70,6 +70,7 @@ export default class CodeFixer {
       this.prettierOptions = prettier.resolveConfig.sync(this.basePath);
     } else {
       this.prettierOptions = prettier.resolveConfig.sync(this.basePath) || {
+        singleQuote: true,
         bracketSpacing: true,
       };
 
@@ -79,9 +80,7 @@ export default class CodeFixer {
       const semiCount = code.split(';').length;
       const tabCount = code.split(`\t`).length;
 
-      if (simpleQuoteCount > doubleQuoteCount) {
-        this.prettierOptions.singleQuote = true;
-      } else {
+      if (doubleQuoteCount > simpleQuoteCount) {
         this.prettierOptions.singleQuote = false;
       }
 
@@ -109,13 +108,9 @@ export default class CodeFixer {
     return this.fixPlugin(code, 'VueI18n');
   }
 
-  fixPwa(code) {}
-
-  fixApollo(code) {}
-
   fixPlugin(code, name) {
     const doc = RQuery.parse(code);
-    const newPlugin = doc.find(`new#${name}`).get(0);
+    const newPlugin = doc.findOne(`new#${name}`);
 
     if (newPlugin) {
       const parentFunc =
@@ -123,16 +118,11 @@ export default class CodeFixer {
         newPlugin.parentType('ArrowFunctionExpression');
 
       if (!parentFunc) {
-        const routerFunc = RQuery.parse('() => { return replace; }')
-          .find('funcArrow')
-          .get(0);
+        const returnFunc = RQuery.parse('() => { return replace; }').findOne('funcArrow');
 
-        routerFunc
-          .find('id#replace')
-          .get(0)
-          .replace(newPlugin);
+        returnFunc.findOne('id#replace').replace(newPlugin);
 
-        newPlugin.replace(routerFunc);
+        newPlugin.replace(returnFunc);
       }
 
       const prettierOptions = this.resolveCodingStyle(code);
@@ -141,6 +131,96 @@ export default class CodeFixer {
         prettierConfig: prettierOptions,
       });
     }
+    return code;
+  }
+
+  fixNewVue(code) {
+    const doc = RQuery.parse(code);
+    const newPlugin = doc.findOne(`new#Vue`);
+
+    if (newPlugin) {
+      const parentFunc =
+        newPlugin.parentType('FunctionDeclaration') ||
+        newPlugin.parentType('ArrowFunctionExpression');
+
+      const exportDefault = newPlugin.parentType('ExportDefaultDeclaration');
+
+      let returnFunc = exportDefault
+        ? RQuery.parse('() => { return replace; }').findOne('funcArrow')
+        : RQuery.parse('export default () => { return replace; }').findOne('exportDefault');
+
+      if (!parentFunc) {
+        returnFunc.findOne('id#replace').replace(newPlugin);
+        newPlugin.replace(returnFunc);
+      } else {
+        returnFunc = parentFunc;
+
+        if (!exportDefault) {
+          const insertExport = RQuery.parse('export default replace;').findOne('exportDefault');
+          insertExport.findOne('id#replace').replace(returnFunc);
+          returnFunc.replace(insertExport);
+        }
+      }
+
+      const callParent = newPlugin.parentType('CallExpression');
+      if (callParent) {
+        callParent.replace(newPlugin);
+      }
+
+      const prettierOptions = this.resolveCodingStyle(code);
+
+      return RQuery.print(doc, {
+        prettierConfig: prettierOptions,
+      });
+    }
+    return code;
+  }
+
+  fixPluginVueOption(code, name) {
+    const doc = RQuery.parse(code);
+
+    const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+    const exportDefault = doc.findOne('exportDefault funcArrow');
+    const vueOptions = exportDefault.findOne('new#Vue {}');
+
+    const option = vueOptions.getProp(name).parent();
+
+    if (option) {
+      // First check: prop value is function
+      if (option.node.value.type === 'CallExpression') {
+        return code;
+      }
+
+      // Second check: value is defined in export function
+      const pluginVar = exportDefault.findOne(`var*#${name}`);
+      if (pluginVar) {
+        if (pluginVar.node.declarations[0].init.type === 'CallExpression') {
+          return code;
+        }
+      }
+
+      // If not a function declaration, create it
+      // First change import name
+      const importStatement = doc.findOne(`import#${name}`);
+      const importSpecifier = importStatement.node.specifiers.find(
+        item => item.type === 'ImportDefaultSpecifier',
+      );
+
+      importSpecifier.local.name = `create${capitalizedName}`;
+
+      // Then declare var in export default function
+      const varDeclaration = RQuery.parse(`const ${name} = create${capitalizedName}();`).node
+        .program.body[0];
+
+      exportDefault.node.body.body.unshift(varDeclaration);
+
+      const prettierOptions = this.resolveCodingStyle(code);
+
+      return RQuery.print(doc, {
+        prettierConfig: prettierOptions,
+      });
+    }
+
     return code;
   }
 }

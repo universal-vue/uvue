@@ -44,6 +44,10 @@ export class AstElement {
     }
   }
 
+  public nodeProp(name: string) {
+    return createFromNode(this.node[name], [...this.parents, this]);
+  }
+
   public print() {
     return Recast.print(this.node);
   }

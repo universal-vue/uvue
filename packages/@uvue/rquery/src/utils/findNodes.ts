@@ -3,6 +3,7 @@ const traversableProps = [
   'body',
   'argument',
   'declaration',
+  'declarations',
   'expression',
   'callee',
   'value',
