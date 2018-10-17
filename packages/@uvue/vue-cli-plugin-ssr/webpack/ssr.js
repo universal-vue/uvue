@@ -59,6 +59,8 @@ module.exports = (api, options = {}) => {
       );
     }
 
+    messages.push(`Type "rs" to restart server`);
+
     args[0].compilationSuccessInfo = {
       messages,
     };
