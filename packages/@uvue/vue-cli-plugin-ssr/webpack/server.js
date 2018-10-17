@@ -21,14 +21,11 @@ module.exports = (api, chainConfig) => {
     .target('node')
     .externals(
       nodeExternals({
-        whitelist: [
-          /\.css$/,
-          /\?vue&type=style/,
-          ...api.service.projectOptions.transpileDependencies,
-          // TODO: make it configurable
-          // ...this.nodeExternalsWhitelist,
-          // ...(this.getConfig('nodeExternalsWhitelist') || []),
-        ],
+        whitelist: [].concat(
+          [/\.css$/, /\?vue&type=style/],
+          api.service.projectOptions.transpileDependencies || [],
+          // TODO make it configurable
+        ),
       }),
     )
     .output.filename('server-bundle.js')

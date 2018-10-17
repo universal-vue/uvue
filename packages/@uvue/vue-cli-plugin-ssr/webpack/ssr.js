@@ -2,6 +2,7 @@ const HtmlWebpack = require('html-webpack-plugin');
 const WebpackBar = require('webpackbar');
 const cssConfig = require('./css');
 const defineOptions = require('./defineOptions');
+const merge = require('lodash/merge');
 
 module.exports = (api, options = {}) => {
   const opts = Object.assign({ client: true, ssr: true }, options);
@@ -18,36 +19,31 @@ module.exports = (api, options = {}) => {
 
   // Override HTMLWebpackPlugin behavior
   chainConfig.plugin('html').tap(args => {
-    const params = {
-      ...(args[0].templateParameters || {}),
+    const params = merge({}, args[0].templateParameters || {}, {
       uvue: opts,
-    };
+    });
 
-    htmlOptions = {
-      ...args[0],
-      ...htmlOptions,
-      filename: '.uvue/ssr.html',
-      inject: false,
-      templateParameters: params,
-    };
-
-    return [htmlOptions];
+    return [
+      merge({}, args[0] || {}, htmlOptions, {
+        filename: '.uvue/ssr.html',
+        inject: false,
+        templateParameters: params,
+      }),
+    ];
   });
 
   // Add a index template for SPA pages
   chainConfig.plugin('html-spa').use(HtmlWebpack, [
-    {
-      ...htmlOptions,
+    merge({}, htmlOptions, {
       filename: '.uvue/spa.html',
       inject: true,
-      templateParameters: {
-        ...htmlOptions.templateParameters,
+      templateParameters: merge({}, htmlOptions.templateParameters, {
         uvue: {
           ssr: false,
           client: true,
         },
-      },
-    },
+      }),
+    }),
   ]);
 
   // Friendly Errors with server URL
