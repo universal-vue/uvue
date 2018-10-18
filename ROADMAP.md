@@ -57,7 +57,7 @@
 - [x] **CLI plugin**: Prompts to install server plugins
 - [x] **CLI plugin**: Prompts to install UVue plugins
 - [x] **Vue CLI plugin support**: TypeScript
-  - [ ] Types for process & class components
+  - [x] Types for process & class components
 - [x] **Vue CLI plugin support**: Vue i18n
 - [x] **Vue CLI plugin support**: PWA
 - [ ] **Vue CLI plugin support**: Apollo
