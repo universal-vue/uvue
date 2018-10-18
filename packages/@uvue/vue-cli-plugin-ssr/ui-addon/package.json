@@ -1,0 +1,32 @@
+{
+  "name": "@uvue/ssr-ui-addon",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@vue/cli-ui-addon-webpack": "^3.0.0-rc.4",
+    "vue": "^2.5.17",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.0-beta.15",
+    "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
+    "@vue/cli-service": "^3.0.0-beta.15",
+    "@vue/cli-ui": "^3.0.0-rc.3",
+    "@vue/eslint-config-prettier": "^3.0.0-rc.3",
+    "@vue/ui": "^0.4.6",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vue-progress-path": "^0.0.2",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

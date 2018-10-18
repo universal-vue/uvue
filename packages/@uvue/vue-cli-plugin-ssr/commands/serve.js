@@ -1,7 +1,19 @@
+const { IpcMessenger } = require('@vue/cli-shared-utils');
+
 const defaults = {
   host: 'localhost',
   port: 8080,
 };
+
+const modifyConfig = (config, fn) => {
+  if (Array.isArray(config)) {
+    config.forEach(c => fn(c));
+  } else {
+    fn(config);
+  }
+};
+
+let ipc = null;
 
 module.exports = (api, options) => {
   api.registerCommand(
@@ -35,7 +47,7 @@ module.exports = (api, options) => {
       const watcher = chokidar.watch(['server.config.js', ...(watch || [])]);
 
       // Start server
-      server = await startServer({ api, host, port });
+      server = await startServer({ api, host, port, args });
 
       // Restart server on changes
       watcher.on('all', async () => {
@@ -44,7 +56,7 @@ module.exports = (api, options) => {
           await server.stop();
           server = null;
         }
-        server = await startServer({ api, host, port });
+        server = await startServer({ api, host, port, args });
       });
 
       // Restart on user input
@@ -56,7 +68,7 @@ module.exports = (api, options) => {
             await server.stop();
             server = null;
           }
-          server = await startServer({ api, host, port });
+          server = await startServer({ api, host, port, args });
         }
       });
 
@@ -70,10 +82,30 @@ module.exports = (api, options) => {
   );
 };
 
-async function startServer({ api, host, port }) {
+async function startServer({ api, host, port, args }) {
   const { Server } = require('@uvue/server');
   const getWebpackConfig = require('../webpack/ssr');
   const { https, devServer } = api.uvue.getServerConfig();
+
+  const serverConfig = getWebpackConfig(api, { serve: true, client: false, host, port });
+  const clientConfig = getWebpackConfig(api, { serve: true, client: true, host, port });
+
+  if (ipc) {
+    ipc.disconnect();
+    ipc = null;
+  }
+
+  // Expose advanced stats
+  if (args.dashboard) {
+    const DashboardPlugin = require('@vue/cli-service/lib/webpack/DashboardPlugin');
+    modifyConfig(clientConfig, config => {
+      config.plugins.push(
+        new DashboardPlugin({
+          type: 'ssr-serve',
+        }),
+      );
+    });
+  }
 
   // Create server
   const server = new Server({
@@ -89,8 +121,8 @@ async function startServer({ api, host, port }) {
 
     // Set webpakc config for webpack compiler
     webpack: {
-      client: getWebpackConfig(api, { client: true, host, port }),
-      server: getWebpackConfig(api, { client: false, host, port }),
+      client: clientConfig,
+      server: serverConfig,
     },
 
     // Set server configuration
@@ -109,6 +141,17 @@ async function startServer({ api, host, port }) {
 
   // Start server
   await server.start();
+
+  if (args.dashboard) {
+    // Send final app URL
+    ipc = new IpcMessenger();
+    ipc.connect();
+    ipc.send({
+      vueServe: {
+        url: `http://${host}:${port}`,
+      },
+    });
+  }
 
   return server;
 }

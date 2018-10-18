@@ -51,7 +51,7 @@
 - [x] **CLI plugin**: Base template (configs, router, server with plugins)
 - [x] **CLI plugin**: (Generator) manage main.js
 - [x] **CLI plugin**: (Generator) Detect Vue plugins presence and transform code
-- [ ] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
+- [x] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
 - [ ] **CLI plugin**: `generate` command
 - [x] **CLI plugin**: Docker prompt
 - [x] **CLI plugin**: Prompts to install server plugins
@@ -81,6 +81,7 @@
 - [ ] **Server**: Adapters
   - [ ] Express
   - [ ] Koa
+- [ ] **Docker** With varnish cache
 - [ ] **Core Plugin**: Vue meta as plugin
 - [ ] **Core Plugin**: SPA loader
 - [ ] **Core Plugin**: Navigation loader

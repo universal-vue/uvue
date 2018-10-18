@@ -6,7 +6,7 @@ const merge = require('lodash/merge');
 
 module.exports = (api, options = {}) => {
   const opts = Object.assign({ client: true, ssr: true }, options);
-  const { client, host, port } = opts;
+  const { client, host, port, serve } = opts;
 
   // Get base config from SPA
   const chainConfig = api.resolveChainableWebpackConfig();
@@ -59,7 +59,7 @@ module.exports = (api, options = {}) => {
       );
     }
 
-    messages.push(`Type "rs" to restart server`);
+    if (serve) messages.push(`Type "rs" to restart server`);
 
     args[0].compilationSuccessInfo = {
       messages,

@@ -50,11 +50,25 @@ module.exports = (api, options) => {
 function build(api, options, args) {
   return new Promise(async (resolve, reject) => {
     const isLegacyBuild = !process.env.VUE_CLI_MODERN_BUILD && process.env.VUE_CLI_MODERN_MODE;
+    const isModernBuild = process.env.VUE_CLI_MODERN_MODE && process.env.VUE_CLI_MODERN_BUILD;
 
     // Get Webpakc configurations
     const getWebpackConfig = require('../webpack/ssr');
     const clientConfig = getWebpackConfig(api, { client: true });
     const serverConfig = getWebpackConfig(api, { client: false });
+
+    // Expose advanced stats
+    if (args.dashboard) {
+      const DashboardPlugin = require('@vue/cli-service/lib/webpack/DashboardPlugin');
+      modifyConfig(clientConfig, config => {
+        config.plugins.push(
+          new DashboardPlugin({
+            type: !isModernBuild ? 'ssr-build' : 'ssr-build-modern',
+            modernBuild: isModernBuild,
+          }),
+        );
+      });
+    }
 
     // Add bundle analyzer if asked
     if (args.report || args['report-json']) {
