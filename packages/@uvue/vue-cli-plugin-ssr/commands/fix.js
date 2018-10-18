@@ -10,7 +10,7 @@ module.exports = api => {
     },
     async function() {
       const cf = new CodeFixer(path.join(api.uvue.getProjectPath(), 'src'));
-      await cf.run(api.uvue.getMainPath());
+      await cf.run(api, api.uvue.getMainPath());
     },
   );
 };

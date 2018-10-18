@@ -2,6 +2,7 @@ import * as prettier from 'prettier';
 import * as recast from 'recast';
 import { AstElement } from './elements';
 import { Recast } from './Recast';
+import createFromNode from './utils/createFromNode';
 
 export interface IPrintOptions {
   prettier?: string | null;
@@ -11,6 +12,10 @@ export interface IPrintOptions {
 export class RQuery {
   public static parse(source: string): AstElement {
     return new AstElement(Recast.parse(source));
+  }
+
+  public static fromNode(node: any): AstElement {
+    return createFromNode(node);
   }
 
   public static print(element: AstElement, options: IPrintOptions = {}): string {

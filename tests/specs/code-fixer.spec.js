@@ -129,4 +129,26 @@ describe('CodeFixer', () => {
 
     expect(codeResult).toBe(codeFixed);
   });
+
+  it('Should fix registerServiceWorker.js', async () => {
+    const filePath = path.resolve(__dirname, '../mocks/code-fixer/transform/pwa.js');
+    const fixedPath = path.resolve(__dirname, '../mocks/code-fixer/transform/pwaFixed.js');
+
+    const code = await fs.readFile(filePath, 'utf-8');
+    const codeFixed = await fs.readFile(fixedPath, 'utf-8');
+
+    let codeResult = cf.fixPwa(code);
+    expect(codeResult).toBe(codeFixed);
+  });
+
+  it('Should not fix already fixed registerServiceWorker.js', async () => {
+    const filePath = path.resolve(__dirname, '../mocks/code-fixer/transform/pwaFixed.js');
+    const fixedPath = path.resolve(__dirname, '../mocks/code-fixer/transform/pwaFixed.js');
+
+    const code = await fs.readFile(filePath, 'utf-8');
+    const codeFixed = await fs.readFile(fixedPath, 'utf-8');
+
+    let codeResult = cf.fixPwa(code);
+    expect(codeResult).toBe(codeFixed);
+  });
 });

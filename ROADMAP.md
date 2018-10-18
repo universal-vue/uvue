@@ -57,8 +57,9 @@
 - [x] **CLI plugin**: Prompts to install server plugins
 - [x] **CLI plugin**: Prompts to install UVue plugins
 - [x] **Vue CLI plugin support**: TypeScript
+  - [ ] Types for process & class components
 - [x] **Vue CLI plugin support**: Vue i18n
-- [ ] **Vue CLI plugin support**: PWA
+- [x] **Vue CLI plugin support**: PWA
 - [ ] **Vue CLI plugin support**: Apollo
 - [ ] **Vue CLI plugin support**: E2E tests with SSR mode
 - [ ] **Common**: New logo
@@ -71,12 +72,16 @@
 
 ## Next / Ideas / Future
 
+- [ ] **Plugin**: Available .env files in configs files
 - [ ] **Server**: Server error plugin (to customize server error page)
 - [ ] **Server**: Pages cache plugin
   - [ ] Memory
   - [ ] Files
   - [ ] Redis
-- [ ] **Core Plugin**: Vue meta as plugin ?
+- [ ] **Server**: Adapters
+  - [ ] Express
+  - [ ] Koa
+- [ ] **Core Plugin**: Vue meta as plugin
 - [ ] **Core Plugin**: SPA loader
 - [ ] **Core Plugin**: Navigation loader
 - [ ] **Core Plugin**: Stash

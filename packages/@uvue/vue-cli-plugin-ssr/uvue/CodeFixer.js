@@ -54,6 +54,11 @@ module.exports = class CodeFixer {
       await fixPlugin('I18n', ['code:new VueI18n'], 'fixI18n');
     }
 
+    // PWA
+    if (api.hasPlugin('pwa')) {
+      await fixPlugin('PWA', ['code:register-service-worker'], 'fixPwa');
+    }
+
     // Main
     {
       consola.start(`Try to fix main file...`);
@@ -169,6 +174,39 @@ module.exports = class CodeFixer {
 
   fixI18n(code) {
     return this.fixPlugin(code, 'VueI18n');
+  }
+
+  fixPwa(code) {
+    const doc = RQuery.parse(code);
+
+    const importStatement = doc.findOne('import#register');
+    const registerCall = doc.findOne('id#register');
+
+    if (importStatement && registerCall) {
+      const ifStatement = registerCall.parentType('IfStatement');
+
+      const haveCheck = ifStatement.findOne('process.client');
+      if (!haveCheck) {
+        const newIfNode = RQuery.parse('if(replaceOld && replaceCheck) {}').node.program.body[0]
+          .test;
+
+        const newIf = RQuery.fromNode(newIfNode);
+        newIf.findOne('id#replaceOld').replace(RQuery.fromNode(ifStatement.node.test));
+        newIf
+          .findOne('id#replaceCheck')
+          .replace(RQuery.parse('process.client').findOne('process.client'));
+
+        ifStatement.node.test = newIf.node;
+
+        const prettierOptions = this.resolveCodingStyle(code);
+
+        return RQuery.print(doc, {
+          prettierConfig: prettierOptions,
+        });
+      }
+    }
+
+    return code;
   }
 
   fixPlugin(code, name) {
