@@ -16,7 +16,10 @@ export default async (context, { to, next } = {}) => {
     if (error instanceof RedirectError) {
       // Do redirect
       doRedirect(context, error);
-      return;
+      if (process.client) {
+        if (next) next(error.location);
+        return;
+      }
     } else {
       if (process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line

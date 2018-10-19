@@ -34,8 +34,9 @@ export const doRedirect = ({ res, ssr, router }, { location, statusCode }) => {
     if (typeof location === 'object') {
       location = router.resolve(location, router.currentRoute).href;
     }
-    ssr.redirected = true;
-    res.statusCode = statusCode;
+
+    ssr.redirected = res.statusCode = statusCode;
+
     res.writeHead(statusCode, {
       Location: location,
     });

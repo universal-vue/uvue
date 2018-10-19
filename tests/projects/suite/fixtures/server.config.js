@@ -6,4 +6,9 @@ export default {
     ['@uvue/server/plugins/modernBuild'],
     // ['@uvue/server/plugins/cssPreload'],
   ],
+  static: {
+    params: {
+      foo: ['bar'],
+    },
+  },
 };

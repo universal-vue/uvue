@@ -81,13 +81,27 @@ module.exports = class StaticGenerate {
    * Create a fake context for renderer
    */
   createRequestContext(url) {
+    const req = httpMocks.createRequest({
+      method: 'GET',
+      url,
+    });
+    const res = httpMocks.createResponse();
+    res.__body = '';
+
+    res.write = chunk => {
+      res.__body += chunk;
+    };
+
+    res.end = data => {
+      if (data) {
+        res.__body = data;
+      }
+    };
+
     return {
       url,
-      req: httpMocks.createRequest({
-        method: 'GET',
-        url,
-      }),
-      res: httpMocks.createResponse(),
+      req,
+      res,
       redirected: false,
       statusCode: 200,
       bodyAdd: '',
@@ -195,16 +209,23 @@ module.exports = class StaticGenerate {
   async buildSSRPage(context) {
     const response = {
       body: '',
-      status: 200,
+      status: null,
     };
 
     try {
       // Render body
       response.body = await this.renderer.render(context);
+      response.status = context.statusCode;
 
       if (context.redirected) {
-        // TODO
-        response.body = this.redirectPage(context.url);
+        // Manage redirect
+        const url = context.res.__body;
+        if (!/https?:\/\//.test(url)) {
+          response.body = this.redirectPage(context.res.__body);
+          response.status = context.redirected;
+        } else {
+          return;
+        }
       } else {
         // Plugins hook
         await this.server.invokeAsync('beforeBuild', response, context, this.server);
@@ -213,17 +234,14 @@ module.exports = class StaticGenerate {
         response.body = await this.renderer.renderSSRPage(response.body, context);
 
         // Hook on rendered
-        await this.server.invokeAsync('rendered', response, context, this);
+        await this.server.invokeAsync('rendered', response, context, this.server);
       }
     } catch (err) {
       // Catch errors
       await this.server.invokeAsync('routeError', err, response, context, this.server);
-
       response.body = response.body || 'Server error';
       response.status = 500;
     }
-
-    const { statusCode } = context;
 
     if (!/\.html?$/.test(context.url)) {
       await fs.ensureDir(`${this.options.outputDir}/${context.url}`);
@@ -233,7 +251,7 @@ module.exports = class StaticGenerate {
       await fs.writeFileSync(`${this.options.outputDir}/${context.url}`, response.body);
     }
 
-    return statusCode;
+    return response.status || 200;
   }
 
   async buildSPAPage(path) {
