@@ -14,14 +14,14 @@ export default async ssr => {
     res: ssr.res,
   };
 
-  // Send router to server side
-  ssr.router = router;
-
   // Call app main
   createApp(context);
 
   // Get some vars from context
   const { app, router } = context;
+
+  // Send router to server side
+  ssr.router = router;
 
   // Handle VueMeta plugin
   if (typeof app.$meta === 'function') {

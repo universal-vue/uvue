@@ -107,22 +107,13 @@ export class Server implements IServer {
     if (this.options.webpack) {
       // Development mode
       readyPromise = setupDevMiddleware(this, (serverBundle, { clientManifest, templates }) => {
-        this.renderer = new Renderer(serverBundle, {
-          ...this.options.renderer,
-          clientManifest,
-          templates,
-        });
+        this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
       });
 
       // Production mode
     } else {
       const { clientManifest, serverBundle, templates } = this.getBuiltFiles();
-
-      this.renderer = new Renderer(serverBundle, {
-        ...this.options.renderer,
-        clientManifest,
-        templates,
-      });
+      this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
     }
 
     await readyPromise;
@@ -148,6 +139,17 @@ export class Server implements IServer {
    */
   public async stop() {
     return this.adapter.stop();
+  }
+
+  /**
+   * Return new instance of a renderer
+   */
+  public createRenderer({ serverBundle, clientManifest, templates }) {
+    return new Renderer(serverBundle, {
+      ...this.options.renderer,
+      clientManifest,
+      templates,
+    });
   }
 
   /**

@@ -18,6 +18,7 @@ module.exports = (api, options) => {
       'ssr:serve': 'vue-cli-service ssr:serve',
       'ssr:build': 'vue-cli-service ssr:build',
       'ssr:start': 'vue-cli-service ssr:start',
+      'ssr:static': 'vue-cli-service ssr:static',
       'ssr:fix': 'vue-cli-service ssr:fix',
     },
   });

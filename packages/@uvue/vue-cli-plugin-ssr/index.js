@@ -10,6 +10,7 @@ module.exports = api => {
   require('./commands/serve')(api, projectOptions);
   require('./commands/build')(api, projectOptions);
   require('./commands/start')(api, projectOptions);
+  require('./commands/static')(api, projectOptions);
   require('./commands/fix')(api, projectOptions);
 };
 
@@ -17,4 +18,5 @@ module.exports.defaultModes = {
   'ssr:serve': 'development',
   'ssr:build': 'production',
   'ssr:start': 'production',
+  'ssr:static': 'production',
 };

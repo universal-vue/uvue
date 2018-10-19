@@ -52,7 +52,7 @@
 - [x] **CLI plugin**: (Generator) manage main.js
 - [x] **CLI plugin**: (Generator) Detect Vue plugins presence and transform code
 - [x] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
-- [ ] **CLI plugin**: `generate` command
+- [x] **CLI plugin**: `generate` command
 - [x] **CLI plugin**: Docker prompt
 - [x] **CLI plugin**: Prompts to install server plugins
 - [x] **CLI plugin**: Prompts to install UVue plugins
