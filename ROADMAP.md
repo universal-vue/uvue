@@ -60,8 +60,8 @@
   - [x] Types for process & class components
 - [x] **Vue CLI plugin support**: Vue i18n
 - [x] **Vue CLI plugin support**: PWA
-- [ ] **Vue CLI plugin support**: Apollo
 - [ ] **Vue CLI plugin support**: E2E tests with SSR mode
+- [ ] **Vue CLI plugin support**: Apollo
 - [ ] **Common**: New logo
 - [ ] **Common**: Documentation with Vuepress and custom theme
 - [ ] **Common**: Issue template for Github
@@ -72,7 +72,7 @@
 
 ## Next / Ideas / Future
 
-- [ ] **Plugin**: Available .env files in configs files
+- [ ] **Plugin**: Available .env variables in configs files
 - [ ] **Server**: Server error plugin (to customize server error page)
 - [ ] **Server**: Pages cache plugin
   - [ ] Memory
