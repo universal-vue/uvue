@@ -15,6 +15,7 @@ module.exports = () => {
         '--enableInSFC',
         0,
       ],
+      apollo: ['--addExamples', '--addServer'],
       '@vue/typescript': [
         '--classComponent',
         1,

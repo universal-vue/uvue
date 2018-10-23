@@ -60,8 +60,8 @@
   - [x] Types for process & class components
 - [x] **Vue CLI plugin support**: Vue i18n
 - [x] **Vue CLI plugin support**: PWA
-- [ ] **Vue CLI plugin support**: E2E tests with SSR mode
-- [ ] **Vue CLI plugin support**: Apollo
+- [x] **Vue CLI plugin support**: Apollo
+- [ ] **CLI plugin**: `generate` manage `res.finished`
 - [ ] **Common**: New logo
 - [ ] **Common**: Documentation with Vuepress and custom theme
 - [ ] **Common**: Issue template for Github
@@ -89,6 +89,7 @@
 - [ ] **Vue CLI UI**: CPU & RAM monitoring for `ssr:start` command
 - [ ] **Vue CLI UI**: Edit configuration files
 - [ ] **Vue CLI UI**: `generate` command: List generated files & size
+- [ ] **Vue CLI plugin support**: E2E tests with SSR mode
 - [ ] **CSS**: Critters on each page
 - [ ] **CSS**: Global Critters
 - [ ] **CSS**: Critical auto generation

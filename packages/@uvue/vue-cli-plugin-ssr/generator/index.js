@@ -8,7 +8,7 @@ const stringify = require('javascript-stringify');
 const CodeFixer = require('../uvue/CodeFixer');
 
 module.exports = (api, options) => {
-  api.extendPackage({
+  const extendPackage = {
     dependencies: {
       'vue-router': '^3.0.1',
       '@uvue/core': '^0.4.0-alpha.0',
@@ -21,7 +21,7 @@ module.exports = (api, options) => {
       'ssr:static': 'vue-cli-service ssr:static',
       'ssr:fix': 'vue-cli-service ssr:fix',
     },
-  });
+  };
 
   if (api.invoking) {
     // Base templates
@@ -39,6 +39,17 @@ module.exports = (api, options) => {
     const uvueConfig = {
       plugins: [],
     };
+
+    // Apollo
+    if (api.hasPlugin('apollo')) {
+      api.render('./templates/apollo');
+
+      // Install isomorphic fetch
+      extendPackage.dependencies['isomorphic-fetch'] = '^2.2.1';
+
+      // Add UVue plugin to config
+      uvueConfig.plugins.push('@/plugins/apollo');
+    }
 
     if (options.uvuePlugins) {
       for (const name of options.uvuePlugins) {
@@ -109,4 +120,6 @@ module.exports = (api, options) => {
     const cf = new CodeFixer(path.join(api.generator.context, 'src'));
     await cf.run(api, mainPath);
   });
+
+  api.extendPackage(extendPackage);
 };

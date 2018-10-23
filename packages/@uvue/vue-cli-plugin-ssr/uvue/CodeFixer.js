@@ -1,4 +1,8 @@
+// eslint-disable-next-line
+require = require('esm')(module);
+
 const fs = require('fs-extra');
+const { join } = require('path');
 const rreaddir = require('recursive-readdir');
 const findInFiles = require('find-in-files');
 const escapeStringRegexp = require('escape-string-regexp');
@@ -41,6 +45,11 @@ module.exports = class CodeFixer {
       }
     };
 
+    const hasDependency = name => {
+      const packageJson = require(api.resolve('package.json'));
+      return packageJson.dependencies[name] ? true : false;
+    };
+
     // Router
     await fixPlugin('Router', ['code:new Router'], 'fixRouter');
 
@@ -57,6 +66,38 @@ module.exports = class CodeFixer {
     // PWA
     if (api.hasPlugin('pwa')) {
       await fixPlugin('PWA', ['code:register-service-worker'], 'fixPwa');
+    }
+
+    // Apollo
+    if (api.hasPlugin('apollo')) {
+      await fixPlugin('Apollo', ['code:createApolloClient'], 'fixApollo');
+
+      // Check isomorphic fetch is installed
+      if (!hasDependency('isomorphic-fetch')) {
+        consola.warn('Need to install isomorphic-fetch to use Vue Apollo in SSR mode!');
+      }
+
+      // Check UVue plugin presence
+      let pluginPath = './src/plugins/apollo';
+      const files = await this.findFiles(['code:__APOLLO_STATE__']);
+
+      if (!files.length) {
+        // Copy file from vue cli plugin
+        await fs.copy(join(__dirname, '..', 'generator', 'templates', 'apollo'), api.resolve(''));
+        consola.success(`UVue Apollo plugin installed in src/plugins/apollo.js`);
+      } else {
+        pluginPath = files[0];
+      }
+
+      // Check UVue config
+      const uvueConfig = require(api.resolve('uvue.config.js')).default;
+      if (
+        uvueConfig.plugins.findIndex(item => {
+          return item == pluginPath || item[0] == pluginPath;
+        }) < 0
+      ) {
+        consola.warn('Need to install UVue Apollo plugin in your uvue.config.js file');
+      }
     }
 
     // Main
@@ -323,5 +364,9 @@ module.exports = class CodeFixer {
     }
 
     return code;
+  }
+
+  fixApollo(code) {
+    return code.replace(/ssr:\s?false/, 'ssr: !!process.server');
   }
 };
