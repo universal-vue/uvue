@@ -1,6 +1,3 @@
-// eslint-disable-next-line
-require = require('esm')(module);
-
 const fs = require('fs-extra');
 const { join } = require('path');
 const rreaddir = require('recursive-readdir');
@@ -78,7 +75,7 @@ module.exports = class CodeFixer {
       }
 
       // Check UVue plugin presence
-      let pluginPath = './src/plugins/apollo';
+      // let pluginPath = './src/plugins/apollo';
       const files = await this.findFiles(['code:__APOLLO_STATE__']);
 
       if (!files.length) {
@@ -86,18 +83,19 @@ module.exports = class CodeFixer {
         await fs.copy(join(__dirname, '..', 'generator', 'templates', 'apollo'), api.resolve(''));
         consola.success(`UVue Apollo plugin installed in src/plugins/apollo.js`);
       } else {
-        pluginPath = files[0];
+        // pluginPath = files[0];
       }
 
       // Check UVue config
-      const uvueConfig = require(api.resolve('uvue.config.js')).default;
-      if (
-        uvueConfig.plugins.findIndex(item => {
-          return item == pluginPath || item[0] == pluginPath;
-        }) < 0
-      ) {
-        consola.warn('Need to install UVue Apollo plugin in your uvue.config.js file');
-      }
+      // FIXME replace by AST checks
+      // const uvueConfig = require(api.resolve('uvue.config.js')).default;
+      // if (
+      //   uvueConfig.plugins.findIndex(item => {
+      //     return item == pluginPath || item[0] == pluginPath;
+      //   }) < 0
+      // ) {
+      //   consola.warn('Need to install UVue Apollo plugin in your uvue.config.js file');
+      // }
     }
 
     // Main
