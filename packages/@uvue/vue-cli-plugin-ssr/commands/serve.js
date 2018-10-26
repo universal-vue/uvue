@@ -85,7 +85,7 @@ module.exports = (api, options) => {
 async function startServer({ api, host, port, args }) {
   const { Server } = require('@uvue/server');
   const getWebpackConfig = require('../webpack/ssr');
-  const { https, devServer } = api.uvue.getServerConfig();
+  const { https, devServer, spaPaths, renderer } = api.uvue.getServerConfig();
 
   const serverConfig = getWebpackConfig(api, { serve: true, client: false, host, port });
   const clientConfig = getWebpackConfig(api, { serve: true, client: true, host, port });
@@ -134,6 +134,10 @@ async function startServer({ api, host, port, args }) {
 
     // Dev server options
     devServer,
+
+    // From config file
+    spaPaths,
+    renderer,
   });
 
   // Install plugins

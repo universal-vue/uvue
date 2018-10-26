@@ -1,7 +1,7 @@
 import * as consola from 'consola';
 import { readFileSync } from 'fs-extra';
 import { IncomingMessage, ServerResponse } from 'http';
-import micromatch from 'micromatch';
+import * as micromatch from 'micromatch';
 import { join } from 'path';
 import { ConnectAdapter } from './ConnectAdapter';
 import { setupDevMiddleware } from './devMiddleware';

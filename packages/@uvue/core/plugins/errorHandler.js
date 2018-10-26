@@ -73,7 +73,7 @@ export default {
 
     // Catch error in router navigation guards
     router.onError(error => {
-      this.setError(error);
+      this.setError(error, context);
     });
   },
 
@@ -82,7 +82,7 @@ export default {
    * and hydrate client with it
    */
   beforeStart({ $errorHandler }) {
-    if (process.client && process.ssr && window.__DATA__.errorHandler) {
+    if (process.client && process.ssr && window.__DATA__ && window.__DATA__.errorHandler) {
       const { error, statusCode } = window.__DATA__.errorHandler;
       $errorHandler.error = error;
       $errorHandler.statusCode = statusCode;

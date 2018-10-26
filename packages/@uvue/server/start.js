@@ -46,6 +46,8 @@ process.env.NODE_ENV = 'production';
     options = require(resolve(argv.config)).default;
   }
 
+  const { spaPaths, renderer } = options;
+
   /**
    * Create server
    */
@@ -67,6 +69,10 @@ process.env.NODE_ENV = 'production';
       port,
       https: options.https,
     },
+
+    // From config file
+    spaPaths,
+    renderer,
   });
 
   // Install plugins from config
