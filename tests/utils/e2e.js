@@ -24,6 +24,10 @@ const doRequest = async (url, options) => {
   });
 };
 
+const goto = async url => {
+  await page.goto(`${baseURL}${url}`);
+};
+
 /**
  * Go to a page in SSR mode and get HTML content
  */
@@ -195,6 +199,7 @@ const wait = time => new Promise(resolve => setTimeout(resolve, time));
 
 module.exports = {
   wait,
+  goto,
   gotoSSR,
   gotoSPA,
   baseURL,

@@ -19,31 +19,36 @@ const unitProject = async name => {
   });
 };
 
-const e2eProject = async (server, name) => {
+const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
   await waitOnPromise({
     resources: [`tcp:localhost:7357`],
     timeout: 60 * 1000,
   });
 
-  const jest = execa(
-    './node_modules/.bin/jest',
-    ['--config', `tests/projects/${name}/jest.config.js`, '--verbose'],
-    {
-      stdio: 'inherit',
-    },
-  );
+  return new Promise((resolve, reject) => {
+    const jest = execa(
+      './node_modules/.bin/jest',
+      ['--config', `tests/projects/${name}/jest.config.js`, '--verbose', '--testMatch', match],
+      {
+        stdio: 'inherit',
+      },
+    );
 
-  jest.on('exit', exitCode => {
-    if (server) {
-      if (os.platform() === 'win32') {
-        execSync(`taskkill /F /T /PID ${server.pid}`);
-      } else {
-        server.kill('SIGINT');
+    jest.on('exit', exitCode => {
+      if (server) {
+        if (os.platform() === 'win32') {
+          execSync(`taskkill /F /T /PID ${server.pid}`);
+        } else {
+          server.kill('SIGINT');
+        }
       }
-    }
 
-    console.log(`Exit code: ${exitCode}`);
-    process.exit(exitCode);
+      console.log(`Exit code: ${exitCode}`);
+      if (exitCode !== 0) {
+        return reject(exitCode);
+      }
+      resolve();
+    });
   });
 };
 
@@ -90,15 +95,26 @@ const e2eProject = async (server, name) => {
       break;
 
     case 'test:e2e':
-      {
-        const server = tm.cliService(name, 'ssr:start', ['--port', '7357']);
+      try {
+        let server = tm.cliService(name, 'ssr:start', ['--port', '7357']);
         await e2eProject(server, name);
+
+        if (name === 'suite') {
+          server = tm.cliService(name, 'serve', ['--port', '7357']);
+          await e2eProject(server, name, '**/specs/spa/*.spec.js');
+        }
+      } catch (err) {
+        if (typeof err === 'number') {
+          process.exit(err);
+        } else {
+          process.exit(1);
+        }
       }
       break;
 
     case 'test':
     case 't':
-      {
+      try {
         // Build project
         await buildProject(tm, name);
 
@@ -106,8 +122,19 @@ const e2eProject = async (server, name) => {
         await unitProject(name);
 
         // E2E tests
-        const server = tm.cliService(name, 'ssr:start', ['--port', '7357']);
+        let server = tm.cliService(name, 'ssr:start', ['--port', '7357']);
         await e2eProject(server, name);
+
+        if (name === 'suite') {
+          server = tm.cliService(name, 'serve', ['--port', '7357']);
+          await e2eProject(server, name, '**/specs/spa/*.spec.js');
+        }
+      } catch (err) {
+        if (typeof err === 'number') {
+          process.exit(err);
+        } else {
+          process.exit(1);
+        }
       }
       break;
   }

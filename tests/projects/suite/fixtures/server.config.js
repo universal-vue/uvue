@@ -11,4 +11,5 @@ export default {
       foo: ['bar'],
     },
   },
+  spaPaths: ['/spa', '/spa/**'],
 };

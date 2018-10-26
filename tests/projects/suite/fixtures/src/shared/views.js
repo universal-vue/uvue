@@ -1,6 +1,6 @@
 import Home from '@/views/Home.vue';
 
-export default [
+const views = [
   {
     label: 'Basics',
     children: [
@@ -125,3 +125,37 @@ export default [
     ],
   },
 ];
+
+// Build SPA paths
+const spaPaths = views.map(item => {
+  const category = { ...item };
+
+  category.label = `(SPA) ${category.label}`;
+  category.children = category.children.map(route => {
+    const spaRoute = {
+      ...route,
+      name: route.name !== undefined ? `spa--${route.name}` : undefined,
+      testName: route.testName !== undefined ? `spa--${route.name}` : undefined,
+      path: route.path !== undefined ? `/spa${route.path}` : undefined,
+      testPath: route.testPath !== undefined ? `/spa${route.testPath}` : undefined,
+    };
+
+    if (spaRoute.children) {
+      spaRoute.children = spaRoute.children.map(child => {
+        return {
+          ...child,
+          name: route.name !== undefined ? `spa--${route.name}` : undefined,
+          testName: route.testName !== undefined ? `spa--${route.name}` : undefined,
+          path: route.path !== undefined ? `/spa${route.path}` : undefined,
+          testPath: route.testPath !== undefined ? `/spa${route.testPath}` : undefined,
+        };
+      });
+    }
+
+    return spaRoute;
+  });
+
+  return category;
+});
+
+export default [...views, ...spaPaths];
