@@ -1,4 +1,5 @@
 import cookieParser from 'cookie-parser';
+import consola from 'consola';
 
 export default {
   install(app) {
@@ -8,9 +9,12 @@ export default {
       ...(this.$options || {}),
     };
 
-    // TODO: warn if no secret
-
     const { secret, options } = this.$options;
+
+    if (!secret) {
+      consola.warn('No secret defined for your cookies!');
+    }
+
     app.use(cookieParser(secret, options));
   },
 };

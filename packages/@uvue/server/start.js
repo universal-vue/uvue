@@ -11,7 +11,7 @@ const argv = yargs
   .option('c', {
     alias: 'config',
     default: 'server.config.js',
-    describe: 'Determine a path to your configuration file',
+    describe: 'Give a path to your server configuration file',
     type: 'string',
   })
   .option('h', {
@@ -25,6 +25,11 @@ const argv = yargs
     default: process.env.PORT || 8080,
     describe: 'Set listen port',
     type: 'number',
+  })
+  .option('d', {
+    alias: 'dist',
+    default: 'dist',
+    describe: 'Give the path to your dist folder',
   })
   .help().argv;
 
@@ -47,7 +52,7 @@ process.env.NODE_ENV = 'production';
   const server = new Server({
     // Set files destinations
     paths: {
-      outputDir: resolve('dist'), // TODO: find a way to configure this
+      outputDir: resolve(argv.dist),
       serverBundle: '.uvue/server-bundle.json',
       clientManifest: '.uvue/client-manifest.json',
       templates: {

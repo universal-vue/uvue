@@ -24,7 +24,7 @@ module.exports = (api, chainConfig) => {
         whitelist: [].concat(
           [/\.css$/, /\?vue&type=style/],
           api.service.projectOptions.transpileDependencies || [],
-          // TODO make it configurable
+          api.uvue.getConfig('externalsWhitelist') || [],
         ),
       }),
     )

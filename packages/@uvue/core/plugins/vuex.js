@@ -3,9 +3,6 @@ import { Store } from 'vuex';
 import sanitizeComponent from '../lib/sanitizeComponent';
 import onHotReload from '../lib/onHotReload';
 
-// FIXME
-// - onHotReload called multiple times (on each HMR)
-
 /**
  * Vuex plugin
  */

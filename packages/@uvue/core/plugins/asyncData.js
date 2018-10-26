@@ -132,7 +132,7 @@ export default {
   },
 
   async beforeReady({ router }) {
-    if (process.client && window.__DATA__.components) {
+    if (process.client && window.__DATA__ && window.__DATA__.components) {
       const asyncDataComponents = getAsyncDataComponents(
         router.getMatchedComponents(router.currentRoute),
       );
