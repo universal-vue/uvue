@@ -37,9 +37,12 @@ const gotoSSR = async url => {
 
   const $ = cheerio.load(responseBody);
 
-  const scriptContent = $('script[data-vue-ssr-data]')
-    .html()
-    .replace(/^window\.__DATA__=/, '');
+  let scriptContent;
+
+  const dataScript = $('script[data-vue-ssr-data]');
+  if (dataScript.length) {
+    scriptContent = dataScript.html().replace(/^window\.__DATA__=/, '');
+  }
 
   if (scriptContent && scriptContent !== 'undefined') {
     $.DATA = JSON.parse(scriptContent);

@@ -1,5 +1,6 @@
 import os from 'os';
 import fs from 'fs';
+import path from 'path';
 import { execSync } from 'child_process';
 import waitOn from 'wait-on';
 import { argv as yargv } from 'yargs';
@@ -100,6 +101,7 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
         await e2eProject(server, name);
 
         if (name === 'suite') {
+          // SPA mode
           server = tm.cliService(name, 'serve', ['--port', '7357']);
           await e2eProject(server, name, '**/specs/spa/*.spec.js');
         }
@@ -109,6 +111,22 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
         } else {
           process.exit(1);
         }
+      }
+      break;
+
+    case 'test:static':
+      {
+        // Static generation
+        await tm.cliService(name, 'ssr:static');
+
+        const server = execa(
+          path.resolve('node_modules', '.bin', 'serve'),
+          ['-l', '7357', 'dist'],
+          {
+            cwd: path.join(tm.baseDir, name),
+          },
+        );
+        await e2eProject(server, name, '**/specs/static/*.spec.js');
       }
       break;
 
@@ -126,6 +144,15 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
         await e2eProject(server, name);
 
         if (name === 'suite') {
+          // Static generation
+          await tm.cliService(name, 'ssr:static', ['--noBuild']);
+
+          server = execa(path.resolve('node_modules', '.bin', 'serve'), ['-l', '7357', 'dist'], {
+            cwd: path.join(tm.baseDir, name),
+          });
+          await e2eProject(server, name, '**/specs/static/*.spec.js');
+
+          // SPA mode
           server = tm.cliService(name, 'serve', ['--port', '7357']);
           await e2eProject(server, name, '**/specs/spa/*.spec.js');
         }

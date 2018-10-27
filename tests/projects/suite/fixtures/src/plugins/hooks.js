@@ -73,7 +73,7 @@ export default {
 
     const { url } = context;
 
-    if (url === '/plugins-route-error/bar?bar=baz') {
+    if (/plugins-route-error/.test(url)) {
       throw new Error('RouteError');
     }
   },

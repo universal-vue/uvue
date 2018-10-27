@@ -48,4 +48,5 @@ yarn test
 
 ```bash
 ./tests/cli test:e2e suite
+./tests/cli test:static suite
 ```

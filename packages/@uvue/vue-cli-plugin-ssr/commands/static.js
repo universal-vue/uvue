@@ -25,24 +25,26 @@ module.exports = (api, options) => {
       },
     },
     async function(args) {
-      // Remove previous build
-      await fs.remove(api.resolve(options.outputDir));
+      if (!args.noBuild) {
+        // Remove previous build
+        await fs.remove(api.resolve(options.outputDir));
 
-      if (!args.modern) {
-        await build(api, options, args);
-      } else {
-        process.env.VUE_CLI_MODERN_MODE = true;
-        delete process.env.VUE_CLI_MODERN_BUILD;
+        if (!args.modern) {
+          await build(api, options, args);
+        } else {
+          process.env.VUE_CLI_MODERN_MODE = true;
+          delete process.env.VUE_CLI_MODERN_BUILD;
 
-        consola.start('Building legacy bundle...');
-        await build(api, options, args);
+          consola.start('Building legacy bundle...');
+          await build(api, options, args);
 
-        consola.start('Building modern bundle...');
-        process.env.VUE_CLI_MODERN_BUILD = true;
-        await build(api, options, args);
+          consola.start('Building modern bundle...');
+          process.env.VUE_CLI_MODERN_BUILD = true;
+          await build(api, options, args);
 
-        delete process.env.VUE_CLI_MODERN_MODE;
-        delete process.env.VUE_CLI_MODERN_BUILD;
+          delete process.env.VUE_CLI_MODERN_MODE;
+          delete process.env.VUE_CLI_MODERN_BUILD;
+        }
       }
 
       // Start static generation

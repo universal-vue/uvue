@@ -52,7 +52,7 @@
 - [x] **CLI plugin**: (Generator) manage main.js
 - [x] **CLI plugin**: (Generator) Detect Vue plugins presence and transform code
 - [x] **CLI plugin**: UI: Webpack dashboard & analyzer for `ssr:serve` and `ssr:build` commands
-- [x] **CLI plugin**: `generate` command
+- [x] **CLI plugin**: `ssr:static` command
 - [x] **CLI plugin**: Docker prompt
 - [x] **CLI plugin**: Prompts to install server plugins
 - [x] **CLI plugin**: Prompts to install UVue plugins
@@ -61,7 +61,7 @@
 - [x] **Vue CLI plugin support**: Vue i18n
 - [x] **Vue CLI plugin support**: PWA
 - [x] **Vue CLI plugin support**: Apollo
-- [ ] **CLI plugin**: `generate` manage `res.finished`
+- [x] **CLI plugin**: `ssr:static` manage `res.finished`
 - [ ] **Common**: New logo
 - [ ] **Common**: Documentation with Vuepress and custom theme
 - [ ] **Common**: Issue template for Github
@@ -70,30 +70,30 @@
 - [ ] **Common**: CodeSandbox template
 - [x] **Common**: Discord Chat
 
-## Next / Ideas / Future
+## Next
 
-- [ ] **Plugin**: Available .env variables in configs files
 - [ ] **Server**: Server error plugin (to customize server error page)
-- [ ] **Server**: Pages cache plugin
+- [ ] **DevTools**: Better autocannon logs (status, low-high)
+- [ ] **Docker** With varnish cache
+- **Server**: Pages cache plugin
   - [ ] Memory
   - [ ] Files
   - [ ] Redis
-- [ ] **Server**: Adapters
+
+# Ideas / Future
+
+- **Server**: Adapters
   - [ ] Express
   - [ ] Koa
-- [ ] **Docker** With varnish cache
-- [ ] **Core Plugin**: Vue meta as plugin
-- [ ] **Core Plugin**: SPA loader
-- [ ] **Core Plugin**: Navigation loader
-- [ ] **Core Plugin**: Stash
+- [ ] **Vue CLI UI**: `ssr:static` Generate a files wil all redirects
+- [ ] **Plugin**: Available .env variables in configs files
 - [ ] **Vue CLI UI**: CPU & RAM monitoring for `ssr:start` command
 - [ ] **Vue CLI UI**: Edit configuration files
-- [ ] **Vue CLI UI**: `generate` command: List generated files & size
-- [ ] **Vue CLI plugin support**: E2E tests with SSR mode
+- [ ] **Vue CLI UI**: `ssr:static` command: List generated files & size
+- [ ] **Vue CLI plugin support**: E2E tests in SSR mode
 - [ ] **CSS**: Critters on each page
 - [ ] **CSS**: Global Critters
 - [ ] **CSS**: Critical auto generation
-- [ ] **DevTools**: Better autocannon logs (status, low-high)
 - [ ] **DevTools**: Benchmark heapdump
 - [ ] **DevTools**: Scenario with auth
 

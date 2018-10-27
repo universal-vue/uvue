@@ -6,9 +6,9 @@ import {
   testContext,
   wait,
   getText,
-} from '../../../utils/e2e';
+} from '../../../../utils/e2e';
 
-describe('SPA paths', () => {
+describe('(Static) SPA paths', () => {
   it('Home is correctly mounted', async () => {
     await goto('/spa');
     await isSPA();
