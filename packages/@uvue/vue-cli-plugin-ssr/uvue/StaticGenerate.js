@@ -81,17 +81,18 @@ module.exports = class StaticGenerate {
    * Create a fake context for renderer
    */
   createRequestContext(url) {
+    // Fake IncomingRequest
     const req = httpMocks.createRequest({
       method: 'GET',
       url,
     });
+
+    // Fake ServerResponse
     const res = httpMocks.createResponse();
     res.__body = '';
-
     res.write = chunk => {
       res.__body += chunk;
     };
-
     res.end = data => {
       if (data) {
         res.__body = data;
@@ -138,7 +139,7 @@ module.exports = class StaticGenerate {
       if (route.path === '*' && parentPath === '') routePath = '/404';
 
       // Remove trailing slash
-      const finalPath = routePath.replace(/.+\/$/, '');
+      const finalPath = routePath.replace(/(.+)\/$/, '$1');
 
       if (finalPath !== '') {
         results.push(finalPath);
@@ -207,10 +208,30 @@ module.exports = class StaticGenerate {
   }
 
   async buildSSRPage(context) {
+    const { res } = context;
+
     const response = {
       body: '',
       status: null,
     };
+
+    const writePage = async (context, response) => {
+      if (!/\.html?$/.test(context.url)) {
+        await fs.ensureDir(`${this.options.outputDir}/${context.url}`);
+        await fs.writeFileSync(
+          `${this.options.outputDir}/${context.url}/index.html`,
+          response.body,
+        );
+      } else {
+        await fs.ensureDir(`${this.options.outputDir}/${dirname(context.url)}`);
+        await fs.writeFileSync(`${this.options.outputDir}/${context.url}`, response.body);
+      }
+    };
+
+    if (res.finished) {
+      await writePage(context, { body: res.__body });
+      return response.status || res.statusCode || 200;
+    }
 
     try {
       // Render body
@@ -230,27 +251,36 @@ module.exports = class StaticGenerate {
         // Plugins hook
         await this.server.invokeAsync('beforeBuild', response, context, this.server);
 
+        if (res.finished) {
+          await writePage(context, { body: res.__body });
+          return response.status || res.statusCode || 200;
+        }
+
         // Render all page
         response.body = await this.renderer.renderSSRPage(response.body, context);
 
         // Hook on rendered
         await this.server.invokeAsync('rendered', response, context, this.server);
+
+        if (res.finished) {
+          await writePage(context, { body: res.__body });
+          return response.status || res.statusCode || 200;
+        }
       }
     } catch (err) {
       // Catch errors
       await this.server.invokeAsync('routeError', err, response, context, this.server);
+
+      if (res.finished) {
+        await writePage(context, { body: res.__body });
+        return response.status || res.statusCode || 500;
+      }
+
       response.body = response.body || 'Server error';
       response.status = 500;
     }
 
-    if (!/\.html?$/.test(context.url)) {
-      await fs.ensureDir(`${this.options.outputDir}/${context.url}`);
-      await fs.writeFileSync(`${this.options.outputDir}/${context.url}/index.html`, response.body);
-    } else {
-      await fs.ensureDir(`${this.options.outputDir}/${dirname(context.url)}`);
-      await fs.writeFileSync(`${this.options.outputDir}/${context.url}`, response.body);
-    }
-
+    await writePage(context, response);
     return response.status || 200;
   }
 
@@ -258,7 +288,7 @@ module.exports = class StaticGenerate {
     await fs.ensureDir(`${this.options.outputDir}/${path}`);
     await fs.writeFileSync(
       `${this.options.outputDir}/${path}/index.html`,
-      this.render.renderSPAPage(),
+      await this.renderer.renderSPAPage(),
     );
     return 'SPA';
   }
