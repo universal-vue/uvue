@@ -22,6 +22,12 @@
 import { promiseData } from '@/shared/utils';
 
 export default {
+  head() {
+    return {
+      meta: [{ vmid: 'desc', name: 'description', content: this.$store.state.vuexPlugin }],
+    };
+  },
+
   async fetch({ store }) {
     const value = await promiseData('fetch');
     store.commit('setVuexPlugin', value);

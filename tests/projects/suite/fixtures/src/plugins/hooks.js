@@ -60,6 +60,14 @@ export default {
     inject('hooksInstalled', true);
     Vue.prototype.$hooksTest = this.vm;
     this.vm.$data.contexts.beforeCreate = analyzeContext(context);
+
+    const { router, redirect } = context;
+    router.beforeEach((to, from, next) => {
+      if (/redirect-nav/.test(to.path)) {
+        redirect('/');
+      }
+      next();
+    });
   },
 
   async beforeStart(context) {

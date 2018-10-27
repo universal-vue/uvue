@@ -62,7 +62,7 @@
 - [x] **Vue CLI plugin support**: PWA
 - [x] **Vue CLI plugin support**: Apollo
 - [x] **CLI plugin**: `ssr:static` manage `res.finished`
-- [ ] **Common**: New logo
+- [x] **Common**: New logo
 - [ ] **Common**: Documentation with Vuepress and custom theme
 - [ ] **Common**: Issue template for Github
 - [ ] **Common**: Better contribution guide
@@ -100,12 +100,10 @@
 ## Beta
 
 - Tests
-  - [ ] VueMeta plugin (e2e)
-  - [ ] Redirects in plugins and navigation guards (e2e)
-  - [ ] Error handler in plugins and navigation guards (e2e)
-  - [ ] UVue plugins system (unit)
   - [x] SPA paths (e2e)
   - [x] Normal build in SPA mode (e2e)
-  - [ ] devServer config correctly sent to middlewares (unit)
-  - [ ] HTTPS setup on server (unit)
-  - [ ] Docker start script (unit)
+  - [x] VueMeta plugin (e2e)
+  - [ ] UVue plugins system
+  - [ ] devServer config correctly sent to middlewares
+  - [ ] HTTPS setup on server
+  - [ ] Docker start script

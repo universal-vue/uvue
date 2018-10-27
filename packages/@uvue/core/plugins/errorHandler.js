@@ -70,11 +70,6 @@ export default {
         );
       };
     }
-
-    // Catch error in router navigation guards
-    router.onError(error => {
-      this.setError(error, context);
-    });
   },
 
   /**

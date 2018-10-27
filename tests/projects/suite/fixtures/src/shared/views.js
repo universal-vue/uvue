@@ -66,6 +66,12 @@ const views = [
         label: 'Redirect route',
         component: () => import('@/views/core/RedirectRoute.vue'),
       },
+      {
+        path: '/redirect-nav',
+        name: 'redirect-nav',
+        label: 'Redirect nav guard',
+        component: () => import('@/views/core/RedirectNavGuard.vue'),
+      },
     ],
   },
   {

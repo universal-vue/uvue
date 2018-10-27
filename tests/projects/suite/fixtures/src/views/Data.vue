@@ -13,8 +13,11 @@
 
 <script>
 export default {
-  head: {
-    title: 'data()',
+  head() {
+    return {
+      title: `data()`,
+      meta: [{ vmid: 'desc', name: 'description', content: this.foo }],
+    };
   },
 
   data: () => ({

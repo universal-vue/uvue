@@ -3,14 +3,16 @@ import {
   pluginsHooks,
   pluginsError,
   pluginsContext,
+  pluginsErrorContext,
   redirect,
+  redirectNavGuard,
   vuex,
   asyncData,
   middlewares,
   errorHandler,
-} from './tests';
+} from '../tests';
 
-describe('SPA paths', () => {
+describe('(SPA) Core', () => {
   pluginsInstall.client();
 
   pluginsHooks.client();
@@ -19,8 +21,14 @@ describe('SPA paths', () => {
 
   pluginsContext.client();
 
+  pluginsErrorContext.client();
+
   redirect.client().helper();
 
+  redirectNavGuard.client();
+});
+
+describe('(SPA) Core plugins', () => {
   vuex.client();
 
   asyncData.client();
