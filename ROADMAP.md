@@ -65,7 +65,7 @@
 - [x] **Common**: New logo
 - [ ] **Common**: Documentation with Vuepress and custom theme
 - [ ] **Common**: Issue template for Github
-- [ ] **Common**: Better contribution guide
+- [x] **Common**: Better contribution guide
 - [ ] **Common**: Example repository
 - [ ] **Common**: CodeSandbox template
 - [x] **Common**: Discord Chat

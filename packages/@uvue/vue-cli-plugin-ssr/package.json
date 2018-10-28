@@ -1,7 +1,7 @@
 {
   "name": "@uvue/vue-cli-plugin-ssr",
   "version": "0.4.0-alpha.0",
-  "description": "Vue CLI plugin UVue: build SSR (Server side rendering) applications with ease",
+  "description": "UVue - SSR (Server side rendered) for Vue CLI with ease",
   "main": "index.js",
   "scripts": {
     "lint": "eslint './**/*.js'",
