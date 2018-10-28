@@ -11,8 +11,8 @@ module.exports = (api, options) => {
   const extendPackage = {
     dependencies: {
       'vue-router': '^3.0.1',
-      '@uvue/core': 'link:../@uvue/core',
-      '@uvue/server': 'link:../@uvue/server',
+      '@uvue/core': '^0.1.0-alpha+0',
+      '@uvue/server': '^0.1.0-alpha+0',
     },
     scripts: {
       'ssr:serve': 'vue-cli-service ssr:serve',

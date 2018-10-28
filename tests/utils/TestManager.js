@@ -130,6 +130,7 @@ export class TestManager {
       dependencies: {
         '@uvue/server': 'link:../../@uvue/server',
         '@uvue/core': 'link:../../@uvue/core',
+        '@uvue/rquery': 'link:../../@uvue/rquery',
       },
       scripts: {
         devtools: 'uvue-devtools',
