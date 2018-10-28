@@ -67,14 +67,6 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
 
   switch (command) {
     /**
-     * Install fixtures on project
-     */
-    case 'install:fixtures':
-    case 'if':
-      await tm.installFixtures(name, `tests/projects/${name}/fixtures`);
-      break;
-
-    /**
      * Create a full test project
      */
     case 'install':
@@ -87,11 +79,8 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
     /**
      * Run tests
      */
-    case 'test:build':
-      await buildProject(tm, name);
-      break;
-
     case 'test:unit':
+      await buildProject(tm, name);
       await unitProject(name);
       break;
 

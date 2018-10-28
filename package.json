@@ -1,6 +1,6 @@
 {
   "name": "uvue",
-  "description": "Universal Vue - SSR for Vue CLI 3.x with ease",
+  "description": "Universal Vue - SSR (Server side rendered) for Vue CLI with ease",
   "repository": "https://github.com/universal-vue/uvue",
   "author": "Simon Babay <simon@babay.fr>",
   "license": "MIT",
@@ -8,8 +8,11 @@
   "scripts": {
     "clean": "rimraf packages/tests",
     "lint": "lerna run lint",
+    "lint:fix": "lerna run lint:fix",
+    "format": "lerna run format",
     "test": "./tests/cli install suite && ./tests/cli test suite",
-    "postinstall": "scripts/postinstall.sh"
+    "postinstall": "scripts/postinstall.sh",
+    "pub": "yarn clean && lerna publish"
   },
   "workspaces": [
     "packages/@uvue/*",
