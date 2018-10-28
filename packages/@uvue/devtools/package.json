@@ -1,6 +1,6 @@
 {
   "name": "@uvue/devtools",
-  "version": "0.4.0-alpha.0",
+  "version": "0.1.0-alpha+0",
   "description": "UVue server development tools",
   "main": "index.js",
   "author": "Simon Babay <simon@babay.fr>",
@@ -14,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/universal-vue/uvue/issues"
   },
-  "homepage": "https://universal-vue.github.io/docs/",
+  "homepage": "https://universal-vue.github.io/docs/dev-tools",
   "scripts": {
     "lint": "eslint './**/*.js'",
     "lint:fix": "eslint --fix './**/*.js'",

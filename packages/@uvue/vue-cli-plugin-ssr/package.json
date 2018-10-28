@@ -1,6 +1,6 @@
 {
   "name": "@uvue/vue-cli-plugin-ssr",
-  "version": "0.4.0-alpha.0",
+  "version": "0.1.0-alpha+0",
   "description": "UVue - SSR (Server side rendered) for Vue CLI with ease",
   "main": "index.js",
   "scripts": {

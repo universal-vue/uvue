@@ -24,8 +24,6 @@ describe('(SPA) Core', () => {
   pluginsErrorContext.client();
 
   redirect.client().helper();
-
-  redirectNavGuard.client();
 });
 
 describe('(SPA) Core plugins', () => {
