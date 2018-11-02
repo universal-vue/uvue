@@ -5,8 +5,6 @@ export default {
    * Setup error handler dans some helpers functions
    */
   beforeCreate(context) {
-    const { router } = context;
-
     // Create error hanlder object to store current error
     if (process.server) {
       // On server side: create simple object
