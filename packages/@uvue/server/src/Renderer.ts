@@ -33,7 +33,7 @@ export class Renderer implements IRenderer {
   public async renderSSRPage(body: string, context: IRequestContext) {
     let head = '';
     let bodyAttrs = '';
-    let htmlAttrs = '';
+    let htmlAttrs = 'data-vue-meta-server-rendered ';
 
     // Add Vuex and components data
     body += `<script data-vue-ssr-data>window.__DATA__=${jsonEncode(context.data || {})}</script>`;
@@ -49,8 +49,8 @@ export class Renderer implements IRenderer {
     if (context.meta) {
       const metas = context.meta.inject();
 
-      bodyAttrs = metas.bodyAttrs.text();
-      htmlAttrs = metas.htmlAttrs.text();
+      bodyAttrs += metas.bodyAttrs.text();
+      htmlAttrs += metas.htmlAttrs.text();
 
       // Inject metas to head
       head =
@@ -80,8 +80,8 @@ export class Renderer implements IRenderer {
     const result = this.templates.ssr
       .replace(/data-html-attrs(="")?/i, htmlAttrs)
       .replace(/data-body-attrs(="")?/i, bodyAttrs)
-      .replace(/<ssr-head\/?>/i, head)
-      .replace(/<ssr-body\/?>/i, body)
+      .replace(/<ssr-head\s*\/?>/i, head)
+      .replace(/<ssr-body\s*\/?>/i, body)
       .replace(/<\/ssr-head>/i, '')
       .replace(/<\/ssr-body>/i, '');
 
@@ -89,8 +89,8 @@ export class Renderer implements IRenderer {
   }
 
   public async renderSPAPage() {
-    return this.templates.spa.replace(/<ssr-head\/?>/i, '').replace(
-      /<ssr-body\/?>/i,
+    return this.templates.spa.replace(/<ssr-head\s*\/?>/i, '').replace(
+      /<ssr-body\s*\/?>/i,
       `<div id="app"></div>
         <script data-vue-spa>window.__SPA_ROUTE__=true;</script>`,
     );
