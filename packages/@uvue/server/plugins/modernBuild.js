@@ -1,7 +1,9 @@
 import path from 'path';
 import fs from 'fs';
-import ModernModePlugin from '@uvue/vue-cli-plugin-ssr/webpack/plugins/ModernModePlugin';
 import escapeStringRegexp from 'escape-string-regexp';
+
+// https://gist.github.com/samthor/64b114e4a4f539915a95b91ffd340acc
+const safariFix = `!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()},!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();`;
 
 export default {
   /**
@@ -70,7 +72,7 @@ export default {
    * Inject legacy code for old browsers
    */
   injectLegacyAndFixes(html) {
-    let code = `<script>${ModernModePlugin.safariFix}</script>`;
+    let code = `<script>${safariFix}</script>`;
     for (const asset of this.legacyManifest.initial) {
       code += `<script src="${asset}" type="text/javascript" nomodule></script>`;
     }
