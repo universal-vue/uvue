@@ -103,6 +103,7 @@
   - [x] SPA paths (e2e)
   - [x] Normal build in SPA mode (e2e)
   - [x] VueMeta plugin (e2e)
+  - [ ] VueMeta & SPA paths (e2e)
   - [ ] UVue plugins system
   - [ ] devServer config correctly sent to middlewares
   - [ ] HTTPS setup on server
