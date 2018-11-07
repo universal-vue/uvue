@@ -67,6 +67,10 @@ module.exports = (api, options = {}) => {
     return args;
   });
 
+  if (!client) {
+    chainConfig.plugins.delete('friendly-errors');
+  }
+
   // Remove default plugins
   chainConfig.plugins.delete('no-emit-on-errors');
   chainConfig.plugins.delete('progress');
