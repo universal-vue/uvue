@@ -126,7 +126,6 @@ export class Server implements IServer {
     const signals = ['SIGINT', 'SIGTERM'];
     for (const signal of signals) {
       (process.on as any)(signal, () => {
-        // tslint:disable-next-line
         consola.info(`Stopping server...`);
         this.stop().then(() => process.exit(0));
       });

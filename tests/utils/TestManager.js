@@ -64,6 +64,7 @@ export class TestManager {
     await this.updatePackage('base', {
       devDependencies: {
         '@uvue/vue-cli-plugin-ssr': 'link:../../@uvue/vue-cli-plugin-ssr',
+        '@uvue/devtools': 'link:../../@uvue/devtools',
       },
     });
   }
@@ -132,8 +133,10 @@ export class TestManager {
         '@uvue/core': 'link:../../@uvue/core',
         '@uvue/rquery': 'link:../../@uvue/rquery',
       },
+      devDependencies: {
+        '@uvue/devtools': 'link:../../@uvue/devtools',
+      },
       scripts: {
-        devtools: 'uvue-devtools',
         start: 'uvue-start',
       },
     });
