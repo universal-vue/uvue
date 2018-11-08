@@ -5,6 +5,8 @@ import yaml from 'js-yaml';
 import waitOn from 'wait-on';
 import opn from 'opn';
 import consola from 'consola';
+import { table } from 'table';
+import chalk from 'chalk';
 
 const waitOnPromise = options =>
   new Promise((resolve, reject) =>
@@ -13,6 +15,52 @@ const waitOnPromise = options =>
       resolve();
     }),
   );
+
+const tableStyles = {
+  border: {
+    topBody: `─`,
+    topJoin: `┬`,
+    topLeft: `┌`,
+    topRight: `┐`,
+
+    bottomBody: `─`,
+    bottomJoin: `┴`,
+    bottomLeft: `└`,
+    bottomRight: `┘`,
+
+    bodyLeft: `│`,
+    bodyRight: `│`,
+    bodyJoin: `│`,
+
+    joinBody: `─`,
+    joinLeft: `├`,
+    joinRight: `┤`,
+    joinJoin: `┼`,
+  },
+  columns: {
+    0: {
+      width: 15,
+    },
+    1: {
+      width: 10,
+    },
+    2: {
+      width: 10,
+    },
+    3: {
+      width: 10,
+    },
+    4: {
+      width: 10,
+    },
+    5: {
+      width: 10,
+    },
+  },
+  drawHorizontalLine: (index, size) => {
+    return index === 0 || index === 1 || index === size;
+  },
+};
 
 export const executeScenario = async (filepath, { host, port }) => {
   const data = await fs.readFile(path.resolve(filepath), 'utf-8');
@@ -46,7 +94,35 @@ export const executeScenario = async (filepath, { host, port }) => {
         },
         (err, results) => {
           if (err) return reject(err);
-          consola.success(`${results.requests.average} req/s`);
+          const { requests, latency } = results;
+
+          const dataTable = [
+            ['', chalk.blue('Min'), chalk.blue('Avg'), chalk.blue('Max')],
+            [chalk.blue('Req/s'), requests.min, requests.average, requests.max],
+            [chalk.blue('Latency(ms)'), latency.min, latency.average, latency.max],
+          ];
+
+          const statusTable = [
+            [
+              chalk.blue('Total'),
+              chalk.blue('1xx'),
+              chalk.green('2xx'),
+              chalk.yellow('3xx'),
+              chalk.red('4xx'),
+              chalk.red('5xx'),
+            ],
+            [
+              requests.total,
+              results['1xx'],
+              results['2xx'],
+              results['3xx'],
+              results['4xx'],
+              results['5xx'],
+            ],
+          ];
+
+          process.stdout.write(table(dataTable, tableStyles));
+          process.stdout.write(table(statusTable, tableStyles));
           resolve(results);
         },
       );

@@ -15,8 +15,12 @@ export default [
 
     const startPath = require.resolve('@uvue/server/start');
 
-    const server = execa('node', [startPath, ...buildServerArgs(argv)]);
+    const server = execa('node', [startPath, ...buildServerArgs(argv)], {
+      stdio: 'inherit',
+    });
+
     await executeScenario(argv.scenario, argv);
+
     server.kill('SIGINT');
   },
 ];
