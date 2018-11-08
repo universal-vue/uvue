@@ -25,11 +25,10 @@ const resolveComponentsAsyncData = (context, route, components) => {
   if (!components) components = router.getMatchedComponents(route);
 
   return Promise.all(
-    getAsyncDataComponents(components).map(Component => {
-      return Component.options.asyncData(context).then(data => {
-        if (data) applyAsyncData(Component, data);
-        return data;
-      });
+    getAsyncDataComponents(components).map(async Component => {
+      const data = await Component.options.asyncData(context);
+      if (data) applyAsyncData(Component, data);
+      return data;
     }),
   );
 };
