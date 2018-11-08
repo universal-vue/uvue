@@ -161,6 +161,10 @@ export const clinicRun = async (argv, clinicApi) => {
 
   await fs.ensureDir('.devtools');
 
+  process.on('SIGINT', () => {
+    consola.info('Generating report...');
+  });
+
   return new Promise((resolve, reject) => {
     clinicApi.collect(['node', startPath, ...buildServerArgs(argv)], (err, filepath) => {
       if (err) return reject(err);
@@ -170,6 +174,7 @@ export const clinicRun = async (argv, clinicApi) => {
         await fs.move(`./${filepath}`, `.devtools/${filepath}`);
         await fs.move(`./${filepath}.html`, `.devtools/${filepath}.html`);
 
+        consola.success('Opening report...');
         await opn(`.devtools/${filepath}.html`);
         resolve();
       });
