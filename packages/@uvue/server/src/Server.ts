@@ -66,10 +66,11 @@ export class Server implements IServer {
   /**
    * Method to declare a plugin
    */
-  public addPlugin(plugin: any, options: any) {
+  public addPlugin(plugin: any, options: any = {}) {
     this.plugins.push(plugin);
-    plugin.$options = options;
-    this.invoke('install', this);
+    if (typeof plugin.install === 'function') {
+      plugin.install(this, options);
+    }
   }
 
   /**

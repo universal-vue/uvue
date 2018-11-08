@@ -1,14 +1,12 @@
 import serveStatic from 'serve-static';
 
 export default {
-  install(app) {
-    this.$options = {
+  install(app, pluginOptions = {}) {
+    const { options: opts, directory } = {
       directory: 'dist',
       options: {},
-      ...(this.$options || {}),
+      ...pluginOptions,
     };
-
-    const { options, directory } = this.$options;
-    app.use(serveStatic(directory, options));
+    app.use(serveStatic(directory, opts));
   },
 };

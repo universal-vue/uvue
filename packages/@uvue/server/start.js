@@ -80,7 +80,7 @@ process.env.NODE_ENV = 'production';
     for (const pluginDef of options.plugins) {
       if (typeof pluginDef === 'string') {
         const plugin = require(pluginDef);
-        server.addPlugin(plugin.default || plugin, pluginDef[1]);
+        server.addPlugin(plugin.default || plugin);
       } else if (Array.isArray(pluginDef)) {
         const plugin = require(pluginDef[0]);
         server.addPlugin(plugin.default || plugin, pluginDef[1]);

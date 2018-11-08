@@ -141,8 +141,8 @@ module.exports = class {
     for (const plugin of plugins) {
       const [src, options] = plugin;
 
-      const module = require(src);
-      server.addPlugin(module.default || module, options);
+      const m = require(src);
+      server.addPlugin(m.default || m, options);
     }
   }
 
