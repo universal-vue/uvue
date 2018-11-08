@@ -5,8 +5,8 @@ const { processStats } = require('@vue/cli-ui/ui-defaults/utils/stats');
 module.exports = api => {
   api.addClientAddon({
     id: 'org.uvue.webpack.client-addon',
-    path: path.join(__dirname, 'ui-addon-dist'),
-    // url: 'http://localhost:8042/index.js',
+    // path: path.join(__dirname, 'ui-addon-dist'),
+    url: 'http://localhost:8042/index.js',
   });
 
   const { getSharedData, setSharedData, removeSharedData } = api.namespace('org.vue.webpack.');
@@ -332,8 +332,13 @@ module.exports = api => {
   });
 
   api.describeTask({
-    match: /vue-cli-service generate/,
+    match: /vue-cli-service ssr:static/,
     description: 'Generate static website',
+  });
+
+  api.describeTask({
+    match: /vue-cli-service ssr:fix/,
+    description: 'Try to fix project code to be SSR compatible',
   });
 
   // Open app button
