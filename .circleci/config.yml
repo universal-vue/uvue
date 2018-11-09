@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  build:
+    branches:
+      only:
+        - master
+        - dev
+
+    docker:
+      - image: circleci/node:8
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+
+      - run: ./.circleci/puppeteer.sh
+      - run: yarn
+      - run: ./test/cli i suite
+
+      - save_cache:
+          paths:
+            - packages/base
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: yarn test
