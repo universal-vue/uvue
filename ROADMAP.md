@@ -73,18 +73,18 @@
 ## Next
 
 - [ ] **Server**: Server error plugin (to customize server error page)
-- [ ] **DevTools**: Better autocannon logs (status, low-high)
+- [x] **DevTools**: Better autocannon logs (status, low-high)
 - [ ] **Docker** With varnish cache
 - **Server**: Pages cache plugin
   - [ ] Memory
   - [ ] Files
   - [ ] Redis
-
-# Ideas / Future
-
 - **Server**: Adapters
   - [ ] Express
   - [ ] Koa
+
+# Ideas / Future
+
 - [ ] **Vue CLI UI**: `ssr:static` Generate a files wil all redirects
 - [ ] **Plugin**: Available .env variables in configs files
 - [ ] **Vue CLI UI**: CPU & RAM monitoring for `ssr:start` command

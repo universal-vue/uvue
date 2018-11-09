@@ -1,11 +1,13 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      For guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://universal-vue.github.io/docs/" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
+
+    <h3>Documentations</h3>
+    <ul>
+      <li><a href="https://vuejs.org/" target="_blank">Vue</a></li>
+      <li><a href="https://universal-vue.github.io/docs/" target="_blank">UVue</a></li>
+      <li><a href="https://cli.vuejs.org//" target="_blank">Vue CLI</a></li>
+    </ul>
   </div>
 </template>
 
@@ -13,16 +15,31 @@
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String,
+    msg: {
+      type: String,
+      default: '',
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Nunito:300,400');
+
+body {
+  font-family: 'Nunito', sans-serif;
+}
+
+h1 {
+  font-weight: 300;
+  margin: 40px 0 0;
+}
+
 h3 {
   margin: 40px 0 0;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
