@@ -21,7 +21,7 @@ jobs:
 
       - run: ./.circleci/puppeteer.sh
       - run: yarn
-      - run: ./test/cli i suite
+      - run: ./tests/cli i suite
 
       - save_cache:
           paths:

@@ -11,6 +11,9 @@
 
 [![chat discord](https://img.shields.io/badge/chat-discord-blue.svg)](https://discord.gg/3ZZBmFs)
 [![npm version](https://badge.fury.io/js/%40uvue%2Fvue-cli-plugin-ssr.svg)](https://badge.fury.io/js/%40uvue%2Fvue-cli-plugin-ssr)
+[![TravisCI](https://travis-ci.org/universal-vue/uvue.svg?branch=master)](https://travis-ci.org/universal-vue/uvue)
+[![CircleCI](https://circleci.com/gh/universal-vue/uvue/tree/master.svg?style=shield)](https://circleci.com/gh/universal-vue/uvue)
+[![AppVeyor](https://ci.appveyor.com/api/projects/status/s152ysadin639ats?svg=true)](https://ci.appveyor.com/project/chymz/uvue)
 
 ## Getting started
 

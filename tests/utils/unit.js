@@ -57,8 +57,10 @@ const mockContext = (url = '/') => {
 };
 
 const testServerPlugin = {
-  install() {
+  install(app, options) {
+    this.$options = options;
     this.$options.install = true;
+
     this.events = this.$options.events;
   },
 

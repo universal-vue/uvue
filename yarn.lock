@@ -1581,26 +1581,28 @@
   integrity sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
 
 "@uvue/core@link:packages/@uvue/core":
-  version "0.1.0-alpha.0"
+  version "0.1.0-alpha.1"
 
 "@uvue/devtools@link:packages/@uvue/devtools":
-  version "0.1.0-alpha.0"
+  version "0.1.0-alpha.1"
   dependencies:
     "@nearform/bubbleprof" "^1.6.1"
     "@nearform/doctor" "^3.4.0"
     "@nearform/flame" "^2.1.1"
     autocannon "^3.0.0"
+    chalk "^2.4.1"
     consola "^1.4.3"
     execa "^1.0.0"
     fs-extra "^7.0.0"
     js-yaml "^3.12.0"
     ndb "^1.0.26"
     opn "^5.4.0"
+    table "^5.1.0"
     wait-on "^3.0.1"
     yargs "^12.0.2"
 
 "@uvue/rquery@link:packages/@uvue/rquery":
-  version "0.1.0-alpha.0"
+  version "0.1.0-alpha.1"
   dependencies:
     "@babel/parser" "^7.0.0"
     "@types/node" "^10.9.4"
@@ -1610,7 +1612,7 @@
     typescript "^3.0.3"
 
 "@uvue/server@link:packages/@uvue/server":
-  version "0.1.0-alpha.0"
+  version "0.1.0-alpha.1"
   dependencies:
     "@types/compression" "^0.0.36"
     "@types/connect" "^3.4.32"
@@ -1638,9 +1640,9 @@
     yargs "^12.0.2"
 
 "@uvue/vue-cli-plugin-ssr@link:packages/@uvue/vue-cli-plugin-ssr":
-  version "0.1.0-alpha.0"
+  version "0.1.0-alpha.1"
   dependencies:
-    "@uvue/rquery" "^0.1.0-alpha.0"
+    "@uvue/rquery" "^0.1.0-alpha.1"
     chalk "^2.4.1"
     chokidar "^2.0.4"
     consola "^1.4.3"
