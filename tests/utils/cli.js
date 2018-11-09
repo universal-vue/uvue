@@ -57,6 +57,11 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
   const tm = new TestManager('packages/tests');
   const [command, name, arg0] = yargv._;
 
+  // Force Yarn
+  const vuercPath = join(os.homedir(), '.vuerc');
+  if (!(await fs.exists(vuercPath))) {
+    await fs.writeFile(vuercPath, JSON.stringify({}));
+  }
   await execa(require.resolve('@vue/cli/bin/vue.js'), ['config', '-s', 'packageManager', 'yarn']);
 
   if (!fs.existsSync('packages/tests/base/src/main.js')) {
