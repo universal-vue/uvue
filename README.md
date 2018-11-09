@@ -1,4 +1,4 @@
-<p align="center">
+<p align="center" style="text-align: center;">
   <img src="https://s3.eu-west-2.amazonaws.com/yabab/uvue-512.png" alt="UVue" width="256" height="256">
 </p>
 
@@ -6,8 +6,10 @@
 
 > Build universal Vue applications with ease
 
-**Documentation:** https://universal-vue.github.io/docs/
+- [Documentation](https://universal-vue.github.io/docs/)
+- [CodeSandbox demo](https://codesandbox.io/s/github/universal-vue/uvue-codesandbox)
 
+[![chat discord](https://img.shields.io/badge/chat-discord-blue.svg)](https://discord.gg/3ZZBmFs)
 [![npm version](https://badge.fury.io/js/%40uvue%2Fvue-cli-plugin-ssr.svg)](https://badge.fury.io/js/%40uvue%2Fvue-cli-plugin-ssr)
 
 ## Getting started
