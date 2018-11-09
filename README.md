@@ -6,11 +6,9 @@
 
 > Build universal Vue applications with ease
 
-**Documentation** (Soon)
+**Documentation:** https://universal-vue.github.io/docs/
 
 [![npm version](https://badge.fury.io/js/%40uvue%2Fvue-cli-plugin-ssr.svg)](https://badge.fury.io/js/%40uvue%2Fvue-cli-plugin-ssr)
-[![TravisCI](https://travis-ci.org/uvue/uvue.svg?branch=master)](https://travis-ci.org/uvue/uvue)
-[![CircleCI](https://circleci.com/gh/uvue/uvue/tree/master.svg?style=shield)](https://circleci.com/gh/uvue/uvue)
 
 ## Getting started
 

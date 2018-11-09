@@ -14,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/universal-vue/uvue/issues"
   },
-  "homepage": "https://universal-vue.github.io/docs/dev-tools",
+  "homepage": "https://universal-vue.github.io/docs/devtools/",
   "scripts": {
     "lint": "eslint './**/*.js'",
     "lint:fix": "eslint --fix './**/*.js'",
