@@ -57,6 +57,8 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
   const tm = new TestManager('packages/tests');
   const [command, name, arg0] = yargv._;
 
+  await execa(require.resolve('@vue/cli/bin/vue.js'), ['config', '-s', 'packageManager', 'yarn']);
+
   if (!fs.existsSync('packages/tests/base/src/main.js')) {
     await tm.initBase();
   }

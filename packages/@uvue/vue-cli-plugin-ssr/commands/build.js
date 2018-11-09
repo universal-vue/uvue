@@ -78,8 +78,8 @@ function build(api, options, args) {
           args.target !== 'app'
             ? config.output.filename.replace(/\.js$/, '-')
             : isLegacyBuild
-              ? 'legacy-'
-              : '';
+            ? 'legacy-'
+            : '';
         config.plugins.push(
           new BundleAnalyzerPlugin({
             logLevel: 'warn',

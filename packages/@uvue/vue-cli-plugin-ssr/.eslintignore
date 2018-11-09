@@ -1,1 +1,3 @@
 generator/templates/**/*
+ui-addon/
+ui-addon-dist/
