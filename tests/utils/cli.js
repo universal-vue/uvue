@@ -1,5 +1,5 @@
 import os from 'os';
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 import { execSync } from 'child_process';
 import waitOn from 'wait-on';
@@ -58,9 +58,9 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
   const [command, name, arg0] = yargv._;
 
   // Force Yarn
-  const vuercPath = join(os.homedir(), '.vuerc');
-  if (!(await fs.exists(vuercPath))) {
-    await fs.writeFile(vuercPath, JSON.stringify({}));
+  const vuercPath = path.join(os.homedir(), '.vuerc');
+  if (!fs.existsSync(vuercPath)) {
+    await fs.writeFile(vuercPath, '{}');
   }
   await execa(require.resolve('@vue/cli/bin/vue.js'), ['config', '-s', 'packageManager', 'yarn']);
 
