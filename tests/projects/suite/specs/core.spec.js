@@ -1,15 +1,14 @@
 import {
-  pluginsInstall,
+  pluginsInit,
   pluginsHooks,
   pluginsError,
   pluginsContext,
   pluginsErrorContext,
   redirect,
-  redirectNavGuard,
 } from './tests';
 
 describe('Core', () => {
-  pluginsInstall
+  pluginsInit
     .server()
     .mount()
     .client();
@@ -19,12 +18,12 @@ describe('Core', () => {
     .mount()
     .client();
 
-  pluginsError
+  pluginsContext
     .server()
     .mount()
     .client();
 
-  pluginsContext
+  pluginsError
     .server()
     .mount()
     .client();

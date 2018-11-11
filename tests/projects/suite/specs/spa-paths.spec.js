@@ -1,5 +1,5 @@
 import {
-  pluginsInstall,
+  pluginsInit,
   pluginsHooks,
   pluginsError,
   pluginsContext,
@@ -11,7 +11,7 @@ import {
 } from './tests';
 
 describe('SPA paths', () => {
-  pluginsInstall.client();
+  pluginsInit.client();
 
   pluginsHooks.client();
 

@@ -43,10 +43,13 @@ const analyzeContext = (context, hookName) => {
 };
 
 export default {
-  beforeCreate(context, inject) {
+  install(options) {
+    this.$options = options;
+
     this.vm = new Vue({
       data: () => ({
-        beforeCreate: true,
+        install: true,
+        beforeCreate: false,
         beforeStart: false,
         routeResolve: false,
         routeError: false,
@@ -56,6 +59,10 @@ export default {
         contexts: {},
       }),
     });
+  },
+
+  beforeCreate(context, inject) {
+    this.vm.$data.beforeCreate = true;
 
     inject('hooksInstalled', true);
     Vue.prototype.$hooksTest = this.vm;

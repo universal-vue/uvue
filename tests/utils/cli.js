@@ -15,7 +15,7 @@ const buildProject = async (tm, name) => {
 
 const unitProject = async name => {
   // Unit/Integration tests
-  await execa('./node_modules/.bin/jest', [], {
+  await execa('./node_modules/.bin/jest', ['--verbose'], {
     stdio: 'inherit',
   });
 };

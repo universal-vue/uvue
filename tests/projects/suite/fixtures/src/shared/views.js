@@ -35,10 +35,10 @@ const views = [
     label: 'Core',
     children: [
       {
-        path: '/plugins-install',
-        name: 'plugins-install',
-        label: 'Plugins install',
-        component: () => import('@/views/core/Install.vue'),
+        path: '/plugins-init',
+        name: 'plugins-init',
+        label: 'Plugins init',
+        component: () => import('@/views/core/PluginInit.vue'),
       },
       {
         path: '/plugins-hooks/:foo',

@@ -1,6 +1,6 @@
 import {
   pluginsHooks,
-  pluginsInstall,
+  pluginsInit,
   pluginsError,
   pluginsContext,
   pluginsErrorContext,
@@ -8,7 +8,7 @@ import {
 } from '../tests';
 
 describe('Core', () => {
-  pluginsInstall
+  pluginsInit
     .server()
     .mount()
     .client();
@@ -18,14 +18,14 @@ describe('Core', () => {
     // .mount()
     .client();
 
-  pluginsError
-    .server()
-    // .mount()
-    .client();
-
   pluginsContext
     // .server()
     .mount()
+    .client();
+
+  pluginsError
+    .server()
+    // .mount()
     .client();
 
   pluginsErrorContext

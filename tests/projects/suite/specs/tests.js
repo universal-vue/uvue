@@ -105,10 +105,10 @@ export const metas = {
 /**
  * Check plugins are installed
  */
-export const pluginsInstall = {
+export const pluginsInit = {
   server() {
     it('Plugins install is working (server)', async () => {
-      const $ = await gotoSSR('/plugins-install');
+      const $ = await gotoSSR('/plugins-init');
       pageRunTestsSSR($);
     });
     return this;
@@ -122,7 +122,7 @@ export const pluginsInstall = {
   },
   client() {
     it('Plugins install is working (client)', async () => {
-      await gotoSPA('plugins-install');
+      await gotoSPA('plugins-init');
       await pageRunTests();
     });
     return this;
