@@ -2,6 +2,13 @@ import Vue from 'vue';
 
 export default {
   /**
+   * Install with options
+   */
+  install(options) {
+    this.$options = options;
+  },
+
+  /**
    * Setup error handler dans some helpers functions
    */
   beforeCreate(context) {

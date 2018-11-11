@@ -8,19 +8,23 @@ import onHotReload from '../lib/onHotReload';
  */
 export default {
   /**
-   * Get store from Vue options and inject it to context
+   * Install with options
    */
-  beforeCreate(context, _, options) {
-    // Default options
+  install(options) {
     this.$options = {
       fetch: true,
       onHttpRequest: true,
-      ...this.$options,
+      ...options,
     };
+  },
 
-    if (options.store || !(options.store instanceof Store)) {
+  /**
+   * Get store from Vue options and inject it to context
+   */
+  beforeCreate(context, _, vueOptions) {
+    if (vueOptions.store || !(vueOptions.store instanceof Store)) {
       // Get store from new Vue options
-      context.store = options.store;
+      context.store = vueOptions.store;
 
       // Handle HMR
       onHotReload(() => {

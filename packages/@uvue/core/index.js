@@ -14,7 +14,11 @@ export default {
       this.plugins.splice(exists, 1);
     }
 
-    plugin.$options = options;
+    // Install hook plugin
+    if (typeof plugin.install === 'function') {
+      plugin.install(options);
+    }
+
     this.plugins.push(plugin);
   },
 

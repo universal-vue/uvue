@@ -3,6 +3,13 @@ import sanitizeComponent from '../lib/sanitizeComponent';
 
 export default {
   /**
+   * Install with options
+   */
+  install(options) {
+    this.$options = options;
+  },
+
+  /**
    * Fetch middlewares from plugin options and other
    * installed plugins
    */
