@@ -145,7 +145,7 @@ module.exports = class CodeFixer {
       } else if (type === 'code') {
         codes.push(value);
         const files = await findInFiles.find(value, this.basePath, '.(js|ts)$');
-        codesResults.concat(Object.keys(files));
+        codesResults = codesResults.concat(Object.keys(files));
       }
     }
 
