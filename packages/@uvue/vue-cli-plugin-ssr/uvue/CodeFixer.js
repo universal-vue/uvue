@@ -6,6 +6,7 @@ const escapeStringRegexp = require('escape-string-regexp');
 const prettier = require('prettier');
 const { RQuery } = require('@uvue/rquery');
 const consola = require('consola');
+const { merge } = require('lodash');
 
 const fileSearchFilter = filename => {
   const regexp = new RegExp(`${filename}.(js|ts)$`);
@@ -130,8 +131,8 @@ module.exports = class CodeFixer {
   }
 
   async findFiles(checks = []) {
-    const filesResults = [];
-    const codesResults = [];
+    let filesResults = [];
+    let codesResults = [];
 
     const codes = [];
 
@@ -140,11 +141,11 @@ module.exports = class CodeFixer {
 
       if (type === 'file') {
         const files = await rreaddir(this.basePath, [fileSearchFilter(value)]);
-        filesResults.push(...files);
+        filesResults = filesResults.concat(files);
       } else if (type === 'code') {
         codes.push(value);
         const files = await findInFiles.find(value, this.basePath, '.(js|ts)$');
-        codesResults.push(...Object.keys(files));
+        codesResults.concat(Object.keys(files));
       }
     }
 
@@ -169,7 +170,7 @@ module.exports = class CodeFixer {
       }
     }
 
-    return [...new Set([...codesResults, ...filesOK])];
+    return Array.from(new Set([].concat(codesResults, filesOK)));
   }
 
   resolveCodingStyle(code) {
@@ -180,11 +181,15 @@ module.exports = class CodeFixer {
     if (prettierConfigFile) {
       this.prettierOptions = prettier.resolveConfig.sync(this.basePath);
     } else {
-      this.prettierOptions = prettier.resolveConfig.sync(this.basePath) || {
-        singleQuote: true,
-        bracketSpacing: true,
-        ...this.detecteCodingStyle(code),
-      };
+      this.prettierOptions =
+        prettier.resolveConfig.sync(this.basePath) ||
+        merge(
+          {
+            singleQuote: true,
+            bracketSpacing: true,
+          },
+          this.detecteCodingStyle(code),
+        );
     }
 
     return this.prettierOptions;
