@@ -1,4 +1,5 @@
 const { IpcMessenger } = require('@vue/cli-shared-utils');
+const consola = require('consola');
 
 const defaults = {
   host: 'localhost',
@@ -11,6 +12,25 @@ const modifyConfig = (config, fn) => {
   } else {
     fn(config);
   }
+};
+
+let server;
+let reloading = false;
+let reloadQueued = false;
+
+const reloadServer = async (server, { api, host, port, args }) => {
+  if (reloading) {
+    consola.warn('Reload queued!');
+    reloadQueued = true;
+    return;
+  }
+  reloading = true;
+
+  if (server) {
+    await server.stop();
+    server = null;
+  }
+  return startServer({ api, host, port, args });
 };
 
 let ipc = null;
@@ -28,8 +48,6 @@ module.exports = (api, options) => {
       },
     },
     async function(args) {
-      let server;
-
       const consola = require('consola');
       const chokidar = require('chokidar');
 
@@ -52,11 +70,7 @@ module.exports = (api, options) => {
       // Restart server on changes
       watcher.on('all', async () => {
         consola.info('Changes detected: restarting server...');
-        if (server) {
-          await server.stop();
-          server = null;
-        }
-        server = await startServer({ api, host, port, args });
+        server = await reloadServer(server, { api, host, port, args });
       });
 
       // Restart on user input
@@ -64,11 +78,7 @@ module.exports = (api, options) => {
       stdin.addListener('data', async d => {
         if (d.toString().trim() == 'rs') {
           consola.info('Restarting server...');
-          if (server) {
-            await server.stop();
-            server = null;
-          }
-          server = await startServer({ api, host, port, args });
+          server = await reloadServer(server, { api, host, port, args });
         }
       });
 
@@ -155,6 +165,14 @@ async function startServer({ api, host, port, args }) {
         url: `http://${host}:${port}`,
       },
     });
+  }
+
+  reloading = false;
+
+  if (reloadQueued) {
+    consola.info(`Restart because reload is queued...`);
+    reloadQueued = false;
+    return reloadServer(server, { api, host, port, args });
   }
 
   return server;
