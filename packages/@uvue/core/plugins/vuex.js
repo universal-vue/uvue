@@ -12,7 +12,7 @@ export default {
    */
   install(options) {
     this.$options = {
-      fetch: true,
+      fetch: false,
       onHttpRequest: true,
       ...options,
     };
