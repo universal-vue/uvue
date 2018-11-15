@@ -6,6 +6,13 @@ const { exists } = require('fs-extra');
 const { resolve } = require('path');
 const { Server } = require('@uvue/server');
 
+const pluginPath = srcPath => {
+  if (/^\./.test(srcPath)) {
+    return resolve(srcPath);
+  }
+  return srcPath;
+};
+
 // CLI args
 const argv = yargs
   .option('c', {
@@ -79,10 +86,10 @@ process.env.NODE_ENV = 'production';
   if (options.plugins) {
     for (const pluginDef of options.plugins) {
       if (typeof pluginDef === 'string') {
-        const plugin = require(pluginDef);
+        const plugin = require(pluginPath(pluginDef));
         server.addPlugin(plugin.default || plugin);
       } else if (Array.isArray(pluginDef)) {
-        const plugin = require(pluginDef[0]);
+        const plugin = require(pluginPath(pluginDef[0]));
         server.addPlugin(plugin.default || plugin, pluginDef[1]);
       }
     }
