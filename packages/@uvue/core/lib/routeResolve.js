@@ -15,10 +15,12 @@ export default async (context, { to, next } = {}) => {
   } catch (error) {
     if (error instanceof RedirectError) {
       // Do redirect
-      doRedirect(context, error);
-      if (process.client) {
-        if (next) next(error.location);
+      if (process.client && next) {
+        context.app.$emit('router.redirect');
+        next(error.location);
         return;
+      } else {
+        doRedirect(context, error);
       }
     } else {
       if (process.env.NODE_ENV !== 'production') {

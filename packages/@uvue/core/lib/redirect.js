@@ -25,16 +25,18 @@ export const getRedirect = ({ ssr }) => {
  * Simply do a redirect
  * Distinct process for server & client side
  */
-export const doRedirect = ({ res, ssr, router }, { location, statusCode }) => {
+export const doRedirect = ({ app, res, ssr, router }, { location, statusCode }) => {
+  if (typeof location === 'object') {
+    location = router.resolve(location, router.currentRoute).href;
+  }
+
+  app.$emit('router.redirect');
+
   if (process.client) {
     // Client side
     router.replace(location);
   } else {
     // Server side
-    if (typeof location === 'object') {
-      location = router.resolve(location, router.currentRoute).href;
-    }
-
     ssr.redirected = res.statusCode = statusCode;
 
     res.writeHead(statusCode, {
