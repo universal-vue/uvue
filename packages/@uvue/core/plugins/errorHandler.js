@@ -2,13 +2,6 @@ import Vue from 'vue';
 
 export default {
   /**
-   * Install with options
-   */
-  install(options) {
-    this.$options = options;
-  },
-
-  /**
    * Setup error handler dans some helpers functions
    */
   beforeCreate(context) {
@@ -107,6 +100,18 @@ export default {
    */
   beforeReady({ ssr, $errorHandler }) {
     if (process.server && $errorHandler.error) {
+      // Try to serialize error object
+      if ($errorHandler.error instanceof Error) {
+        const error = {
+          message: $errorHandler.error.message,
+          stack: $errorHandler.error.stack,
+        };
+        for (const key in $errorHandler.error) {
+          error[key] = $errorHandler.error[key];
+        }
+        $errorHandler.error = error;
+      }
+
       ssr.data.errorHandler = $errorHandler;
       ssr.statusCode = $errorHandler.statusCode || 500;
     }
