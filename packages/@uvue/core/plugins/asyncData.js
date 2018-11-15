@@ -39,7 +39,7 @@ const resolveComponentsAsyncData = (context, route, components) => {
 const applyAsyncData = (Component, asyncData) => {
   const ComponentData = Component.options.data || noopData;
 
-  if (!asyncData || Component.options.hasAsyncData) {
+  if (!asyncData) {
     return;
   }
 
@@ -48,10 +48,6 @@ const applyAsyncData = (Component, asyncData) => {
     const data = ComponentData.call(this);
     return { ...data, ...asyncData };
   };
-
-  if (Component.extendOptions) {
-    Component.extendOptions.__DATA__ = asyncData;
-  }
 };
 
 /**
