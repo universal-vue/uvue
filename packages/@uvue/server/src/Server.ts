@@ -17,6 +17,11 @@ import { Renderer } from './Renderer';
 
 export class Server implements IServer {
   /**
+   * Started boolean
+   */
+  public started: boolean = false;
+
+  /**
    * HTTP server adapter
    */
   private adapter: IAdapter;
@@ -122,23 +127,29 @@ export class Server implements IServer {
     // Setup last middleware: renderer
     this.use((req: IncomingMessage, res: ServerResponse) => this.renderMiddleware(req, res));
 
-    // Handle kill
-    const signals = ['SIGINT', 'SIGTERM'];
-    for (const signal of signals) {
-      (process.on as any)(signal, () => {
-        consola.info(`Stopping server...`);
-        this.stop().then(() => process.exit(0));
-      });
-    }
+    return this.adapter.start().then(() => {
+      this.started = true;
 
-    return this.adapter.start();
+      // Handle kill
+      const signals = ['SIGINT', 'SIGTERM'];
+      for (const signal of signals) {
+        (process.once as any)(signal, () => {
+          consola.info(`Stopping server...`);
+          this.stop().then(() => process.exit(0));
+        });
+      }
+    });
   }
 
   /**
    * Stop server
    */
   public async stop() {
-    return this.adapter.stop();
+    if (this.started) {
+      process.removeAllListeners('SIGINT');
+      process.removeAllListeners('SIGTERM');
+      return this.adapter.stop();
+    }
   }
 
   /**
