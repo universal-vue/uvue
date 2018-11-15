@@ -83,8 +83,13 @@ module.exports = (api, options) => {
       });
 
       const onCloseServer = () => {
-        stdin.pause();
+        watcher.removeAllListeners();
+        watcher.close();
+
         stdin.removeAllListeners();
+        stdin.pause();
+
+        process.stdin.destroy();
       };
       process.on('SIGINT', onCloseServer);
       process.on('SIGTERM', onCloseServer);
@@ -170,7 +175,7 @@ async function startServer({ api, host, port, args }) {
   reloading = false;
 
   if (reloadQueued) {
-    consola.info(`Restart because reload is queued...`);
+    consola.info(`Restart because a reload is queued...`);
     reloadQueued = false;
     return reloadServer(server, { api, host, port, args });
   }
