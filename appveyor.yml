@@ -2,6 +2,7 @@ environment:
   nodejs_version: '8'
 
 install:
+  - ps: $env:APPVEYOR_CACHE_SKIP_RESTORE = "true"
   - ps: Install-Product node $env:nodejs_version
   - yarn --network-timeout 600000
 
@@ -11,7 +12,7 @@ test_script:
   - yarn --version
   - yarn test:win
 
-cache: {}
+cache:
 #   - "%LOCALAPPDATA%\\Yarn"
 #   - node_modules -> yarn.lock
 
