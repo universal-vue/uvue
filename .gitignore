@@ -1,2 +1,3 @@
 node_modules
 packages/tests
+lerna-debug.log

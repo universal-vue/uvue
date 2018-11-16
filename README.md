@@ -7,9 +7,10 @@
 > Build universal Vue applications with ease
 
 - [Documentation](https://universal-vue.github.io/docs/)
-- [CodeSandbox demo](https://codesandbox.io/s/github/universal-vue/uvue-codesandbox)
+- [Live demo](http://uvue.yabab.net)
+- [CodeSandbox template](https://codesandbox.io/s/github/universal-vue/uvue-codesandbox)
+- [Discord chat](https://discord.gg/3ZZBmFs)
 
-[![chat discord](https://img.shields.io/badge/chat-discord-blue.svg)](https://discord.gg/3ZZBmFs)
 [![npm version](https://badge.fury.io/js/%40uvue%2Fvue-cli-plugin-ssr.svg)](https://badge.fury.io/js/%40uvue%2Fvue-cli-plugin-ssr)
 [![TravisCI](https://travis-ci.org/universal-vue/uvue.svg?branch=master)](https://travis-ci.org/universal-vue/uvue)
 [![CircleCI](https://circleci.com/gh/universal-vue/uvue/tree/master.svg?style=shield)](https://circleci.com/gh/universal-vue/uvue)
