@@ -11,8 +11,8 @@ test_script:
   - yarn --version
   - yarn test:win
 
-cache:
-  - "%LOCALAPPDATA%\\Yarn"
-  - node_modules -> yarn.lock
+# cache:
+#   - "%LOCALAPPDATA%\\Yarn"
+#   - node_modules -> yarn.lock
 
 build: off

@@ -27,6 +27,7 @@ jobs:
           paths:
             - packages/base
             - node_modules
+            - ~/.cache/yarn
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: yarn test
