@@ -1,7 +1,5 @@
-#!/usr/bin/env bash
-
 cd packages/@uvue/server
-yarn build
+call yarn build
 cd ../rquery
-yarn build
+call yarn build
 cd ../../..

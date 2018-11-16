@@ -1,11 +1,12 @@
 const path = require('path');
+const os = require('os');
 const mm = require('micromatch');
 const { RQuery } = require('@uvue/rquery');
 
 /**
  * Simple loader to find and replace code before final compilation
  */
-module.exports = async function(content, map, meta) {
+module.exports = async function (content, map, meta) {
   const callback = this.async();
 
   // Get UVue API
@@ -15,7 +16,10 @@ module.exports = async function(content, map, meta) {
   if (mm.isMatch(this.resourcePath, '**/@uvue/core/(client|server).js')) {
     // Get absolute path to generated main.js
     const dirPath = path.join(uvue.getProjectPath(), 'node_modules', '.uvue');
-    const mainPath = path.join(dirPath, 'main.js');
+    let mainPath = path.join(dirPath, 'main.js');
+    if (os.platform() === 'win32') {
+      mainPath = mainPath.replace(/\\/g, '/');
+    }
 
     // Replace import main path to generated file by Webpack plugin
     content = content.replace('./main', mainPath);

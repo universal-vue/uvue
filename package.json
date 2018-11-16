@@ -11,7 +11,8 @@
     "lint:fix": "lerna run lint:fix",
     "format": "lerna run format",
     "test": "./tests/cli install suite && ./tests/cli test suite",
-    "postinstall": "scripts/postinstall.sh",
+    "test:win": "node tests/cli install suite && node tests/cli test suite",
+    "postinstall": "scripts/postinstall",
     "pub": "yarn clean && lerna publish"
   },
   "workspaces": [

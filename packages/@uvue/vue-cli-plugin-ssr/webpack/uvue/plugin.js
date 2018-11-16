@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
+const os = require('os');
 
 /**
  * Simple webpack plugin to generate main.js with imports
@@ -40,11 +41,16 @@ module.exports = class UVuePlugin {
     const dirPath = path.join(this.uvue.getProjectPath(), 'node_modules', '.uvue');
     const mainPath = path.join(dirPath, 'main.js');
 
+    let importMainPath = this.uvue.getMainPath();
+    if (os.platform() === 'win32') {
+      importMainPath = importMainPath.replace(/\\/g, '/');
+    }
+
     // Generate file content
     let code = ``;
     code += `/* eslint-disable */\n`;
     code += `/* tslint:disable */\n`;
-    code += `import createApp from '${this.uvue.getMainPath()}';\nexport { createApp };\n`;
+    code += `import createApp from '${importMainPath}';\nexport { createApp };\n`;
     code += this.buildImports();
     code += this.buildPlugins();
 
