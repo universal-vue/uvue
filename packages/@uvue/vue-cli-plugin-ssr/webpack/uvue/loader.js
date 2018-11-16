@@ -6,7 +6,7 @@ const { RQuery } = require('@uvue/rquery');
 /**
  * Simple loader to find and replace code before final compilation
  */
-module.exports = async function (content, map, meta) {
+module.exports = async function(content, map, meta) {
   const callback = this.async();
 
   // Get UVue API
