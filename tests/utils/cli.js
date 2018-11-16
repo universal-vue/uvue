@@ -15,7 +15,12 @@ const buildProject = async (tm, name) => {
 
 const unitProject = async name => {
   // Unit/Integration tests
-  await execa('./node_modules/.bin/jest', ['--verbose'], {
+  const args = ['--verbose'];
+  if (os.platform() === 'win32') {
+    args.push('--testPathIgnorePatterns', 'code-fixer');
+  }
+
+  await execa('./node_modules/.bin/jest', args, {
     stdio: 'inherit',
   });
 };
