@@ -12,7 +12,7 @@
     "format": "lerna run format",
     "test": "./tests/cli install suite && ./tests/cli test suite",
     "test:win": "node tests/cli install suite && node tests/cli test suite",
-    "postinstall": "scripts/postinstall",
+    "postinstall": "node scripts/postinstall.js",
     "pub": "yarn clean && lerna publish"
   },
   "workspaces": [
