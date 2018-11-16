@@ -213,7 +213,28 @@ module.exports = class CodeFixer {
   }
 
   fixVuex(code) {
-    return this.fixPlugin(code, 'Vuex.Store');
+    code = this.fixPlugin(code, 'Vuex.Store');
+
+    // Transform state to a factory function
+    const doc = RQuery.parse(code);
+    let changes = false;
+    doc.find('{}').forEach(obj => {
+      const stateProp = obj.getProp('state');
+      if (stateProp.node.type === 'ObjectExpression') {
+        changes = true;
+        const arrowFunc = RQuery.parse('() => (replace)').findOne('funcArrow');
+        arrowFunc.findOne('id#replace').replace(stateProp);
+        stateProp.replace(arrowFunc);
+      }
+    });
+
+    if (changes) {
+      const prettierOptions = this.resolveCodingStyle(code);
+      return RQuery.print(doc, {
+        prettierConfig: prettierOptions,
+      });
+    }
+    return code;
   }
 
   fixI18n(code) {

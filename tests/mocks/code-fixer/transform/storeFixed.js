@@ -5,7 +5,9 @@ Vue.use(Vuex);
 
 export default () => {
   return new Vuex.Store({
-    state: {},
+    state: () => ({
+      foo: 'bar',
+    }),
     mutations: {},
     actions: {},
   });

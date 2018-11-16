@@ -1581,7 +1581,7 @@
   integrity sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
 
 "@uvue/devtools@link:packages/@uvue/devtools":
-  version "0.1.0-alpha.1"
+  version "0.1.0-alpha.2"
   dependencies:
     "@nearform/bubbleprof" "^1.6.1"
     "@nearform/doctor" "^3.4.0"
@@ -1599,9 +1599,9 @@
     yargs "^12.0.2"
 
 "@uvue/vue-cli-plugin-ssr@link:packages/@uvue/vue-cli-plugin-ssr":
-  version "0.1.0-alpha.1"
+  version "0.1.0-alpha.2"
   dependencies:
-    "@uvue/rquery" "^0.1.0-alpha.1"
+    "@uvue/rquery" "^0.1.0-alpha.2"
     chalk "^2.4.1"
     chokidar "^2.0.4"
     consola "^1.4.3"
