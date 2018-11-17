@@ -1,17 +1,13 @@
-import * as connect from 'connect';
-import { HandleFunction } from 'connect';
+import * as express from 'express';
 import * as http from 'http';
 import * as https from 'https';
-import { IAdapter, IAdapterOptions } from './interfaces';
+import { IAdapter, IAdapterOptions } from '../interfaces';
 
-/**
- * Connect server adapter
- */
-export class ConnectAdapter implements IAdapter {
+export class ExpressAdapter implements IAdapter {
   /**
-   * Connect instance
+   * Express instance
    */
-  private app: connect.Server;
+  private app: express.Express;
 
   /**
    * HTTP server instance
@@ -26,7 +22,7 @@ export class ConnectAdapter implements IAdapter {
     );
 
     // Create connect instance
-    this.app = connect();
+    this.app = express();
 
     // Create HTTP server
     const httpsOptions = this.options.https || { key: null, cert: null };
@@ -40,7 +36,7 @@ export class ConnectAdapter implements IAdapter {
   /**
    * Method to add middlewares
    */
-  public use(...args: any[]): ConnectAdapter {
+  public use(...args: any[]): ExpressAdapter {
     if (args.length === 2) {
       this.app.use(args[0], args[1]);
     } else {

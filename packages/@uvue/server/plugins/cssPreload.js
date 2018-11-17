@@ -9,8 +9,8 @@ export default {
   /**
    * Read clientManifest
    */
-  beforeStart(app) {
-    const { outputDir } = app.options.paths;
+  beforeStart(server) {
+    const { outputDir } = server.options.paths;
     const clientManifestPath = path.join(outputDir, '.uvue/client-manifest.json');
     if (fs.existsSync(clientManifestPath)) {
       this.clientManifest = JSON.parse(fs.readFileSync(clientManifestPath, 'utf-8'));

@@ -2,7 +2,7 @@ import cookieParser from 'cookie-parser';
 import consola from 'consola';
 
 export default {
-  install(app, pluginOptions = {}) {
+  install(server, pluginOptions = {}) {
     const { secret, options: opts } = {
       secret: '',
       options: {},
@@ -13,6 +13,6 @@ export default {
       consola.warn('No secret defined for your cookies!');
     }
 
-    app.use(cookieParser(secret, opts));
+    server.use(cookieParser(secret, opts));
   },
 };

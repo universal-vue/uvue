@@ -2,6 +2,7 @@
  * Default config
  */
 module.exports = () => ({
+  adapter: null,
   https: {
     cert: null,
     key: null,
