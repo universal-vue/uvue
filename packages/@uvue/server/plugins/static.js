@@ -7,6 +7,11 @@ export default {
       options: {},
       ...pluginOptions,
     };
-    server.use(serveStatic(directory, opts));
+
+    if (server.getApp().__isKoa) {
+      server.use(require('koa-connect')(serveStatic(directory, opts)));
+    } else {
+      server.use(serveStatic(directory, opts));
+    }
   },
 };

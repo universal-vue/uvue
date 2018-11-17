@@ -3,6 +3,8 @@ import http from 'http';
 import https from 'https';
 
 export interface IAdapter {
+  app: any;
+
   // Add middlewares
   use(middleware: HandleFunction): any;
   use(path: string, middleware: HandleFunction): any;

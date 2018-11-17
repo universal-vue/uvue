@@ -13,6 +13,10 @@ export default {
       consola.warn('No secret defined for your cookies!');
     }
 
-    server.use(cookieParser(secret, opts));
+    if (server.getApp().__isKoa) {
+      server.use(require('koa-connect')(cookieParser(secret, opts)));
+    } else {
+      server.use(cookieParser(secret, opts));
+    }
   },
 };

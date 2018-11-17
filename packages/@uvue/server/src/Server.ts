@@ -132,7 +132,13 @@ export class Server implements IServer {
     await readyPromise;
 
     // Setup last middleware: renderer
-    this.use((req: IncomingMessage, res: ServerResponse) => this.renderMiddleware(req, res));
+    let rendererMiddleware = (req: IncomingMessage, res: ServerResponse) =>
+      this.renderMiddleware(req, res);
+    if (this.getApp().__isKoa) {
+      rendererMiddleware = require('koa-connect')(rendererMiddleware);
+    }
+
+    this.use(rendererMiddleware);
 
     return this.adapter.start().then(() => {
       this.started = true;

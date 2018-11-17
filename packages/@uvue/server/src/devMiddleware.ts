@@ -52,24 +52,27 @@ export const setupDevMiddleware = async (
   const compiler = webpack([client, server]);
   compiler.outputFileSystem = mfs;
 
-  // Install dev middleware
-  app.use(
-    webpackDevMiddleware(compiler.compilers[0], {
-      logLevel: 'silent',
-      publicPath: client.output.publicPath,
-      stats: false,
-      ...(app.options.devServer.middleware || {}),
-    }),
-  );
+  let devMiddleware = webpackDevMiddleware(compiler.compilers[0], {
+    logLevel: 'silent',
+    publicPath: client.output.publicPath,
+    stats: false,
+    ...(app.options.devServer.middleware || {}),
+  });
 
-  // Install hot middleware
-  app.use(
-    webpackHotMiddleware(compiler.compilers[0], {
-      heartbeat: 10000,
-      log: false,
-      ...(app.options.devServer.hot || {}),
-    }),
-  );
+  let hotMiddleware = webpackHotMiddleware(compiler.compilers[0], {
+    heartbeat: 10000,
+    log: false,
+    ...(app.options.devServer.hot || {}),
+  });
+
+  if (app.getApp().__isKoa) {
+    devMiddleware = require('koa-connect')(devMiddleware);
+    hotMiddleware = require('koa-connect')(hotMiddleware);
+  }
+
+  // Install dev middlewares
+  app.use(devMiddleware);
+  app.use(hotMiddleware);
 
   // When a compilation finished
   const handleCompilation = () => {
