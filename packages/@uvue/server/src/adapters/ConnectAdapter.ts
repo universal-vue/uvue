@@ -10,7 +10,7 @@ export class ConnectAdapter implements IAdapter {
   /**
    * Connect instance
    */
-  private app: connect.Server;
+  public app: connect.Server;
 
   /**
    * HTTP server instance

@@ -7,7 +7,7 @@ export class ExpressAdapter implements IAdapter {
   /**
    * Express instance
    */
-  private app: express.Express;
+  public app: express.Express;
 
   /**
    * HTTP server instance

@@ -7,7 +7,7 @@ export class FastifyAdapter implements IAdapter {
   /**
    * Fastify instance
    */
-  private app: fastify.FastifyInstance;
+  public app: fastify.FastifyInstance;
 
   /**
    * HTTP server instance

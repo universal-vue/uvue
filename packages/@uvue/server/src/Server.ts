@@ -3,7 +3,7 @@ import { readFileSync } from 'fs-extra';
 import { IncomingMessage, ServerResponse } from 'http';
 import * as micromatch from 'micromatch';
 import { join } from 'path';
-import { ConnectAdapter } from './ConnectAdapter';
+import { ConnectAdapter } from './adapters/ConnectAdapter';
 import { setupDevMiddleware } from './devMiddleware';
 import {
   IAdapter,
@@ -54,6 +54,13 @@ export class Server implements IServer {
    */
   public getAdapter(): IAdapter {
     return this.adapter;
+  }
+
+  /**
+   * Return current adapter framework instance
+   */
+  public getApp(): any {
+    return this.adapter.app;
   }
 
   /**

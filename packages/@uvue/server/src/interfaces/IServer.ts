@@ -1,10 +1,13 @@
 import { HandleFunction } from 'connect';
-import { IRenderer } from './IRenderer';
+import { IAdapter } from './IAdapter';
 import { IServerOptions } from './IServerOptions';
 
 export interface IServer {
   // Options
   options: IServerOptions;
+
+  getAdapter(): IAdapter;
+  getApp(): any;
 
   // Add middlewares
   use(middleware: HandleFunction);
