@@ -53,12 +53,14 @@ process.env.NODE_ENV = 'production';
     options = require(resolve(argv.config)).default;
   }
 
-  const { spaPaths, renderer } = options;
+  const { adapter, spaPaths, renderer } = options;
 
   /**
    * Create server
    */
   const server = new Server({
+    adapter,
+
     // Set files destinations
     paths: {
       outputDir: resolve(argv.dist),
