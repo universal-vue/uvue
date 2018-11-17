@@ -5,6 +5,9 @@ import https from 'https';
 export interface IAdapter {
   app: any;
 
+  // Create framework instance and HTTP server
+  createApp();
+
   // Add middlewares
   use(middleware: HandleFunction): any;
   use(path: string, middleware: HandleFunction): any;
@@ -12,6 +15,9 @@ export interface IAdapter {
   // Start/stop server
   start(): Promise<void>;
   stop(): Promise<void>;
+
+  // Main middleware to render pages
+  renderMiddleware(req: http.IncomingMessage, res: http.ServerResponse): Promise<any>;
 
   // Getters
   getHttpServer(): http.Server | https.Server;

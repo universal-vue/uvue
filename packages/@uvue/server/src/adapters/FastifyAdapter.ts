@@ -1,26 +1,15 @@
 import * as fastify from 'fastify';
 import * as http from 'http';
 import * as https from 'https';
-import { IAdapter, IAdapterOptions } from '../interfaces';
+import { ConnectAdapter } from './ConnectAdapter';
 
-export class FastifyAdapter implements IAdapter {
+export class FastifyAdapter extends ConnectAdapter {
   /**
    * Fastify instance
    */
   public app: fastify.FastifyInstance;
 
-  /**
-   * HTTP server instance
-   */
-  private server: http.Server | https.Server;
-
-  constructor(private options: IAdapterOptions = {}) {
-    // Default options
-    this.options = Object.assign(
-      { host: process.env.HOST || '0.0.0.0', port: process.env.PORT || 8080 },
-      this.options,
-    );
-
+  public createApp() {
     const serverFactory = (handler, opts) => {
       const httpsOptions = this.options.https || { key: null, cert: null };
       if (httpsOptions.key && httpsOptions.cert) {
@@ -36,18 +25,6 @@ export class FastifyAdapter implements IAdapter {
     };
 
     this.app = fastify({ serverFactory } as any);
-  }
-
-  /**
-   * Method to add middlewares
-   */
-  public use(...args: any[]): FastifyAdapter {
-    if (args.length === 2) {
-      this.app.use(args[0], args[1]);
-    } else {
-      this.app.use(args[0]);
-    }
-    return this;
   }
 
   /**
@@ -73,33 +50,5 @@ export class FastifyAdapter implements IAdapter {
         resolve();
       });
     });
-  }
-
-  /**
-   * Get server instance
-   */
-  public getHttpServer() {
-    return this.server;
-  }
-
-  /**
-   * Get port
-   */
-  public getPort() {
-    return this.options.port;
-  }
-
-  /**
-   * Get host
-   */
-  public getHost() {
-    return this.options.host;
-  }
-
-  /**
-   * Is HTTPS ?
-   */
-  public isHttps() {
-    return this.server instanceof https.Server;
   }
 }

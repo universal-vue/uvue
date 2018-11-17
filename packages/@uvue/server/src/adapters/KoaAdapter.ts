@@ -1,30 +1,23 @@
+import * as consola from 'consola';
 import * as http from 'http';
 import * as https from 'https';
 import * as Koa from 'koa';
-import { IAdapter, IAdapterOptions } from '../interfaces';
+import * as mount from 'koa-mount';
+import * as micromatch from 'micromatch';
+import { IAdapter, IRequestContext, IResponseContext } from '../interfaces';
+import { ConnectAdapter } from './ConnectAdapter';
 
 /*
-Required deps: koa koa-connect
+Required deps: koa koa-connect koa-mount
 */
 
-export class KoaAdapter implements IAdapter {
+export class KoaAdapter extends ConnectAdapter {
   /**
    * Koa instance
    */
   public app: Koa;
 
-  /**
-   * HTTP server instance
-   */
-  private server: http.Server | https.Server;
-
-  constructor(private options: IAdapterOptions = {}) {
-    // Default options
-    this.options = Object.assign(
-      { host: process.env.HOST || '0.0.0.0', port: process.env.PORT || 8080 },
-      this.options,
-    );
-
+  public createApp() {
     // Create connect instance
     this.app = new Koa();
     (this.app as any).__isKoa = true;
@@ -43,7 +36,6 @@ export class KoaAdapter implements IAdapter {
    */
   public use(...args: any[]): KoaAdapter {
     if (args.length === 2) {
-      const mount = require('koa-mount');
       this.app.use(mount(args[0], args[1]));
     } else {
       this.app.use(args[0]);
@@ -52,58 +44,82 @@ export class KoaAdapter implements IAdapter {
   }
 
   /**
-   * Start server
+   * Middleware to render pages
    */
-  public start(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.server.listen(this.options.port, this.options.host, err => {
-        if (err) {
-          return reject(err);
+  // @ts-ignore
+  public async renderMiddleware(ctx: Koa.Context) {
+    const { req, res } = ctx;
+
+    const response: IResponseContext = {
+      body: '',
+      status: 200,
+    };
+
+    const context: IRequestContext = {
+      data: {},
+      redirected: false,
+      req,
+      res,
+      url: req.url,
+    };
+
+    try {
+      // Hook before render
+      await this.uvueServer.invokeAsync('beforeRender', context, this);
+
+      if (!res.finished) {
+        const { spaPaths } = this.uvueServer.options;
+
+        if (spaPaths && spaPaths.length && micromatch.some(context.url, spaPaths)) {
+          // SPA paths
+
+          response.body = await this.uvueServer.renderer.renderSPAPage();
+        } else {
+          // SSR Process
+
+          // Render page body
+          response.body = await this.uvueServer.renderer.render(context);
+
+          // Check if there is a redirection
+          if (context.redirected) {
+            return;
+          }
+
+          // Hook before building the page
+          await this.uvueServer.invokeAsync('beforeBuild', response, context, this);
+
+          // Build page
+          response.body = await this.uvueServer.renderer.renderSSRPage(response.body, context);
         }
-        resolve();
-      });
-    });
-  }
 
-  /**
-   * Stop server
-   */
-  public stop(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.server.close(err => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
-    });
-  }
+        // Hook on rendered
+        await this.uvueServer.invokeAsync('rendered', response, context, this);
 
-  /**
-   * Get server instance
-   */
-  public getHttpServer() {
-    return this.server;
-  }
+        // Send response
+        this.sendResponse(response, context);
+      }
+    } catch (err) {
+      if (process.env.NODE_ENV !== 'test') {
+        // tslint:disable-next-line
+        consola.error(err);
+      }
 
-  /**
-   * Get port
-   */
-  public getPort() {
-    return this.options.port;
-  }
+      // Catch errors
+      await this.uvueServer.invokeAsync('routeError', err, response, context, this);
 
-  /**
-   * Get host
-   */
-  public getHost() {
-    return this.options.host;
-  }
+      if (!res.finished) {
+        response.body = response.body || 'Server error';
+        response.status = 500;
+        this.sendResponse(response, context);
+      }
+    }
 
-  /**
-   * Is HTTPS ?
-   */
-  public isHttps() {
-    return this.server instanceof https.Server;
+    // Hook after response was sent
+    this.uvueServer.invoke('afterResponse', context, this);
+
+    return {
+      context,
+      response,
+    };
   }
 }
