@@ -48,31 +48,43 @@ export const setupDevMiddleware = async (
     }
   };
 
+  if (app.getApp().__isKoa) {
+    client.plugins = client.plugins.filter(
+      item => !(item instanceof webpack.HotModuleReplacementPlugin),
+    );
+  }
+
   // Create Webpack compiler
   const compiler = webpack([client, server]);
   compiler.outputFileSystem = mfs;
 
-  let devMiddleware = webpackDevMiddleware(compiler.compilers[0], {
-    logLevel: 'silent',
-    publicPath: client.output.publicPath,
-    stats: false,
-    ...(app.options.devServer.middleware || {}),
-  });
-
-  let hotMiddleware = webpackHotMiddleware(compiler.compilers[0], {
-    heartbeat: 10000,
-    log: false,
-    ...(app.options.devServer.hot || {}),
-  });
-
   if (app.getApp().__isKoa) {
-    devMiddleware = require('koa-connect')(devMiddleware);
-    hotMiddleware = require('koa-connect')(hotMiddleware);
-  }
+    const koaWebpack = require('koa-webpack');
 
-  // Install dev middlewares
-  app.use(devMiddleware);
-  app.use(hotMiddleware);
+    const middleware = await koaWebpack({
+      compiler: compiler.compilers[0],
+    });
+
+    app.use(middleware);
+  } else {
+    // Install dev middlewares
+    app.use(
+      webpackDevMiddleware(compiler.compilers[0], {
+        logLevel: 'silent',
+        publicPath: client.output.publicPath,
+        stats: false,
+        ...(app.options.devServer.middleware || {}),
+      }),
+    );
+
+    app.use(
+      webpackHotMiddleware(compiler.compilers[0], {
+        heartbeat: 10000,
+        log: false,
+        ...(app.options.devServer.hot || {}),
+      }),
+    );
+  }
 
   // When a compilation finished
   const handleCompilation = () => {

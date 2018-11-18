@@ -9,7 +9,7 @@ export default {
     };
 
     if (server.getApp().__isKoa) {
-      server.use(require('koa-connect')(serveStatic(directory, opts)));
+      server.use(require('koa-static')(directory, opts));
     } else {
       server.use(serveStatic(directory, opts));
     }

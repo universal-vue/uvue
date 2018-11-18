@@ -8,7 +8,7 @@ import { IAdapter, IRequestContext, IResponseContext } from '../interfaces';
 import { ConnectAdapter } from './ConnectAdapter';
 
 /*
-Required deps: koa koa-connect koa-mount
+Required deps: koa koa-mount koa-compress koa-static koa-webpack
 */
 
 export class KoaAdapter extends ConnectAdapter {
