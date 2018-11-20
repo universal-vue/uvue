@@ -31,6 +31,28 @@ module.exports = class UVuePlugin {
     compiler.hooks.watchRun.tapPromise('UVuePlugin', async () => {
       await this.writeMain();
     });
+
+    const callPluginsHooks = async (type, compilation) => {
+      const plugins = this.uvue.getServerConfig('plugins');
+      for (const plugin of plugins) {
+        const [src, options] = plugin;
+        let m = require(src);
+        m = m.default || m;
+        if (typeof m[type] === 'function') {
+          await m[type](compilation, options);
+        }
+      }
+    };
+
+    // Call plugins hooks when writing files
+    compiler.hooks.emit.tapPromise('UVueServerPlugins', async compilation => {
+      await callPluginsHooks('webpackEmit', compilation);
+    });
+
+    // Call plugins hooks when files are emitted
+    compiler.hooks.afterEmit.tapPromise('UVueServerPlugins', async compilation => {
+      await callPluginsHooks('webpackAfterEmit', compilation);
+    });
   }
 
   /**
