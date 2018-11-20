@@ -122,4 +122,16 @@ export class KoaAdapter extends ConnectAdapter {
       response,
     };
   }
+
+  protected prepareRequestContext(ctx: Koa.Context): IRequestContext {
+    const { req, res, cookies } = ctx;
+    const context = super.prepareRequestContext(req, res);
+
+    context.ctx = ctx;
+    context.req = req;
+    context.res = res;
+    context.cookies = cookies;
+
+    return context;
+  }
 }

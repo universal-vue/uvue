@@ -81,18 +81,8 @@ export class ConnectAdapter implements IAdapter {
    * Middleware to render pages
    */
   public async renderMiddleware(req: http.IncomingMessage, res: http.ServerResponse) {
-    const response: IResponseContext = {
-      body: '',
-      status: 200,
-    };
-
-    const context: IRequestContext = {
-      data: {},
-      redirected: false,
-      req,
-      res,
-      url: req.url,
-    };
+    const response: IResponseContext = this.prepareResponseContext(req, res);
+    const context: IRequestContext = this.prepareRequestContext(req, res);
 
     try {
       // Hook before render
@@ -193,5 +183,30 @@ export class ConnectAdapter implements IAdapter {
     res.setHeader('Content-Length', response.body.length);
     res.statusCode = statusCode || response.status;
     res.end(response.body);
+  }
+
+  protected prepareRequestContext(...args: any[]): IRequestContext;
+  protected prepareRequestContext(
+    req: http.IncomingMessage,
+    res: http.ServerResponse,
+  ): IRequestContext {
+    return {
+      data: {},
+      redirected: false,
+      req,
+      res,
+      url: req.url,
+    };
+  }
+
+  protected prepareResponseContext(...args: any[]): IResponseContext;
+  protected prepareResponseContext(
+    req: http.IncomingMessage,
+    res: http.ServerResponse,
+  ): IResponseContext {
+    return {
+      body: '',
+      status: 200,
+    };
   }
 }
