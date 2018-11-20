@@ -39,7 +39,7 @@ export class Server implements IServer {
       this.options.adapter = ConnectAdapter;
     }
     this.adapter = new this.options.adapter(this, options.httpOptions);
-    this.adapter.createApp();
+    this.adapter.createApp(options.adapterArgs);
   }
 
   /**

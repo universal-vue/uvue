@@ -9,7 +9,7 @@ export class ExpressAdapter extends ConnectAdapter {
    */
   public app: express.Express;
 
-  public createApp() {
+  public createApp(adatperArgs: any[] = []) {
     // Create connect instance
     this.app = express();
 

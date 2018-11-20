@@ -28,7 +28,7 @@ export class ConnectAdapter implements IAdapter {
     );
   }
 
-  public createApp() {
+  public createApp(adatperArgs: any[] = []) {
     // Create connect instance
     this.app = connect();
 

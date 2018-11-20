@@ -9,7 +9,7 @@ export class FastifyAdapter extends ConnectAdapter {
    */
   public app: fastify.FastifyInstance;
 
-  public createApp() {
+  public createApp(adatperArgs: any[] = []) {
     const serverFactory = (handler, opts) => {
       const httpsOptions = this.options.https || { key: null, cert: null };
       if (httpsOptions.key && httpsOptions.cert) {
@@ -24,7 +24,15 @@ export class FastifyAdapter extends ConnectAdapter {
       return this.server;
     };
 
-    this.app = fastify({ serverFactory } as any);
+    if (adatperArgs[0]) {
+      adatperArgs[0].serverFactory = serverFactory;
+    } else {
+      adatperArgs[0] = {
+        serverFactory,
+      };
+    }
+
+    this.app = fastify(...adatperArgs);
   }
 
   /**

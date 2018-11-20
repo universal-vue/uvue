@@ -17,7 +17,7 @@ export class KoaAdapter extends ConnectAdapter {
    */
   public app: Koa;
 
-  public createApp() {
+  public createApp(adatperArgs: any[] = []) {
     // Create connect instance
     this.app = new Koa();
     (this.app as any).__isKoa = true;

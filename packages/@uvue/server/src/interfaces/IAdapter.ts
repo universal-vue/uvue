@@ -6,7 +6,7 @@ export interface IAdapter {
   app: any;
 
   // Create framework instance and HTTP server
-  createApp();
+  createApp(...args: any[]);
 
   // Add middlewares
   use(middleware: HandleFunction): any;
