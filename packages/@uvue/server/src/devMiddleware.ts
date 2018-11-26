@@ -48,28 +48,43 @@ export const setupDevMiddleware = async (
     }
   };
 
+  if (app.getApp().__isKoa) {
+    client.plugins = client.plugins.filter(
+      item => !(item instanceof webpack.HotModuleReplacementPlugin),
+    );
+  }
+
   // Create Webpack compiler
   const compiler = webpack([client, server]);
   compiler.outputFileSystem = mfs;
 
-  // Install dev middleware
-  app.use(
-    webpackDevMiddleware(compiler.compilers[0], {
-      logLevel: 'silent',
-      publicPath: client.output.publicPath,
-      stats: false,
-      ...(app.options.devServer.middleware || {}),
-    }),
-  );
+  if (app.getApp().__isKoa) {
+    const koaWebpack = require('koa-webpack');
 
-  // Install hot middleware
-  app.use(
-    webpackHotMiddleware(compiler.compilers[0], {
-      heartbeat: 10000,
-      log: false,
-      ...(app.options.devServer.hot || {}),
-    }),
-  );
+    const middleware = await koaWebpack({
+      compiler: compiler.compilers[0],
+    });
+
+    app.use(middleware);
+  } else {
+    // Install dev middlewares
+    app.use(
+      webpackDevMiddleware(compiler.compilers[0], {
+        logLevel: 'silent',
+        publicPath: client.output.publicPath,
+        stats: false,
+        ...(app.options.devServer.middleware || {}),
+      }),
+    );
+
+    app.use(
+      webpackHotMiddleware(compiler.compilers[0], {
+        heartbeat: 10000,
+        log: false,
+        ...(app.options.devServer.hot || {}),
+      }),
+    );
+  }
 
   // When a compilation finished
   const handleCompilation = () => {
