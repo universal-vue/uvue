@@ -1692,6 +1692,7 @@
     webpack-dev-middleware "^3.3.0"
     webpack-hot-middleware "^2.24.0"
     yargs "^12.0.2"
+    youch "^2.0.10"
 
 "@uvue/vue-cli-plugin-ssr@link:packages/@uvue/vue-cli-plugin-ssr":
   version "0.1.0-alpha.2"
@@ -15370,6 +15371,13 @@ yorkie@^2.0.0:
     is-ci "^1.0.10"
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
+
+youch-terminal@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/youch-terminal/-/youch-terminal-1.0.0.tgz#03e2096ee360ef915816e62ea9ec94a6ff094d9e"
+  integrity sha512-rOVcJi5juKSUI3/mwAKOP+gjrUWUgb5AUTe2LZlfLBgLdfgnYtBKCrWc02GgRozDf/i6uXBu9/y3Vf6db+7k1A==
+  dependencies:
+    chalk "^2.3.0"
 
 youch@^2.0.10:
   version "2.0.10"

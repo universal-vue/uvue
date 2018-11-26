@@ -1,7 +1,9 @@
 import * as consola from 'consola';
-import { readFileSync } from 'fs-extra';
+import { readFile, readFileSync } from 'fs-extra';
 import { IncomingMessage, ServerResponse } from 'http';
 import { join } from 'path';
+import * as Youch from 'youch';
+import * as youchTerminal from 'youch-terminal';
 import { ConnectAdapter } from './adapters/ConnectAdapter';
 import { setupDevMiddleware } from './devMiddleware';
 import { IAdapter, IRenderer, IServer, IServerOptions } from './interfaces';
@@ -161,6 +163,31 @@ export class Server implements IServer {
       clientManifest,
       templates,
     });
+  }
+
+  /**
+   * Handling errors
+   */
+  public async handleError(err: any, req: IncomingMessage, res: ServerResponse) {
+    if (!res.finished) {
+      let html: string = '';
+
+      if (process.env.NODE_ENV !== 'production') {
+        const youch = new Youch(err, req);
+        html = await youch.toHTML();
+
+        const json = await youch.toJSON();
+        // tslint:disable-next-line
+        console.error(youchTerminal(json));
+      } else {
+        html = await readFile(join(__dirname, '..', 'serverError.html'));
+      }
+
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.setHeader('Content-Length', html.length);
+      res.statusCode = 500;
+      res.end(html);
+    }
   }
 
   /**

@@ -106,12 +106,7 @@ export class KoaAdapter extends ConnectAdapter {
 
       // Catch errors
       await this.uvueServer.invokeAsync('routeError', err, response, context, this);
-
-      if (!res.finished) {
-        response.body = response.body || 'Server error';
-        response.status = 500;
-        this.sendResponse(response, context);
-      }
+      await this.uvueServer.handleError(err, req, res);
     }
 
     // Hook after response was sent
