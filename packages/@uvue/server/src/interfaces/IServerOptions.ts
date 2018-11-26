@@ -28,6 +28,8 @@ export interface IServerOptions {
 
   // Configure HTTP server
   adapter?: any;
+  adapterArgs?: any[];
+
   httpOptions?: IAdapterOptions;
 
   // Renderer options

@@ -1,12 +1,17 @@
 import serveStatic from 'serve-static';
 
 export default {
-  install(app, pluginOptions = {}) {
+  install(server, pluginOptions = {}) {
     const { options: opts, directory } = {
       directory: 'dist',
       options: {},
       ...pluginOptions,
     };
-    app.use(serveStatic(directory, opts));
+
+    if (server.getApp().__isKoa) {
+      server.use(require('koa-static')(directory, opts));
+    } else {
+      server.use(serveStatic(directory, opts));
+    }
   },
 };

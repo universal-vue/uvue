@@ -55,6 +55,8 @@ module.exports = (api, options) => {
       const { Server } = require('@uvue/server');
 
       const server = new Server({
+        adapter: api.uvue.getServerConfig('adapter'),
+
         // Set files destinations
         paths: {
           outputDir: api.resolve(options.outputDir),

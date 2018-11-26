@@ -65,7 +65,7 @@ describe('Server and Renderer', () => {
     });
     const res = httpMocks.createResponse();
 
-    const { response } = await server.renderMiddleware(req, res);
+    const { response } = await server.getAdapter().renderMiddleware(req, res);
     const $ = cheerio.load(response.body);
 
     expect(response.status).toBe(200);
@@ -104,7 +104,7 @@ describe('Server and Renderer', () => {
     });
     const res = httpMocks.createResponse();
 
-    const { response } = await server.renderMiddleware(req, res);
+    const { response } = await server.getAdapter().renderMiddleware(req, res);
 
     expect(pluginStates.routeError).toBe(true);
   });

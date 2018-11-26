@@ -9,8 +9,8 @@ export default {
   /**
    * Check if there is a legacy bundle
    */
-  beforeStart(app) {
-    const { outputDir } = app.options.paths;
+  beforeStart(server) {
+    const { outputDir } = server.options.paths;
 
     if (outputDir) {
       const modernPath = path.join(outputDir, '.uvue/client-manifest.json');
