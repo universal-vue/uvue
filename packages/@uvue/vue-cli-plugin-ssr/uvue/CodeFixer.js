@@ -49,7 +49,7 @@ module.exports = class CodeFixer {
     };
 
     // Router
-    await fixPlugin('Router', ['code:new Router'], 'fixRouter');
+    await fixPlugin('Router', ['code:new Router', 'code: new VueRouter'], 'fixRouter');
 
     // Vuex
     if (api.hasPlugin('vuex')) {

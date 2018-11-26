@@ -60,20 +60,22 @@ const findNodes = (
     item = items[index];
   }
 
-  if (item.is(node)) {
-    if (index < items.length - 1) {
-      const children = getNodeChildren(node);
-      for (const child of children) {
-        findNodes(child, items, index + 1, nodes, [...parents, node]);
+  if (node) {
+    if (item.is(node)) {
+      if (index < items.length - 1) {
+        const children = getNodeChildren(node);
+        for (const child of children) {
+          findNodes(child, items, index + 1, nodes, [...parents, node]);
+        }
+      } else {
+        nodes.push(item.fromNode(node, parents));
       }
     } else {
-      nodes.push(item.fromNode(node, parents));
-    }
-  } else {
-    if (deep) {
-      const children = getNodeChildren(node);
-      for (const child of children) {
-        findNodes(child, items, index, nodes, [...parents, node]);
+      if (deep) {
+        const children = getNodeChildren(node);
+        for (const child of children) {
+          findNodes(child, items, index, nodes, [...parents, node]);
+        }
       }
     }
   }
