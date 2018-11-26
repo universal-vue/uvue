@@ -57,6 +57,20 @@ describe('CodeFixer', () => {
     expect(codeResult).toBe(codeFixed);
   });
 
+  it('Should fix complex router.js', async () => {
+    const filePath = path.resolve(__dirname, '../mocks/code-fixer/transform/routerComplex.js');
+    const fixedPath = path.resolve(
+      __dirname,
+      '../mocks/code-fixer/transform/routerComplexFixed.js',
+    );
+
+    const code = await fs.readFile(filePath, 'utf-8');
+    const codeFixed = await fs.readFile(fixedPath, 'utf-8');
+
+    const codeResult = cf.fixRouter(code);
+    expect(codeResult).toBe(codeFixed);
+  });
+
   it('Should fix store.js', async () => {
     const filePath = path.resolve(__dirname, '../mocks/code-fixer/transform/store.js');
     const fixedPath = path.resolve(__dirname, '../mocks/code-fixer/transform/storeFixed.js');
@@ -107,6 +121,18 @@ describe('CodeFixer', () => {
   it('Should fix main.js (already in export default)', async () => {
     const filePath = path.resolve(__dirname, '../mocks/code-fixer/transform/mainExport.js');
     const fixedPath = path.resolve(__dirname, '../mocks/code-fixer/transform/mainExportFixed.js');
+
+    const code = await fs.readFile(filePath, 'utf-8');
+    const codeFixed = await fs.readFile(fixedPath, 'utf-8');
+
+    const codeResult = cf.fixNewVue(code);
+
+    expect(codeResult).toBe(codeFixed);
+  });
+
+  it('Should fix complex main.js', async () => {
+    const filePath = path.resolve(__dirname, '../mocks/code-fixer/transform/mainComplex.js');
+    const fixedPath = path.resolve(__dirname, '../mocks/code-fixer/transform/mainComplexFixed.js');
 
     const code = await fs.readFile(filePath, 'utf-8');
     const codeFixed = await fs.readFile(fixedPath, 'utf-8');

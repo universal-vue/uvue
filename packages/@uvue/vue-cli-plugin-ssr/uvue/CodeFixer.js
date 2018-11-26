@@ -4,7 +4,7 @@ const rreaddir = require('recursive-readdir');
 const findInFiles = require('find-in-files');
 const escapeStringRegexp = require('escape-string-regexp');
 const prettier = require('prettier');
-const { RQuery } = require('@uvue/rquery');
+const { RQuery, Recast } = require('@uvue/rquery');
 const consola = require('consola');
 const { merge } = require('lodash');
 
@@ -279,20 +279,73 @@ module.exports = class CodeFixer {
     const newPlugin = doc.findOne(`new#${name}`);
 
     if (newPlugin) {
-      const parentFunc =
-        newPlugin.parentType('FunctionDeclaration') ||
-        newPlugin.parentType('ArrowFunctionExpression');
+      const parent = newPlugin.parent();
 
-      if (!parentFunc) {
-        const returnFunc = RQuery.parse('() => { return replace; }').findOne('funcArrow');
+      if (parent.node.type === 'VariableDeclarator') {
+        // Complex case
+        doc.findOne('exportDefault').remove();
 
-        returnFunc.findOne('id#replace').replace(newPlugin);
+        // Get variable ID
+        const variableName = parent.node.id.name;
 
-        newPlugin.replace(returnFunc);
+        // Determine start & last indexes
+        const elements = doc.find(`id#${variableName}`);
+
+        const firstNode = parent.parents[1];
+        const lastNode = elements.get(elements.size() - 1).parents[1];
+
+        let firstIndex, lastIndex;
+        for (const index in doc.node.program.body) {
+          const currentNode = doc.node.program.body[index];
+
+          if (currentNode === firstNode) {
+            firstIndex = index;
+          }
+
+          if (currentNode === lastNode) {
+            lastIndex = index;
+          }
+        }
+
+        if (firstIndex !== undefined && lastIndex !== undefined) {
+          const newExport = RQuery.parse(
+            `export default () => { CODEFIXER_REPLACE_BODY\n return ${variableName}; }`,
+          ).findOne('exportDefault');
+
+          const nodes = doc.node.program.body.splice(
+            firstIndex,
+            lastIndex - firstIndex + 1,
+            newExport.node,
+          );
+
+          let bodyCode = '';
+          for (const node of nodes) {
+            bodyCode += Recast.print(node) + `\n\n`;
+          }
+
+          const prettierOptions = this.resolveCodingStyle(code);
+          const newCode = RQuery.print(doc);
+
+          return RQuery.prettify(newCode.replace('CODEFIXER_REPLACE_BODY', bodyCode), {
+            prettierConfig: prettierOptions,
+          });
+        }
+      } else if (parent.node.type === 'ExportDefaultDeclaration') {
+        const parentFunc =
+          newPlugin.parentType('FunctionDeclaration') ||
+          newPlugin.parentType('ArrowFunctionExpression');
+
+        // Simple case
+        if (!parentFunc) {
+          const returnFunc = RQuery.parse('() => { return replace; }').findOne('funcArrow');
+
+          returnFunc.findOne('id#replace').replace(newPlugin);
+
+          newPlugin.replace(returnFunc);
+        }
       }
 
       const prettierOptions = this.resolveCodingStyle(code);
-
       return RQuery.print(doc, {
         prettierConfig: prettierOptions,
       });
@@ -302,42 +355,100 @@ module.exports = class CodeFixer {
 
   fixNewVue(code) {
     const doc = RQuery.parse(code);
-    const newPlugin = doc.findOne(`new#Vue`);
+    const newVue = doc.findOne(`new#Vue`);
 
-    if (newPlugin) {
-      const parentFunc =
-        newPlugin.parentType('FunctionDeclaration') ||
-        newPlugin.parentType('ArrowFunctionExpression');
+    if (newVue) {
+      let parent = newVue.parentType('VariableDeclarator');
 
-      const exportDefault = newPlugin.parentType('ExportDefaultDeclaration');
+      if (parent) {
+        // Complex case
 
-      let returnFunc = exportDefault
-        ? RQuery.parse('() => { return replace; }').findOne('funcArrow')
-        : RQuery.parse('export default () => { return replace; }').findOne('exportDefault');
-
-      if (!parentFunc) {
-        returnFunc.findOne('id#replace').replace(newPlugin);
-        newPlugin.replace(returnFunc);
-      } else {
-        returnFunc = parentFunc;
-
-        if (!exportDefault) {
-          const insertExport = RQuery.parse('export default replace;').findOne('exportDefault');
-          insertExport.findOne('id#replace').replace(returnFunc);
-          returnFunc.replace(insertExport);
+        const callParent = newVue.parentType('CallExpression');
+        if (callParent) {
+          callParent.replace(newVue);
         }
+
+        // Get variable ID
+        const variableName = parent.node.id.name;
+
+        // Determine start & last indexes
+        const elements = doc.find(`id#${variableName}`);
+
+        const firstNode = parent.parents[1];
+        const lastNode = elements.get(elements.size() - 1).parents[1];
+
+        let firstIndex, lastIndex;
+        for (const index in doc.node.program.body) {
+          const currentNode = doc.node.program.body[index];
+
+          if (currentNode === firstNode) {
+            firstIndex = index;
+          }
+
+          if (currentNode === lastNode) {
+            lastIndex = index;
+          }
+        }
+
+        if (firstIndex !== undefined && lastIndex !== undefined) {
+          const newExport = RQuery.parse(
+            `export default () => { CODEFIXER_REPLACE_BODY\n return ${variableName}; }`,
+          ).findOne('exportDefault');
+
+          const nodes = doc.node.program.body.splice(
+            firstIndex,
+            lastIndex - firstIndex + 1,
+            newExport.node,
+          );
+
+          let bodyCode = '';
+          for (const node of nodes) {
+            bodyCode += Recast.print(node) + `\n\n`;
+          }
+
+          const prettierOptions = this.resolveCodingStyle(code);
+          const newCode = RQuery.print(doc);
+
+          return RQuery.prettify(newCode.replace('CODEFIXER_REPLACE_BODY', bodyCode), {
+            prettierConfig: prettierOptions,
+          });
+        }
+      } else {
+        // Simple case
+
+        const parentFunc =
+          newVue.parentType('FunctionDeclaration') || newVue.parentType('ArrowFunctionExpression');
+
+        const exportDefault = newVue.parentType('ExportDefaultDeclaration');
+
+        let returnFunc = exportDefault
+          ? RQuery.parse('() => { return replace; }').findOne('funcArrow')
+          : RQuery.parse('export default () => { return replace; }').findOne('exportDefault');
+
+        if (!parentFunc) {
+          returnFunc.findOne('id#replace').replace(newVue);
+          newVue.replace(returnFunc);
+        } else {
+          returnFunc = parentFunc;
+
+          if (!exportDefault) {
+            const insertExport = RQuery.parse('export default replace;').findOne('exportDefault');
+            insertExport.findOne('id#replace').replace(returnFunc);
+            returnFunc.replace(insertExport);
+          }
+        }
+
+        const callParent = newVue.parentType('CallExpression');
+        if (callParent) {
+          callParent.replace(newVue);
+        }
+
+        const prettierOptions = this.resolveCodingStyle(code);
+
+        return RQuery.print(doc, {
+          prettierConfig: prettierOptions,
+        });
       }
-
-      const callParent = newPlugin.parentType('CallExpression');
-      if (callParent) {
-        callParent.replace(newPlugin);
-      }
-
-      const prettierOptions = this.resolveCodingStyle(code);
-
-      return RQuery.print(doc, {
-        prettierConfig: prettierOptions,
-      });
     }
     return code;
   }
