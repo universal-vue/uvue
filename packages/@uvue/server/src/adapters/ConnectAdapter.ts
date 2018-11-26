@@ -115,15 +115,14 @@ export class ConnectAdapter implements IAdapter {
 
         // Hook on rendered
         await this.uvueServer.invokeAsync('rendered', response, context, this);
-
-        // Send response
-        this.sendResponse(response, context);
       }
     } catch (err) {
       // Catch errors
       await this.uvueServer.invokeAsync('routeError', err, response, context, this);
-      await this.uvueServer.handleError(err, req, res);
     }
+
+    // Send response
+    this.sendResponse(response, context);
 
     // Hook after response was sent
     this.uvueServer.invoke('afterResponse', context, this);

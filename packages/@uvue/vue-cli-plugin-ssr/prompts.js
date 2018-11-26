@@ -46,11 +46,11 @@ module.exports = [
     name: 'serverPlugins',
     type: 'checkbox',
     message: 'Install server plugins?',
-    default: ['static', 'gzip', 'modernBuild'],
+    default: ['serverError', 'static', 'gzip', 'modernBuild'],
     choices: [
       {
-        name: 'Cookie parser',
-        value: 'cookie',
+        name: 'Server error page',
+        value: 'serverError',
       },
       {
         name: 'Static files serving',
@@ -63,6 +63,10 @@ module.exports = [
       {
         name: 'Modern build',
         value: 'modernBuild',
+      },
+      {
+        name: 'Cookie parser',
+        value: 'cookie',
       },
     ],
   },

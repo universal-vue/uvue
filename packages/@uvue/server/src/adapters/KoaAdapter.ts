@@ -94,20 +94,14 @@ export class KoaAdapter extends ConnectAdapter {
 
         // Hook on rendered
         await this.uvueServer.invokeAsync('rendered', response, context, this);
-
-        // Send response
-        this.sendResponse(response, context);
       }
     } catch (err) {
-      if (process.env.NODE_ENV !== 'test') {
-        // tslint:disable-next-line
-        consola.error(err);
-      }
-
       // Catch errors
       await this.uvueServer.invokeAsync('routeError', err, response, context, this);
-      await this.uvueServer.handleError(err, req, res);
     }
+
+    // Send response
+    this.sendResponse(response, context);
 
     // Hook after response was sent
     this.uvueServer.invoke('afterResponse', context, this);

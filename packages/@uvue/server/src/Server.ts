@@ -166,31 +166,6 @@ export class Server implements IServer {
   }
 
   /**
-   * Handling errors
-   */
-  public async handleError(err: any, req: IncomingMessage, res: ServerResponse) {
-    if (!res.finished) {
-      let html: string = '';
-
-      if (process.env.NODE_ENV !== 'production') {
-        const youch = new Youch(err, req);
-        html = await youch.toHTML();
-
-        const json = await youch.toJSON();
-        // tslint:disable-next-line
-        console.error(youchTerminal(json));
-      } else {
-        html = await readFile(join(__dirname, '..', 'server-error.html'));
-      }
-
-      res.setHeader('Content-Type', 'text/html; charset=utf-8');
-      res.setHeader('Content-Length', html.length);
-      res.statusCode = 500;
-      res.end(html);
-    }
-  }
-
-  /**
    * Read files content for renderer
    */
   private getBuiltFiles() {

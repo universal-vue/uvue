@@ -22,7 +22,4 @@ export interface IServer {
   // Start/stop server
   start(): Promise<void>;
   stop(): Promise<void>;
-
-  // Error handler
-  handleError(err: any, req: IncomingMessage, res: ServerResponse): Promise<void>;
 }
