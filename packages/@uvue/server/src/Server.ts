@@ -180,7 +180,7 @@ export class Server implements IServer {
         // tslint:disable-next-line
         console.error(youchTerminal(json));
       } else {
-        html = await readFile(join(__dirname, '..', 'serverError.html'));
+        html = await readFile(join(__dirname, '..', 'server-error.html'));
       }
 
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
