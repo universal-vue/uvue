@@ -209,7 +209,8 @@ module.exports = class CodeFixer {
   }
 
   fixRouter(code) {
-    return this.fixPlugin(code, 'Router');
+    code = this.fixPlugin(code, 'Router');
+    return this.fixPlugin(code, 'VueRouter');
   }
 
   fixVuex(code) {
@@ -220,7 +221,7 @@ module.exports = class CodeFixer {
     let changes = false;
     doc.find('{}').forEach(obj => {
       const stateProp = obj.getProp('state');
-      if (stateProp.node.type === 'ObjectExpression') {
+      if (stateProp && stateProp.node.type === 'ObjectExpression') {
         changes = true;
         const arrowFunc = RQuery.parse('() => (replace)').findOne('funcArrow');
         arrowFunc.findOne('id#replace').replace(stateProp);
@@ -282,6 +283,11 @@ module.exports = class CodeFixer {
       const parent = newPlugin.parent();
 
       if (parent.node.type === 'VariableDeclarator') {
+        const topExport = parent.parentType('ExportDefaultDeclaration');
+        if (topExport) {
+          return code;
+        }
+
         // Complex case
         doc.findOne('exportDefault').remove();
 
@@ -362,6 +368,10 @@ module.exports = class CodeFixer {
 
       if (parent) {
         // Complex case
+        const topExport = parent.parentType('ExportDefaultDeclaration');
+        if (topExport) {
+          return code;
+        }
 
         const callParent = newVue.parentType('CallExpression');
         if (callParent) {
