@@ -22,7 +22,7 @@ module.exports = class CodeFixer {
   }
 
   async run(api, mainPath) {
-    const fixPlugin = async (name, search, methodName) => {
+    const fixPlugin = async (name, search, methodName, findByImport = false) => {
       consola.start(`Searching ${name} file...`);
 
       const files = await this.findFiles(search);
@@ -31,7 +31,7 @@ module.exports = class CodeFixer {
       } else {
         for (const file of files) {
           const code = await fs.readFile(file, 'utf-8');
-          const result = this[methodName](code);
+          const result = this[methodName](code, findByImport);
 
           if (code !== result) {
             consola.success(`${name} file fixed!`);
@@ -49,16 +49,16 @@ module.exports = class CodeFixer {
     };
 
     // Router
-    await fixPlugin('Router', ['code:new Router', 'code: new VueRouter'], 'fixRouter');
+    await fixPlugin('Router', ['code:vue-router'], 'fixRouter', true);
 
     // Vuex
     if (api.hasPlugin('vuex')) {
-      await fixPlugin('Vuex', ['code:new Vuex.Store'], 'fixVuex');
+      await fixPlugin('Vuex', ['code:vuex'], 'fixVuex', true);
     }
 
     // i18n
     if (api.hasPlugin('i18n')) {
-      await fixPlugin('I18n', ['code:new VueI18n'], 'fixI18n');
+      await fixPlugin('I18n', ['code:vue-i18n'], 'fixI18n', true);
     }
 
     // PWA
@@ -72,7 +72,7 @@ module.exports = class CodeFixer {
 
       // Check isomorphic fetch is installed
       if (!hasDependency('isomorphic-fetch')) {
-        consola.warn('Need to install isomorphic-fetch to use Vue Apollo in SSR mode!');
+        consola.warn('`isomorphic-fetch` package is required to use Vue Apollo in SSR mode!');
       }
 
       // Check UVue plugin presence
@@ -208,13 +208,21 @@ module.exports = class CodeFixer {
     };
   }
 
-  fixRouter(code) {
-    code = this.fixPlugin(code, 'Router');
-    return this.fixPlugin(code, 'VueRouter');
+  fixRouter(code, findByImport = false) {
+    if (!findByImport) {
+      code = this.fixPlugin(code, 'Router');
+      return this.fixPlugin(code, 'VueRouter');
+    } else {
+      return this.fixPlugin(code, 'vue-router', true);
+    }
   }
 
-  fixVuex(code) {
-    code = this.fixPlugin(code, 'Vuex.Store');
+  fixVuex(code, findByImport = false) {
+    if (!findByImport) {
+      code = this.fixPlugin(code, 'Vuex.Store');
+    } else {
+      code = this.fixPlugin(code, 'vuex', findByImport);
+    }
 
     // Transform state to a factory function
     const doc = RQuery.parse(code);
@@ -238,8 +246,11 @@ module.exports = class CodeFixer {
     return code;
   }
 
-  fixI18n(code) {
-    return this.fixPlugin(code, 'VueI18n');
+  fixI18n(code, findByImport = false) {
+    if (!findByImport) {
+      return this.fixPlugin(code, 'VueI18n');
+    }
+    return this.fixPlugin(code, 'vue-i18n');
   }
 
   fixPwa(code) {
@@ -275,8 +286,18 @@ module.exports = class CodeFixer {
     return code;
   }
 
-  fixPlugin(code, name) {
+  fixPlugin(code, name, findByImport = false) {
     const doc = RQuery.parse(code);
+
+    if (findByImport) {
+      const importDec = doc.findOne(`import@${name}`);
+      for (const spec of importDec.specifiers) {
+        if (spec.type === 'ImportDefaultSpecifier') {
+          name = spec.local.name;
+        }
+      }
+    }
+
     const newPlugin = doc.findOne(`new#${name}`);
 
     if (newPlugin) {
