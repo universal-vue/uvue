@@ -1,4 +1,3 @@
-import * as fastify from 'fastify';
 import * as http from 'http';
 import * as https from 'https';
 import { ConnectAdapter } from './ConnectAdapter';
@@ -7,7 +6,7 @@ export class FastifyAdapter extends ConnectAdapter {
   /**
    * Fastify instance
    */
-  public app: fastify.FastifyInstance;
+  protected app: any;
 
   public createApp(adatperArgs: any[] = []) {
     const serverFactory = (handler, opts) => {
@@ -32,7 +31,7 @@ export class FastifyAdapter extends ConnectAdapter {
       };
     }
 
-    this.app = fastify(...adatperArgs);
+    this.app = require('fastify')(...adatperArgs);
   }
 
   /**
@@ -53,10 +52,15 @@ export class FastifyAdapter extends ConnectAdapter {
    * Stop server
    */
   public stop(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.app.close(() => {
-        resolve();
-      });
+    return new Promise(resolve => {
+      this.app.close(resolve);
+    });
+  }
+
+  public setupRenderer() {
+    // Fastify doesnt found a route: call renderer
+    this.app.setNotFoundHandler(async (request, reply) => {
+      await this.renderMiddleware(request.req, reply.res);
     });
   }
 }

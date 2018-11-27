@@ -55,7 +55,7 @@ export class Server implements IServer {
    * Return current adapter framework instance
    */
   public getApp(): any {
-    return this.adapter.app;
+    return this.adapter.getApp();
   }
 
   /**
@@ -106,9 +106,6 @@ export class Server implements IServer {
    * Start server
    */
   public async start() {
-    // Call beforeStart hook
-    await this.invokeAsync('beforeStart', this);
-
     let readyPromise = Promise.resolve();
 
     // Setup renderer
@@ -127,7 +124,7 @@ export class Server implements IServer {
     await readyPromise;
 
     // Setup last middleware: renderer
-    this.use(this.adapter.renderMiddleware.bind(this.adapter));
+    this.adapter.setupRenderer();
 
     return this.adapter.start().then(() => {
       this.started = true;

@@ -9,7 +9,7 @@ export default {
   /**
    * Check if there is a legacy bundle
    */
-  beforeStart(server) {
+  install(server) {
     const { outputDir } = server.options.paths;
 
     if (outputDir) {

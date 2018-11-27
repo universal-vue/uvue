@@ -1,10 +1,8 @@
-import * as consola from 'consola';
 import * as http from 'http';
 import * as https from 'https';
-import * as Koa from 'koa';
 import * as mount from 'koa-mount';
 import * as micromatch from 'micromatch';
-import { IAdapter, IRequestContext, IResponseContext } from '../interfaces';
+import { IRequestContext, IResponseContext } from '../interfaces';
 import { ConnectAdapter } from './ConnectAdapter';
 
 /*
@@ -15,9 +13,11 @@ export class KoaAdapter extends ConnectAdapter {
   /**
    * Koa instance
    */
-  public app: Koa;
+  protected app: any;
 
   public createApp(adatperArgs: any[] = []) {
+    const Koa = require('koa');
+
     // Create connect instance
     this.app = new Koa();
     (this.app as any).__isKoa = true;
@@ -47,21 +47,11 @@ export class KoaAdapter extends ConnectAdapter {
    * Middleware to render pages
    */
   // @ts-ignore
-  public async renderMiddleware(ctx: Koa.Context) {
+  public async renderMiddleware(ctx: any) {
     const { req, res } = ctx;
 
-    const response: IResponseContext = {
-      body: '',
-      status: 200,
-    };
-
-    const context: IRequestContext = {
-      data: {},
-      redirected: false,
-      req,
-      res,
-      url: req.url,
-    };
+    const response: IResponseContext = this.createResponseContext(req, res);
+    const context: IRequestContext = this.createRequestContext(ctx);
 
     try {
       // Hook before render
@@ -101,7 +91,7 @@ export class KoaAdapter extends ConnectAdapter {
     }
 
     // Send response
-    this.sendResponse(response, context);
+    this.send(response, context);
 
     // Hook after response was sent
     this.uvueServer.invoke('afterResponse', context, this);
@@ -112,9 +102,9 @@ export class KoaAdapter extends ConnectAdapter {
     };
   }
 
-  protected prepareRequestContext(ctx: Koa.Context): IRequestContext {
+  protected createRequestContext(ctx: any): IRequestContext {
     const { req, res, cookies } = ctx;
-    const context = super.prepareRequestContext(req, res);
+    const context = super.createRequestContext(req, res);
 
     context.ctx = ctx;
     context.req = req;

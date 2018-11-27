@@ -1,4 +1,4 @@
-import serveStatic from 'serve-static';
+import { KoaAdapter } from '@uvue/server';
 
 export default {
   install(server, pluginOptions = {}) {
@@ -8,10 +8,11 @@ export default {
       ...pluginOptions,
     };
 
-    if (server.getApp().__isKoa) {
+    const adapter = server.getAdapter();
+    if (adapter instanceof KoaAdapter) {
       server.use(require('koa-static')(directory, opts));
     } else {
-      server.use(serveStatic(directory, opts));
+      server.use(require('serve-static')(directory, opts));
     }
   },
 };

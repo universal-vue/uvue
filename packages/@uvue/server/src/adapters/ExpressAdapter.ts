@@ -1,4 +1,3 @@
-import * as express from 'express';
 import * as http from 'http';
 import * as https from 'https';
 import { ConnectAdapter } from './ConnectAdapter';
@@ -7,11 +6,11 @@ export class ExpressAdapter extends ConnectAdapter {
   /**
    * Express instance
    */
-  public app: express.Express;
+  protected app: any;
 
   public createApp(adatperArgs: any[] = []) {
     // Create connect instance
-    this.app = express();
+    this.app = require('express')();
 
     // Create HTTP server
     const httpsOptions = this.options.https || { key: null, cert: null };

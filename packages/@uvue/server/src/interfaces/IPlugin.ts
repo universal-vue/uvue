@@ -9,9 +9,6 @@ export interface IPlugin {
   // Install
   install?(server: IServer, ...args: any[]): any;
 
-  // On server boot
-  beforeStart?(server: IServer): Promise<any>;
-
   // Before a route render
   beforeRender?(context: IRequestContext, server: IServer): Promise<any>;
 

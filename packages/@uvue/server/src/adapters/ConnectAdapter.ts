@@ -1,7 +1,6 @@
-import * as connect from 'connect';
-import * as consola from 'consola';
 import * as http from 'http';
 import * as https from 'https';
+import * as killable from 'killable';
 import * as micromatch from 'micromatch';
 import { IAdapter, IAdapterOptions, IRequestContext, IResponseContext } from '../interfaces';
 import { Server } from '../Server';
@@ -13,7 +12,7 @@ export class ConnectAdapter implements IAdapter {
   /**
    * Connect instance
    */
-  public app: connect.Server | any;
+  protected app: any;
 
   /**
    * HTTP server instance
@@ -30,7 +29,7 @@ export class ConnectAdapter implements IAdapter {
 
   public createApp(adatperArgs: any[] = []) {
     // Create connect instance
-    this.app = connect();
+    this.app = require('connect')();
 
     // Create HTTP server
     const httpsOptions = this.options.https || { key: null, cert: null };
@@ -39,6 +38,10 @@ export class ConnectAdapter implements IAdapter {
     } else {
       this.server = http.createServer(this.app);
     }
+  }
+
+  public getApp() {
+    return this.app;
   }
 
   /**
@@ -60,6 +63,7 @@ export class ConnectAdapter implements IAdapter {
         }
         resolve();
       });
+      killable(this.server);
     });
   }
 
@@ -67,13 +71,8 @@ export class ConnectAdapter implements IAdapter {
    * Stop server
    */
   public stop(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.server.close(err => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
+    return new Promise(resolve => {
+      (this.server as any).kill(resolve);
     });
   }
 
@@ -81,8 +80,8 @@ export class ConnectAdapter implements IAdapter {
    * Middleware to render pages
    */
   public async renderMiddleware(req: http.IncomingMessage, res: http.ServerResponse) {
-    const response: IResponseContext = this.prepareResponseContext(req, res);
-    const context: IRequestContext = this.prepareRequestContext(req, res);
+    const response: IResponseContext = this.createResponseContext(req, res);
+    const context: IRequestContext = this.createRequestContext(req, res);
 
     try {
       // Hook before render
@@ -122,7 +121,7 @@ export class ConnectAdapter implements IAdapter {
     }
 
     // Send response
-    this.sendResponse(response, context);
+    this.send(response, context);
 
     // Hook after response was sent
     this.uvueServer.invoke('afterResponse', context, this);
@@ -131,6 +130,10 @@ export class ConnectAdapter implements IAdapter {
       context,
       response,
     };
+  }
+
+  public setupRenderer() {
+    this.app.use(this.renderMiddleware.bind(this));
   }
 
   /**
@@ -164,18 +167,15 @@ export class ConnectAdapter implements IAdapter {
   /**
    * Send HTTP response
    */
-  protected sendResponse(
-    response: { body: string; status: number },
-    { res, statusCode }: IRequestContext,
-  ) {
+  protected send(response: { body: string; status: number }, { res, statusCode }: IRequestContext) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Content-Length', response.body.length);
     res.statusCode = statusCode || response.status;
     res.end(response.body);
   }
 
-  protected prepareRequestContext(...args: any[]): IRequestContext;
-  protected prepareRequestContext(
+  protected createRequestContext(...args: any[]): IRequestContext;
+  protected createRequestContext(
     req: http.IncomingMessage,
     res: http.ServerResponse,
   ): IRequestContext {
@@ -188,8 +188,8 @@ export class ConnectAdapter implements IAdapter {
     };
   }
 
-  protected prepareResponseContext(...args: any[]): IResponseContext;
-  protected prepareResponseContext(
+  protected createResponseContext(...args: any[]): IResponseContext;
+  protected createResponseContext(
     req: http.IncomingMessage,
     res: http.ServerResponse,
   ): IResponseContext {

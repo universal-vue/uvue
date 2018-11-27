@@ -1,12 +1,13 @@
-import compression from 'compression';
+import { KoaAdapter } from '@uvue/server';
 
 export default {
   install(server, options = {}) {
     if (process.env.NODE_ENV === 'production') {
-      if (server.getApp().__isKoa) {
+      const adapter = server.getAdapter();
+      if (adapter instanceof KoaAdapter) {
         server.use(require('koa-compress')(options));
       } else {
-        server.use(compression(options));
+        server.use(require('compression')(options));
       }
     }
   },

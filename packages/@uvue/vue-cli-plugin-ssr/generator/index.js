@@ -13,6 +13,10 @@ module.exports = (api, options) => {
       'vue-router': '^3.0.1',
       '@uvue/core': '^0.1.0-alpha',
       '@uvue/server': '^0.1.0-alpha',
+      compression: '^1.7.3',
+      connect: '^3.6.6',
+      'cookie-parser': '^1.4.3',
+      'serve-static': '^1.13.2',
     },
     scripts: {
       'ssr:serve': 'vue-cli-service ssr:serve',

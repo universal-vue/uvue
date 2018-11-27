@@ -1635,10 +1635,10 @@
   integrity sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
 
 "@uvue/core@link:packages/@uvue/core":
-  version "0.1.0-alpha.2"
+  version "0.1.0-alpha.3"
 
 "@uvue/devtools@link:packages/@uvue/devtools":
-  version "0.1.0-alpha.2"
+  version "0.1.0-alpha.3"
   dependencies:
     "@nearform/bubbleprof" "^1.6.1"
     "@nearform/doctor" "^3.4.0"
@@ -1656,7 +1656,7 @@
     yargs "^12.0.2"
 
 "@uvue/rquery@link:packages/@uvue/rquery":
-  version "0.1.0-alpha.2"
+  version "0.1.0-alpha.3"
   dependencies:
     "@babel/parser" "^7.0.0"
     "@types/node" "^10.9.4"
@@ -1666,7 +1666,7 @@
     typescript "^3.0.3"
 
 "@uvue/server@link:packages/@uvue/server":
-  version "0.1.0-alpha.2"
+  version "0.1.0-alpha.3"
   dependencies:
     "@types/compression" "^0.0.36"
     "@types/connect" "^3.4.32"
@@ -1697,9 +1697,9 @@
     youch-terminal "^1.0.0"
 
 "@uvue/vue-cli-plugin-ssr@link:packages/@uvue/vue-cli-plugin-ssr":
-  version "0.1.0-alpha.2"
+  version "0.1.0-alpha.3"
   dependencies:
-    "@uvue/rquery" "^0.1.0-alpha.2"
+    "@uvue/rquery" "^0.1.0-alpha.3"
     chalk "^2.4.1"
     chokidar "^2.0.4"
     consola "^1.4.3"
@@ -8971,7 +8971,7 @@ keygrip@~1.0.3:
   resolved "https://registry.yarnpkg.com/keygrip/-/keygrip-1.0.3.tgz#399d709f0aed2bab0a059e0cdd3a5023a053e1dc"
   integrity sha512-/PpesirAIfaklxUzp4Yb7xBper9MwP6hNRA6BGGUFCgbJ+BM5CKBtsoxinNXkLHAr+GXS1/lSlF2rP7cv5Fl+g==
 
-killable@^1.0.0:
+killable@^1.0.0, killable@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/killable/-/killable-1.0.1.tgz#4c8ce441187a061c7474fb87ca08e2a638194892"
   integrity sha512-LzqtLKlUwirEUyl/nicirVmNiPvYs7l5n8wOPP7fyJVpUPkvCnW/vuiXGpylGUlnPDnB7311rARzAt3Mhswpjg==
@@ -14699,7 +14699,7 @@ vue-loader@^15.4.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-meta@^1.5.5:
+vue-meta@^1.5.6:
   version "1.5.6"
   resolved "https://registry.yarnpkg.com/vue-meta/-/vue-meta-1.5.6.tgz#8c6e56e560217c63637bb9ed66434df15c162057"
   integrity sha512-0MK3VGtAeZvGBkWmvCIsTE3LzoXvfbbduF1vbNOa491tYw7E1IlLMsmdr0DNypIdrFGS4NmOajVMJcDXCSp2VA==

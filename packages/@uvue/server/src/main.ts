@@ -1,4 +1,4 @@
 export * from './interfaces';
-export * from './adapters/ConnectAdapter';
+export * from './adapters';
 export * from './Server';
 export * from './Renderer';
