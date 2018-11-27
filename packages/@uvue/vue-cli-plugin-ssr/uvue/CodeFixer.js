@@ -291,7 +291,7 @@ module.exports = class CodeFixer {
 
     if (findByImport) {
       const importDec = doc.findOne(`import@${name}`);
-      for (const spec of importDec.specifiers) {
+      for (const spec of importDec.node.specifiers) {
         if (spec.type === 'ImportDefaultSpecifier') {
           name = spec.local.name;
         }
