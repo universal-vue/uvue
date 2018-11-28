@@ -17,6 +17,7 @@ module.exports = (api, options) => {
       connect: '^3.6.6',
       'cookie-parser': '^1.4.3',
       'serve-static': '^1.13.2',
+      'core-js': '^2.5.7',
     },
     scripts: {
       'ssr:serve': 'vue-cli-service ssr:serve',
