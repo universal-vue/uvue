@@ -11,6 +11,11 @@ describe('CodeFixer', () => {
     expect(files.length).toBe(4);
   });
 
+  it('Should find files with RegExp', async () => {
+    const files = await cf.findFiles([/import\s.*from\s.*(vuex)/gm]);
+    expect(files.length).toBe(4);
+  });
+
   it('Should dectect coding style', async () => {
     const testA = await fs.readFile(
       path.resolve(__dirname, '../mocks/code-fixer/detectStyle/testA.js'),

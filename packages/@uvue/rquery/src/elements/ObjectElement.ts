@@ -27,7 +27,7 @@ export class ObjectElement extends AstElement {
   }
 
   public getProp(key: string): AstElement {
-    const prop = this.node.properties.find(item => item.key.name === key);
+    const prop = this.node.properties.find(item => item.key && item.key.name === key);
     if (prop) {
       return createFromNode(prop.value, [...this.parents, this.node, prop]);
     }

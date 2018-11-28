@@ -49,16 +49,16 @@ module.exports = class CodeFixer {
     };
 
     // Router
-    await fixPlugin('Router', ['code:vue-router'], 'fixRouter', true);
+    await fixPlugin('Router', [/import\s.*from\s.*vue-router/gm], 'fixRouter', true);
 
     // Vuex
     if (api.hasPlugin('vuex')) {
-      await fixPlugin('Vuex', ['code:vuex'], 'fixVuex', true);
+      await fixPlugin('Vuex', [/import\s.*from\s.*vuex/gm], 'fixVuex', true);
     }
 
     // i18n
     if (api.hasPlugin('i18n')) {
-      await fixPlugin('I18n', ['code:vue-i18n'], 'fixI18n', true);
+      await fixPlugin('I18n', [/import\s.*from\s.*vue-i18n/gm], 'fixI18n', true);
     }
 
     // PWA
@@ -72,7 +72,9 @@ module.exports = class CodeFixer {
 
       // Check isomorphic fetch is installed
       if (!hasDependency('isomorphic-fetch')) {
-        consola.warn('`isomorphic-fetch` package is required to use Vue Apollo in SSR mode!');
+        consola.warn(
+          '`isomorphic-fetch` package is required to use Vue Apollo in SSR mode\nhttps://universal-vue.github.io/docs/guide/vue-cli-plugins.html#apollo\n',
+        );
       }
 
       // Check UVue plugin presence
@@ -95,7 +97,9 @@ module.exports = class CodeFixer {
           return item == pluginPath || item[0] == pluginPath;
         }) < 0
       ) {
-        consola.warn('Need to install UVue Apollo plugin in your uvue.config.js file');
+        consola.warn(
+          'Need to install UVue Apollo plugin in your uvue.config.js file\nhttps://universal-vue.github.io/docs/guide/vue-cli-plugins.html#apollo\n',
+        );
       }
     }
 
@@ -137,15 +141,35 @@ module.exports = class CodeFixer {
     const codes = [];
 
     for (const check of checks) {
-      const [type, value] = check.split(':');
+      let type, value;
+      if (check instanceof RegExp) {
+        type = 'code';
+        value = check;
+      } else {
+        const chunks = check.split(':');
+        type = chunks[0];
+        value = chunks[1];
+      }
 
       if (type === 'file') {
         const files = await rreaddir(this.basePath, [fileSearchFilter(value)]);
         filesResults = filesResults.concat(files);
       } else if (type === 'code') {
         codes.push(value);
-        const files = await findInFiles.find(value, this.basePath, '.(js|ts)$');
-        codesResults = codesResults.concat(Object.keys(files));
+        if (value instanceof RegExp) {
+          const files = await findInFiles.find(
+            {
+              term: value.source,
+              flags: value.flags,
+            },
+            this.basePath,
+            '.(js|ts)$',
+          );
+          codesResults = codesResults.concat(Object.keys(files));
+        } else {
+          const files = await findInFiles.find(value, this.basePath, '.(js|ts)$');
+          codesResults = codesResults.concat(Object.keys(files));
+        }
       }
     }
 
@@ -159,7 +183,7 @@ module.exports = class CodeFixer {
 
         let found = false;
         for (const code of codes) {
-          const regexp = new RegExp(escapeStringRegexp(code), 'gm');
+          const regexp = code instanceof RegExp ? code : new RegExp(escapeStringRegexp(code), 'gm');
           if (regexp.test(fileContent)) {
             found = true;
             break;
@@ -221,7 +245,9 @@ module.exports = class CodeFixer {
     if (!findByImport) {
       code = this.fixPlugin(code, 'Vuex.Store');
     } else {
-      code = this.fixPlugin(code, 'vuex', findByImport);
+      code = this.fixPlugin(code, 'vuex', findByImport, {
+        Vuex: 'Vuex.Store',
+      });
     }
 
     // Transform state to a factory function
@@ -250,7 +276,7 @@ module.exports = class CodeFixer {
     if (!findByImport) {
       return this.fixPlugin(code, 'VueI18n');
     }
-    return this.fixPlugin(code, 'vue-i18n');
+    return this.fixPlugin(code, 'vue-i18n', findByImport);
   }
 
   fixPwa(code) {
@@ -286,15 +312,24 @@ module.exports = class CodeFixer {
     return code;
   }
 
-  fixPlugin(code, name, findByImport = false) {
+  fixPlugin(code, name, findByImport = false, altNames = {}) {
     const doc = RQuery.parse(code);
 
     if (findByImport) {
       const importDec = doc.findOne(`import@${name}`);
+
+      if (!importDec) {
+        return code;
+      }
+
       for (const spec of importDec.node.specifiers) {
         if (spec.type === 'ImportDefaultSpecifier') {
           name = spec.local.name;
         }
+      }
+
+      if (altNames[name]) {
+        name = altNames[name];
       }
     }
 
