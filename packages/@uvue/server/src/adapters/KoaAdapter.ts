@@ -1,6 +1,5 @@
 import * as http from 'http';
 import * as https from 'https';
-import * as mount from 'koa-mount';
 import * as micromatch from 'micromatch';
 import { IRequestContext, IResponseContext } from '../interfaces';
 import { ConnectAdapter } from './ConnectAdapter';
@@ -36,7 +35,7 @@ export class KoaAdapter extends ConnectAdapter {
    */
   public use(...args: any[]): KoaAdapter {
     if (args.length === 2) {
-      this.app.use(mount(args[0], args[1]));
+      this.app.use(require('koa-mount')(args[0], args[1]));
     } else {
       this.app.use(args[0]);
     }
