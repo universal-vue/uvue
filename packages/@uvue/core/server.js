@@ -8,6 +8,7 @@ import routeResolve from './lib/routeResolve';
 export default async ssr => {
   // Create context object
   const context = {
+    ...ssr.inject,
     ssr,
     url: ssr.url,
     req: ssr.req,

@@ -1,5 +1,6 @@
 import * as http from 'http';
 import * as https from 'https';
+import { IRequestContext } from '../interfaces';
 import { ConnectAdapter } from './ConnectAdapter';
 
 export class FastifyAdapter extends ConnectAdapter {
@@ -60,7 +61,18 @@ export class FastifyAdapter extends ConnectAdapter {
   public setupRenderer() {
     // Fastify doesnt found a route: call renderer
     this.app.setNotFoundHandler(async (request, reply) => {
-      await this.renderMiddleware(request.req, reply.res);
+      await this.renderMiddleware(request, reply);
     });
+  }
+
+  protected createRequestContext(request: any, reply: any): IRequestContext {
+    const context = super.createRequestContext(request.req, reply.res);
+
+    context.inject = {
+      reply,
+      request,
+    };
+
+    return context;
   }
 }

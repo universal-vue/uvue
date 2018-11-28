@@ -106,10 +106,9 @@ export class KoaAdapter extends ConnectAdapter {
     const { req, res, cookies } = ctx;
     const context = super.createRequestContext(req, res);
 
-    context.ctx = ctx;
-    context.req = req;
-    context.res = res;
-    context.cookies = cookies;
+    context.inject = {
+      ctx,
+    };
 
     return context;
   }
