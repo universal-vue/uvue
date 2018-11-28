@@ -1,5 +1,6 @@
 import * as http from 'http';
 import * as https from 'https';
+import * as killable from 'killable';
 import { IRequestContext } from '../interfaces';
 import { ConnectAdapter } from './ConnectAdapter';
 
@@ -21,6 +22,7 @@ export class FastifyAdapter extends ConnectAdapter {
           handler(req, res);
         });
       }
+      killable(this.server);
       return this.server;
     };
 
@@ -54,7 +56,9 @@ export class FastifyAdapter extends ConnectAdapter {
    */
   public stop(): Promise<void> {
     return new Promise(resolve => {
-      this.app.close(resolve);
+      (this.server as any).kill(() => {
+        this.app.close(resolve);
+      });
     });
   }
 
