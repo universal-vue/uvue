@@ -109,10 +109,12 @@ module.exports = class UVuePlugin {
   buildPlugins() {
     let result = '';
 
+    const configPath = path.join(this.uvue.getProjectPath(), 'uvue.config');
+
     if (this.uvue.getConfig('plugins')) {
       result = `
 import UVue from '@uvue/core';
-import uvueConfig from '@/../uvue.config';
+import uvueConfig from '${configPath}';
 
 const { plugins } = uvueConfig;
 for (const index in plugins) {
