@@ -29,7 +29,7 @@ export default async (context, { to, next } = {}) => {
       }
 
       // Call hooks if there is an error
-      await UVue.invokeAsync('routeError', error, routeContext);
+      await UVue.invokeAsync('routeError', routeContext, error);
     }
   }
 

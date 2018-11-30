@@ -85,7 +85,7 @@ export default {
   /**
    * On route error populate our error handler
    */
-  routeError(error, context) {
+  routeError(context, error) {
     this.setError(
       {
         error,

@@ -93,7 +93,7 @@ export default {
     }
   },
 
-  async routeError(error, context) {
+  async routeError(context, error) {
     this.vm.$data.routeError = true;
     this.vm.$data.contexts.routeError = analyzeContext(context, 'routeError');
   },
