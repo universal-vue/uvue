@@ -29,21 +29,14 @@ export default async ssr => {
     ssr.meta = app.$meta();
   }
 
-  // Call beforeStart hook
-  await UVue.invokeAsync('beforeStart', context);
-
-  // Router resolve route
-  router.beforeResolve((to, _, next) => {
-    routeResolve(context, { to, next });
-  });
-
   // Init router with current URL
   router.push(ssr.url);
 
   // On router ready
   return new Promise(resolve => {
     router.onReady(async () => {
-      // beforeReady hook
+      await UVue.invokeAsync('beforeStart', context);
+      await routeResolve(context);
       await UVue.invokeAsync('beforeReady', context);
 
       // Resolve app
