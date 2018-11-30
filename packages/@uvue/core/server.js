@@ -35,8 +35,13 @@ export default async ssr => {
   // On router ready
   return new Promise(resolve => {
     router.onReady(async () => {
+      // Call beforeStart hook
       await UVue.invokeAsync('beforeStart', context);
+
+      // Resolve current route
       await routeResolve(context);
+
+      // Call beforeReady hook
       await UVue.invokeAsync('beforeReady', context);
 
       // Resolve app

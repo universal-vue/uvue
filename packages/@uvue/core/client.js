@@ -20,9 +20,6 @@ if (module.hot) {
   // Call app main
   createApp(context);
 
-  // Call created hook
-  await UVue.invokeAsync('beforeStart', context);
-
   // Get some vars from context
   const { app, router } = context;
 
@@ -32,6 +29,9 @@ if (module.hot) {
     router.beforeResolve((to, _, next) => {
       routeResolve(context, { to, next });
     });
+
+    // Call created hook
+    await UVue.invokeAsync('beforeStart', context);
 
     // SPA mode or route
     if (!process.ssr || window.__SPA_ROUTE__) {
