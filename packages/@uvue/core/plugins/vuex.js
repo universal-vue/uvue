@@ -50,6 +50,11 @@ export default {
    * Call fetch() methods on pages components
    */
   async routeResolve(context) {
+    if (!context.app._isMounted) {
+      // onHttpRequest
+      await this.resolveOnHttpRequest(context);
+    }
+
     await this.resolveFetch(context);
   },
 
@@ -58,9 +63,6 @@ export default {
    */
   async beforeReady(context) {
     const { store, ssr } = context;
-
-    // onHttpRequest
-    await this.resolveOnHttpRequest(context);
 
     if (store && process.server) {
       // Inject store data in __DATA__ on server side
