@@ -1,10 +1,9 @@
 <p align="center" style="text-align: center;">
-  <img src="https://s3.eu-west-2.amazonaws.com/yabab/uvue-512.png" alt="UVue" width="256" height="256">
+  <img src="https://s3.eu-west-2.amazonaws.com/yabab/uvue-512.png" alt="UVue" width="128" height="128">
 </p>
 
-# UVue
-
-> Build universal Vue applications with ease
+<h1 align="center">UVue</h1>
+<p align="center">Build universal Vue applications with ease</p>
 
 - [Documentation](https://universal-vue.github.io/docs/)
 - [Live demo](http://uvue.yabab.net)
