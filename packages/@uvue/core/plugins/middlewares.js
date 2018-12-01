@@ -26,6 +26,8 @@ export default {
         if (middlewares && Array.isArray(middlewares)) {
           this.$options.middlewares = [...this.$options.middlewares, ...middlewares];
         }
+      } else if (Array.isArray(plugin.middlewares)) {
+        this.$options.middlewares = [...this.$options.middlewares, ...plugin.middlewares];
       }
     }
   },
@@ -36,7 +38,9 @@ export default {
   async routeResolve(context) {
     const middlewares = [...this.$options.middlewares, ...this.getComponentsMiddlewares(context)];
     for (const m of middlewares) {
-      await m(context);
+      if (typeof m === 'function') {
+        await m(context);
+      }
     }
   },
 
@@ -45,7 +49,9 @@ export default {
    */
   getComponentsMiddlewares(context) {
     const { routeComponents } = context;
-    // Get pages components
+    let middlewares = [];
+
+    // Get middlewares from pages components
     if (routeComponents.length) {
       return routeComponents
         .map(c => {
@@ -60,8 +66,8 @@ export default {
         .reduce((middlewares, results) => {
           results = [...results, ...middlewares];
           return results;
-        }, []);
+        }, middlewares);
     }
-    return [];
+    return middlewares;
   },
 };
