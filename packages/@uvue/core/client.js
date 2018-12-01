@@ -2,6 +2,7 @@ import { createApp } from './main';
 import UVue from '@uvue/core';
 import routeResolve from './lib/routeResolve';
 import onHotReload from './lib/onHotReload';
+import { catchErrorAsync, catchError } from './lib/catchError';
 
 // Enable HMR
 if (module.hot) {
@@ -30,16 +31,18 @@ if (module.hot) {
       routeResolve(context, { to, next });
     });
 
-    // Call created hook
-    await UVue.invokeAsync('beforeStart', context);
+    await catchErrorAsync(context, async () => {
+      // Call created hook
+      await UVue.invokeAsync('beforeStart', context);
 
-    // SPA mode or route
-    if (!process.ssr || window.__SPA_ROUTE__) {
-      await routeResolve(context);
-    }
+      // SPA mode or route
+      if (!process.ssr || window.__SPA_ROUTE__) {
+        await routeResolve(context);
+      }
 
-    // beforeReady hook
-    await UVue.invokeAsync('beforeReady', context);
+      // beforeReady hook
+      await UVue.invokeAsync('beforeReady', context);
+    });
 
     // Mount app
     app.$mount('#app');
@@ -47,7 +50,9 @@ if (module.hot) {
     // Wait for next tick after mount
     app.$nextTick(() => {
       // Call ready hook
-      UVue.invoke('ready', context);
+      catchError(context, () => {
+        UVue.invoke('ready', context);
+      });
     });
   });
 

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import UVue from '@uvue/core';
 import { doRedirect, getRedirect, RedirectError } from '@uvue/core/lib/redirect';
+import { catchError, VueError } from './catchError';
 
 /**
  * Simple function to create main context with
@@ -23,14 +24,16 @@ export default (options, context) => {
   };
 
   // beforeCreate hook call
-  UVue.invoke(
-    'beforeCreate',
-    context,
-    (key, value) => {
-      if (!options[key]) options[key] = value;
-    },
-    { ...options },
-  );
+  catchError(context, () => {
+    UVue.invoke(
+      'beforeCreate',
+      context,
+      (key, value) => {
+        if (!options[key]) options[key] = value;
+      },
+      { ...options },
+    );
+  });
 
   // Create app and return it
   context.app = new Vue(options);
@@ -41,6 +44,26 @@ export default (options, context) => {
       doRedirect(context, err);
     }
   });
+
+  // Catch Vue errors
+  Vue.config.errorHandler = (error, vm, info) => {
+    if (error instanceof RedirectError) {
+      doRedirect(context, error);
+    } else {
+      UVue.invoke('catchError', context, new VueError(error, vm, info));
+
+      if (process.client) {
+        if (process.env.NODE_ENV !== 'production') {
+          Vue.util.warn(`Error in ${info}: "${error.toString()}"`, vm);
+        } else if (process.env.VUE_APP_ENABLE_ERROR_LOGS) {
+          // eslint-disable-next-line
+          console.error(error.stack || error.message || error);
+        }
+      } else {
+        throw error;
+      }
+    }
+  };
 
   return context.app;
 };

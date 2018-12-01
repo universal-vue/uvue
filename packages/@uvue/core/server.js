@@ -1,6 +1,7 @@
 import { createApp } from './main';
 import UVue from '@uvue/core';
 import routeResolve from './lib/routeResolve';
+import { catchErrorAsync, catchError } from './lib/catchError';
 
 /**
  * Vue start
@@ -36,19 +37,23 @@ export default async ssr => {
   return new Promise(resolve => {
     router.onReady(async () => {
       // Call beforeStart hook
-      await UVue.invokeAsync('beforeStart', context);
+      await catchErrorAsync(context, async () => {
+        await UVue.invokeAsync('beforeStart', context);
 
-      // Resolve current route
-      await routeResolve(context);
+        // Resolve current route
+        await routeResolve(context);
 
-      // Call beforeReady hook
-      await UVue.invokeAsync('beforeReady', context);
+        // Call beforeReady hook
+        await UVue.invokeAsync('beforeReady', context);
+      });
 
       // Resolve app
       resolve(app);
 
       // Call ready hook
-      UVue.invoke('ready', context);
+      catchError(context, () => {
+        UVue.invoke('ready', context);
+      });
     });
   });
 };

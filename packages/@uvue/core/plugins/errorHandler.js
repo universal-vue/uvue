@@ -54,20 +54,6 @@ export default {
     };
 
     Vue.error.clear = () => this.clearError(context);
-
-    if (process.client) {
-      // Catch Vue errors
-      Vue.config.errorHandler = (error, vm, info) => {
-        this.setError(
-          {
-            error,
-            info,
-            vm,
-          },
-          context,
-        );
-      };
-    }
   },
 
   /**
@@ -86,6 +72,18 @@ export default {
    * On route error populate our error handler
    */
   routeError(context, error) {
+    this.setError(
+      {
+        error,
+      },
+      context,
+    );
+  },
+
+  /**
+   * Catch errors in plugins hooks
+   */
+  catchError(context, error) {
     this.setError(
       {
         error,
