@@ -124,6 +124,8 @@ module.exports = (api, options) => {
 
     const cf = new CodeFixer(path.join(api.generator.context, 'src'));
     await cf.run(api, mainPath);
+
+    await CodeFixer.warningMessage();
   });
 
   api.extendPackage(extendPackage);

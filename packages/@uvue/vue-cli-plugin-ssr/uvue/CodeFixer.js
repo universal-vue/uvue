@@ -7,6 +7,7 @@ const prettier = require('prettier');
 const { RQuery, Recast } = require('@uvue/rquery');
 const consola = require('consola');
 const { merge } = require('lodash');
+const chalk = require('chalk');
 
 const fileSearchFilter = filename => {
   const regexp = new RegExp(`${filename}.(js|ts)$`);
@@ -654,5 +655,33 @@ module.exports = class CodeFixer {
       });
     }
     return code;
+  }
+
+  static warningMessage() {
+    consola.warn(chalk.red('PLEASE READ THIS MESSAGE'));
+    // eslint-disable-next-line
+    console.log(`
+${chalk.yellow(`At installation, this plugin will try to fix your current project code to make it compatible
+with Vue SSR. If you install others Vue CLI plugin after UVue, you have to run "ssr:fix" command`)}
+
+List of supported plugins here:
+${chalk.blue(`https://universal-vue.github.io/docs/guide/vue-cli-plugins.html`)}
+
+${chalk.yellow('You need to keep in mind two things:')}
+
+1) Avoid stateful singletons:
+${chalk.blue(`https://ssr.vuejs.org/guide/structure.html#avoid-stateful-singletons`)}
+
+2) Use a factory function to delcare your Vuex states:
+${chalk.blue(`export default {
+  state: () => ({
+    // Your variables here
+  }),
+  // mutations, actions, getters...
+}`)}
+`);
+    //${chalk.gray('Command: ssr:fix-vuex')}
+
+    return new Promise(resolve => setTimeout(resolve, 5000));
   }
 };
