@@ -51,6 +51,23 @@ export default {
     const { routeComponents } = context;
     let middlewares = [];
 
+    // Get middlewares from routes metas
+    const { route } = context;
+    if (route && route.matched) {
+      for (const routeItem of route.matched) {
+        if (routeItem.meta && routeItem.meta.middlewares) {
+          if (Array.isArray(route.meta.middlewares)) {
+            middlewares = [...middlewares, ...route.meta.middlewares];
+          } else if (typeof route.meta.middlewares === 'function') {
+            const result = route.meta.middlewares();
+            if (result && Array.isArray(result)) {
+              middlewares = [...middlewares, ...result];
+            }
+          }
+        }
+      }
+    }
+
     // Get middlewares from pages components
     if (routeComponents.length) {
       return routeComponents
