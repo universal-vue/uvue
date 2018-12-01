@@ -109,7 +109,10 @@ module.exports = class UVuePlugin {
   buildPlugins() {
     let result = '';
 
-    const configPath = path.join(this.uvue.getProjectPath(), 'uvue.config');
+    let configPath = path.join(this.uvue.getProjectPath(), 'uvue.config');
+    if (os.platform() === 'win32') {
+      configPath = configPath.replace(/\\/g, '/');
+    }
 
     if (this.uvue.getConfig('plugins')) {
       result = `
