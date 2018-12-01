@@ -208,4 +208,35 @@ describe('CodeFixer', () => {
     let codeResult = cf.fixPwa(code);
     expect(codeResult).toBe(codeFixed);
   });
+
+  it('Should find files with a possible Vuex state to fix', async () => {
+    const mocksPath = path.resolve(__dirname, '../mocks/code-fixer/storeStates');
+    const cf = new CodeFixer(mocksPath);
+    const files = await cf.findVuexStateFiles();
+    expect(Object.keys(files).length).toBe(3);
+  });
+
+  it('Should fix Vuex states', async () => {
+    {
+      const filePath = path.resolve(__dirname, '../mocks/code-fixer/storeStates/normal.js');
+      const fixedPath = path.resolve(__dirname, '../mocks/code-fixer/storeStates/fixed.js');
+
+      const code = await fs.readFile(filePath, 'utf-8');
+      const codeFixed = await fs.readFile(fixedPath, 'utf-8');
+
+      let codeResult = cf.fixVuexState(code);
+      expect(codeResult).toBe(codeFixed);
+    }
+
+    {
+      const filePath = path.resolve(__dirname, '../mocks/code-fixer/storeStates/store/split.js');
+      const fixedPath = path.resolve(__dirname, '../mocks/code-fixer/storeStates/store/fixed.js');
+
+      const code = await fs.readFile(filePath, 'utf-8');
+      const codeFixed = await fs.readFile(fixedPath, 'utf-8');
+
+      let codeResult = cf.fixVuexState(code);
+      expect(codeResult).toBe(codeFixed);
+    }
+  });
 });

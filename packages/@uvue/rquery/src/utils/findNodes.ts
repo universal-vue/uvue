@@ -1,4 +1,6 @@
 const traversableProps = [
+  'id',
+  'key',
   'init',
   'body',
   'argument',

@@ -570,4 +570,89 @@ module.exports = class CodeFixer {
   fixApollo(code) {
     return code.replace(/ssr:\s?false/, 'ssr: !!process.server');
   }
+
+  async findVuexStateFiles() {
+    const results = {};
+    const files = await this.findFiles([/state/gm]);
+
+    for (const filePath of files) {
+      const doc = RQuery.parse(await fs.readFile(filePath, 'utf-8'));
+      const elements = doc.find('id#state');
+
+      elements.forEach(el => {
+        const parent = el.parent();
+        if (
+          parent.node.type === 'ObjectProperty' &&
+          parent.node.value.type === 'ObjectExpression'
+        ) {
+          // Normal case
+          if (!results[filePath]) {
+            results[filePath] = { type: 'normal' };
+          }
+        } else if (
+          parent.node.type === 'VariableDeclarator' &&
+          parent.node.init.type === 'ObjectExpression'
+        ) {
+          // Split case
+          if (!results[filePath]) {
+            results[filePath] = { type: 'split' };
+          }
+        } else if (
+          parent.node.type === 'ObjectProperty' &&
+          parent.node.value.type === 'Identifier'
+        ) {
+          // From a pre-defined variable
+          if (!results[filePath]) {
+            results[filePath] = { type: 'complex' };
+          }
+        }
+      });
+    }
+
+    return results;
+  }
+
+  fixVuexState(code) {
+    const doc = RQuery.parse(code);
+    const elements = doc.find('id#state');
+
+    elements.forEach(el => {
+      const parent = el.parent();
+
+      if (parent.node.type === 'ObjectProperty' && parent.node.value.type === 'ObjectExpression') {
+        // Normal case
+        const obj = parent.nodeProp('value');
+        const func = RQuery.parse('() => (replace)').findOne('funcArrow');
+        func.findOne('id#replace').replace(obj);
+
+        parent
+          .parent()
+          .getProp('state')
+          .replace(func);
+      } else if (
+        parent.node.type === 'VariableDeclarator' &&
+        parent.node.init.type === 'ObjectExpression'
+      ) {
+        // Split case
+        const obj = parent.nodeProp('init');
+        const func = RQuery.parse('() => (replace)').findOne('funcArrow');
+        func.findOne('id#replace').replace(obj);
+
+        const declarationIndex = parent
+          .parent()
+          .node.declarations.findIndex(item => item === parent.node);
+        if (declarationIndex >= 0) {
+          parent.parent().node.declarations[0].init = func.node;
+        }
+      }
+    });
+
+    if (elements.size()) {
+      const prettierOptions = this.resolveCodingStyle(code);
+      return RQuery.print(doc, {
+        prettierConfig: prettierOptions,
+      });
+    }
+    return code;
+  }
 };
