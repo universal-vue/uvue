@@ -667,7 +667,7 @@ with Vue SSR. If you install others Vue CLI plugin after UVue, you have to run "
 List of supported plugins here:
 ${chalk.blue(`https://universal-vue.github.io/docs/guide/vue-cli-plugins.html`)}
 
-${chalk.yellow('You need to keep in mind two things:')}
+${chalk.yellow('Basically, you need to keep in mind two things:')}
 
 1) Avoid stateful singletons:
 ${chalk.blue(`https://ssr.vuejs.org/guide/structure.html#avoid-stateful-singletons`)}
@@ -679,9 +679,7 @@ ${chalk.blue(`export default {
   }),
   // mutations, actions, getters...
 }`)}
+You can use "ssr:fix-vuex" to try to fix them automatically
 `);
-    //${chalk.gray('Command: ssr:fix-vuex')}
-
-    return new Promise(resolve => setTimeout(resolve, 5000));
   }
 };

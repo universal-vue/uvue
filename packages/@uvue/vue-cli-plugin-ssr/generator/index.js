@@ -25,6 +25,7 @@ module.exports = (api, options) => {
       'ssr:start': 'vue-cli-service ssr:start',
       'ssr:static': 'vue-cli-service ssr:static',
       'ssr:fix': 'vue-cli-service ssr:fix',
+      'ssr:fix-vuex': 'vue-cli-service ssr:fix-vuex',
     },
   };
 
@@ -125,7 +126,9 @@ module.exports = (api, options) => {
     const cf = new CodeFixer(path.join(api.generator.context, 'src'));
     await cf.run(api, mainPath);
 
-    await CodeFixer.warningMessage();
+    setTimeout(() => {
+      CodeFixer.warningMessage();
+    }, 1000);
   });
 
   api.extendPackage(extendPackage);

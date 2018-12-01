@@ -12,6 +12,7 @@ module.exports = api => {
   require('./commands/start')(api, projectOptions);
   require('./commands/static')(api, projectOptions);
   require('./commands/fix')(api, projectOptions);
+  require('./commands/fix-vuex')(api, projectOptions);
 };
 
 module.exports.defaultModes = {
