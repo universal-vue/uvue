@@ -24,5 +24,6 @@ module.exports = () => ({
     hot: {},
   },
   plugins: [],
-  watch: [],
+  watch: ['server.config.js'],
+  watchIgnore: ['dist/**/*'],
 });

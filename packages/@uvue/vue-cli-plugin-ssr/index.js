@@ -8,6 +8,7 @@ module.exports = api => {
 
   // Vue CLI commands
   require('./commands/serve')(api, projectOptions);
+  require('./commands/serveRun')(api, projectOptions);
   require('./commands/build')(api, projectOptions);
   require('./commands/start')(api, projectOptions);
   require('./commands/static')(api, projectOptions);
