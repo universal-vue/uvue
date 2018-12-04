@@ -1,5 +1,6 @@
 const nodemon = require('nodemon');
 const consola = require('consola');
+const path = require("path")
 
 const defaults = {
   host: 'localhost',
@@ -22,7 +23,7 @@ module.exports = api => {
       const { watch, watchIgnore } = api.uvue.getServerConfig();
 
       nodemon({
-        exec: `node ./node_modules/.bin/vue-cli-service ssr:serve-run ${process.argv
+        exec: `node ${path.resolve("./node_modules/@vue/cli-service/bin/vue-cli-service.js")} ssr:serve-run ${process.argv
           .slice(2)
           .map(arg => `"${arg}"`)
           .join(' ')}`,
