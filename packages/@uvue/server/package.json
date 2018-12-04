@@ -10,7 +10,7 @@
     "lint": "tslint 'src/**/*.ts'",
     "lint:fix": "tslint --fix 'src/**/*.ts'",
     "format": "prettier --ignore-path .gitignore --write 'src/**/*.ts'",
-    "prepublishOnly": "tsc"
+    "prepublishOnly": "npm run build"
   },
   "repository": "https://github.com/universal-vue/uvue",
   "keywords": [
