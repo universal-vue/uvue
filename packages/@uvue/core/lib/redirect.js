@@ -30,7 +30,9 @@ export const doRedirect = ({ app, res, ssr, router }, { location, statusCode }) 
     location = router.resolve(location, router.currentRoute).href;
   }
 
-  app.$emit('router.redirect');
+  if (app) {
+    app.$emit('router.redirect');
+  }
 
   if (process.client) {
     // Client side
