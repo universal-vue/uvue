@@ -23,16 +23,18 @@ export default (options, context) => {
     });
   };
 
+  // Inject function
+  const inject = (key, value) => {
+    if (!/^\$/.test(key)) key = `$${key}`;
+    context[key] = Vue.prototype[key] = value;
+    if (options.store) {
+      options.store[key] = value;
+    }
+  };
+
   // beforeCreate hook call
   catchError(context, () => {
-    UVue.invoke(
-      'beforeCreate',
-      context,
-      (key, value) => {
-        if (!options[key]) options[key] = value;
-      },
-      { ...options },
-    );
+    UVue.invoke('beforeCreate', context, inject, options);
   });
 
   // Create app and return it
