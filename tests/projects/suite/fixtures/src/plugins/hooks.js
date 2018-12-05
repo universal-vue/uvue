@@ -61,10 +61,9 @@ export default {
     });
   },
 
-  beforeCreate(context, inject) {
+  beforeCreate(context) {
     this.vm.$data.beforeCreate = true;
 
-    inject('hooksInstalled', true);
     Vue.prototype.$hooksTest = this.vm;
     this.vm.$data.contexts.beforeCreate = analyzeContext(context);
 

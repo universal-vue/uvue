@@ -8,11 +8,5 @@
       :result="$hooksTest.options.foo"
     />
 
-    <h3>Inject to root</h3>
-    <test-case
-      expected="true"
-      :result="$root.$options.hooksInstalled.toString()"
-    />
-
   </div>
 </template>

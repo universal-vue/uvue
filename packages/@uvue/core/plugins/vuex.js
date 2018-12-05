@@ -22,7 +22,7 @@ export default {
    * Get store from Vue options and inject it to context
    */
   beforeCreate(context, _, vueOptions) {
-    if (vueOptions.store || !(vueOptions.store instanceof Store)) {
+    if (vueOptions.store && vueOptions.store instanceof Store) {
       // Get store from new Vue options
       context.store = vueOptions.store;
 

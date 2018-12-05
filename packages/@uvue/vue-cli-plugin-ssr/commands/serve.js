@@ -1,6 +1,5 @@
 const nodemon = require('nodemon');
 const consola = require('consola');
-const path = require('path');
 
 const defaults = {
   host: 'localhost',
