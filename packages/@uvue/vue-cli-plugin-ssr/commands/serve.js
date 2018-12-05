@@ -21,7 +21,7 @@ module.exports = api => {
     },
     async function() {
       const { watch, watchIgnore } = api.uvue.getServerConfig();
-      const vueCliPath = path.resolve('./node_modules/@vue/cli-service/bin/vue-cli-service.js');
+      const vueCliPath = require.resolve('@vue/cli-service/bin/vue-cli-service.js');
 
       nodemon({
         exec: `node ${vueCliPath} ssr:serve-run ${process.argv
@@ -36,6 +36,9 @@ module.exports = api => {
         })
         .on('crash', () => {
           consola.error('Server crashed');
+        })
+        .on('quit', () => {
+          process.exit();
         });
     },
   );
