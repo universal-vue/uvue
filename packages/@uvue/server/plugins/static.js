@@ -1,12 +1,24 @@
 import { KoaAdapter } from '@uvue/server';
+import { merge } from 'lodash';
 
 export default {
   install(server, pluginOptions = {}) {
-    const { options: opts, directory } = {
-      directory: 'dist',
-      options: {},
-      ...pluginOptions,
-    };
+    const { options: opts, directory } = merge(
+      {},
+      {
+        directory: 'dist',
+        options: {
+          immutable: true,
+          maxAge: '1y',
+          setHeaders(res, path) {
+            if (/service-worker\.js/.test(path)) {
+              res.setHeader('Cache-Control', 'public, max-age=0');
+            }
+          },
+        },
+      },
+      pluginOptions,
+    );
 
     const adapter = server.getAdapter();
     if (adapter instanceof KoaAdapter) {

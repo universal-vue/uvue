@@ -1,14 +1,18 @@
 import { join } from 'path';
-import { readFileSync } from 'fs';
+import { readFile } from 'fs-extra';
 import Youch from 'youch';
 import youchTerminal from 'youch-terminal';
+import { merge } from 'lodash';
 
 export default {
   install(server, options) {
-    this.options = {
-      path: join(__dirname, '..', 'server-error.html'),
-      ...(options || {}),
-    };
+    this.options = merge(
+      {},
+      {
+        path: join(__dirname, '..', 'server-error.html'),
+      },
+      options || {},
+    );
   },
 
   async routeError(err, response, { req }) {
@@ -22,7 +26,7 @@ export default {
       // tslint:disable-next-line
       console.error(youchTerminal(json));
     } else {
-      html = readFileSync(this.options.path, 'utf-8');
+      html = await readFile(this.options.path, 'utf-8');
     }
 
     response.status = 500;

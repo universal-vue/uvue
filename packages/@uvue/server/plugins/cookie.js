@@ -1,13 +1,17 @@
 import { KoaAdapter } from '@uvue/server';
 import consola from 'consola';
+import { merge } from 'lodash';
 
 export default {
-  install(server, pluginOptions = {}) {
-    const { secret, options: opts } = {
-      secret: '',
-      options: {},
-      ...pluginOptions,
-    };
+  install(server, options = {}) {
+    const { secret, options: opts } = merge(
+      {},
+      {
+        secret: '',
+        options: {},
+      },
+      options,
+    );
 
     if (!secret) {
       consola.warn('No secret defined for your cookies!');
