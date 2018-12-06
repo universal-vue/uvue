@@ -23,11 +23,3 @@
     <router-view/>
   </div>
 </template>
-
-<script>
-import { route } from '@/shared/middlewares';
-
-export default {
-  middlewares: [route],
-};
-</script>

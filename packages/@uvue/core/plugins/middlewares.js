@@ -1,5 +1,5 @@
 import UVue from '@uvue/core';
-import sanitizeComponent from '../lib/sanitizeComponent';
+import getContext from '../lib/getContext';
 
 export default {
   /**
@@ -13,7 +13,7 @@ export default {
    * Fetch middlewares from plugin options and other
    * installed plugins
    */
-  beforeCreate() {
+  beforeCreate(context) {
     this.$options = {
       middlewares: [],
       ...this.$options,
@@ -30,17 +30,18 @@ export default {
         this.$options.middlewares = [...this.$options.middlewares, ...plugin.middlewares];
       }
     }
-  },
 
-  /**
-   * On each route call middlewares
-   */
-  async routeResolve(context) {
-    const middlewares = [...this.$options.middlewares, ...this.getComponentsMiddlewares(context)];
-    for (const m of middlewares) {
-      if (typeof m === 'function') {
-        await m(context);
-      }
+    if (!this.$options.legacy) {
+      context.router.beforeEach(async (to, from, next) => {
+        const ctx = getContext(context, to);
+        const middlewares = [...this.$options.middlewares, ...this.getComponentsMiddlewares(ctx)];
+        for (const m of middlewares) {
+          if (typeof m === 'function') {
+            await m(ctx);
+          }
+        }
+        next();
+      });
     }
   },
 
@@ -48,7 +49,6 @@ export default {
    * Get middlewares defined on pages components
    */
   getComponentsMiddlewares(context) {
-    const { routeComponents } = context;
     let middlewares = [];
 
     // Get middlewares from routes metas
@@ -68,23 +68,6 @@ export default {
       }
     }
 
-    // Get middlewares from pages components
-    if (routeComponents.length) {
-      return routeComponents
-        .map(c => {
-          const Component = sanitizeComponent(c);
-          const { middlewares } = Component.options;
-
-          if (middlewares && Array.isArray(middlewares)) {
-            return middlewares;
-          }
-          return [];
-        })
-        .reduce((middlewares, results) => {
-          results = [...results, ...middlewares];
-          return results;
-        }, middlewares);
-    }
     return middlewares;
   },
 };
