@@ -38,11 +38,16 @@ export default {
   /**
    * Read data from SSR to hydrate store
    */
-  beforeStart(context) {
+  async beforeStart(context) {
     const { store } = context;
     if (store && process.client && process.ssr && window.__DATA__) {
       const { state } = window.__DATA__;
       store.replaceState(state);
+    }
+
+    if (!context.app._isMounted) {
+      // onHttpRequest
+      await this.resolveOnHttpRequest(context);
     }
   },
 
@@ -50,11 +55,6 @@ export default {
    * Call fetch() methods on pages components
    */
   async routeResolve(context) {
-    if (!context.app._isMounted) {
-      // onHttpRequest
-      await this.resolveOnHttpRequest(context);
-    }
-
     await this.resolveFetch(context);
   },
 

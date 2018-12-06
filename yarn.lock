@@ -1641,10 +1641,10 @@
   integrity sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
 
 "@uvue/core@link:packages/@uvue/core":
-  version "0.1.0-alpha.6"
+  version "0.1.0-alpha.7"
 
 "@uvue/devtools@link:packages/@uvue/devtools":
-  version "0.1.0-alpha.6"
+  version "0.1.0-alpha.7"
   dependencies:
     "@nearform/bubbleprof" "^1.6.1"
     "@nearform/doctor" "^3.4.0"
@@ -1662,7 +1662,7 @@
     yargs "^12.0.2"
 
 "@uvue/rquery@link:packages/@uvue/rquery":
-  version "0.1.0-alpha.6"
+  version "0.1.0-alpha.7"
   dependencies:
     "@babel/parser" "^7.0.0"
     "@types/node" "^10.9.4"
@@ -1672,7 +1672,7 @@
     typescript "^3.0.3"
 
 "@uvue/server@link:packages/@uvue/server":
-  version "0.1.0-alpha.6"
+  version "0.1.0-alpha.7"
   dependencies:
     "@types/compression" "^0.0.36"
     "@types/connect" "^3.4.32"
@@ -1704,9 +1704,9 @@
     youch-terminal "^1.0.0"
 
 "@uvue/vue-cli-plugin-ssr@link:packages/@uvue/vue-cli-plugin-ssr":
-  version "0.1.0-alpha.6"
+  version "0.1.0-alpha.7"
   dependencies:
-    "@uvue/rquery" "^0.1.0-alpha.6"
+    "@uvue/rquery" "^0.1.0-alpha.7"
     chalk "^2.4.1"
     chokidar "^2.0.4"
     consola "^1.4.3"
@@ -1754,7 +1754,7 @@
   resolved "https://registry.yarnpkg.com/@vue/cli-overlay/-/cli-overlay-3.2.0.tgz#bb5d781914bb5af97d92410babbaa3720707b728"
   integrity sha512-RKMSfgTtRs4VOXQhmbrNZJaCCheshebji9NcPNGyXzukCMBtoAbu3cG9HxizCSUA//oFFAdPP5BGeHvv0cpu/A==
 
-"@vue/cli-plugin-babel@^3.1.1":
+"@vue/cli-plugin-babel@^3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@vue/cli-plugin-babel/-/cli-plugin-babel-3.2.0.tgz#5548e052f07512156942f50dcf18948ad29be7ec"
   integrity sha512-HRhwsUIZ9DZYH+cVS8O0Qfk2W43vKpl5/JcvCS8YWWmRjwZjjHtRDifnfQuLC3Q0cUMTcv4bv8vnPMtkAbvXKg==
@@ -1775,7 +1775,7 @@
     ts-loader "^5.3.1"
     tslint "^5.11.0"
 
-"@vue/cli-service@^3.0.3", "@vue/cli-service@^3.1.4":
+"@vue/cli-service@^3.0.3", "@vue/cli-service@^3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@vue/cli-service/-/cli-service-3.2.0.tgz#96e8ee7b33a911ab71710c126ab55cd64c2a4c51"
   integrity sha512-HTiaz1IBXV/JCfrmyhHJvDOYpPTBK0uQAekSVRTt5AddCeOV68ktdUqHbDe3VPDfrWFA5x3d3kIHlJd6WK31mA==
