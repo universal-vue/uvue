@@ -2,7 +2,7 @@ import { join } from 'path';
 import { readFile } from 'fs-extra';
 import Youch from 'youch';
 import youchTerminal from 'youch-terminal';
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 
 export default {
   install(server, options) {
