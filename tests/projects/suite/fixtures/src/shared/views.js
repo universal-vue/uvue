@@ -1,5 +1,5 @@
 import Home from '@/views/Home.vue';
-import { route, routeNested, routeError } from '@/shared/middlewares';
+import { route, routeNested } from '@/shared/middlewares';
 
 const views = [
   {
@@ -134,9 +134,6 @@ const views = [
         label: 'Error handler (route)',
         name: 'plugin-error-route',
         component: () => import('@/views/plugins/ErrorRoute.vue'),
-        meta: {
-          middlewares: [routeError],
-        },
       },
     ],
   },

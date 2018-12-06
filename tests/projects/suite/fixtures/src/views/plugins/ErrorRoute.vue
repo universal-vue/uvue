@@ -16,13 +16,12 @@ import { promiseData } from '@/shared/utils';
 import { routeError } from '@/shared/middlewares';
 
 export default {
-  middlewares: [routeError],
-
   data: () => ({
     foo: 'bar',
   }),
 
-  async asyncData() {
+  async asyncData({ error }) {
+    error('Forbidden', 403);
     return {
       foo: await promiseData('error'),
     };

@@ -31,18 +31,16 @@ export default {
       }
     }
 
-    if (!this.$options.legacy) {
-      context.router.beforeEach(async (to, from, next) => {
-        const ctx = getContext(context, to);
-        const middlewares = [...this.$options.middlewares, ...this.getComponentsMiddlewares(ctx)];
-        for (const m of middlewares) {
-          if (typeof m === 'function') {
-            await m(ctx);
-          }
+    context.router.beforeEach(async (to, from, next) => {
+      const ctx = getContext(context, to);
+      const middlewares = [...this.$options.middlewares, ...this.getComponentsMiddlewares(ctx)];
+      for (const m of middlewares) {
+        if (typeof m === 'function') {
+          await m(ctx);
         }
-        next();
-      });
-    }
+      }
+      next();
+    });
   },
 
   /**
@@ -56,10 +54,10 @@ export default {
     if (route && route.matched) {
       for (const routeItem of route.matched) {
         if (routeItem.meta && routeItem.meta.middlewares) {
-          if (Array.isArray(route.meta.middlewares)) {
-            middlewares = [...middlewares, ...route.meta.middlewares];
-          } else if (typeof route.meta.middlewares === 'function') {
-            const result = route.meta.middlewares();
+          if (Array.isArray(routeItem.meta.middlewares)) {
+            middlewares = [...middlewares, ...routeItem.meta.middlewares];
+          } else if (typeof routeItem.meta.middlewares === 'function') {
+            const result = routeItem.meta.middlewares();
             if (result && Array.isArray(result)) {
               middlewares = [...middlewares, ...result];
             }
