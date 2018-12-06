@@ -8,11 +8,3 @@
     />
   </div>
 </template>
-
-<script>
-import { routeNested } from '@/shared/middlewares';
-
-export default {
-  middlewares: [routeNested],
-};
-</script>

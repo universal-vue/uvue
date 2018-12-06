@@ -1,4 +1,5 @@
 import Home from '@/views/Home.vue';
+import { route, routeNested } from '@/shared/middlewares';
 
 const views = [
   {
@@ -108,11 +109,17 @@ const views = [
         label: 'Middlewares',
         testName: 'plugin-middlewares',
         component: () => import('@/views/plugins/Middlewares.vue'),
+        meta: {
+          middlewares: [route],
+        },
         children: [
           {
             path: '',
             name: 'plugin-middlewares',
             component: () => import('@/views/plugins/MiddlewaresNested.vue'),
+            meta: {
+              middlewares: [routeNested],
+            },
           },
         ],
       },
