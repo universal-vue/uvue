@@ -53,7 +53,7 @@ process.env.NODE_ENV = 'production';
     options = require(resolve(argv.config)).default;
   }
 
-  const { adapter, spaPaths, renderer } = options;
+  const { adapter, https, spaPaths, renderer } = options;
 
   /**
    * Create server
@@ -76,7 +76,7 @@ process.env.NODE_ENV = 'production';
     httpOptions: {
       host,
       port,
-      https: options.https,
+      https,
     },
 
     // From config file

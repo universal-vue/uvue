@@ -52,10 +52,11 @@ module.exports = (api, options) => {
       /**
        * Create server
        */
+      const { adapter, https, spaPaths, renderer } = api.uvue.getServerConfig();
       const { Server } = require('@uvue/server');
 
       const server = new Server({
-        adapter: api.uvue.getServerConfig('adapter'),
+        adapter,
 
         // Set files destinations
         paths: {
@@ -72,8 +73,12 @@ module.exports = (api, options) => {
         httpOptions: {
           host,
           port,
-          https: api.uvue.getServerConfig('https'),
+          https,
         },
+
+        // From config file
+        spaPaths,
+        renderer,
       });
 
       // Install plugins
