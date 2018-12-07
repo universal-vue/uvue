@@ -11,8 +11,8 @@ module.exports = () => ({
   renderer: {
     directives: {},
     cache: null,
-    shoudPrefetch: null,
-    shoudPreload: null,
+    shouldPrefetch: null,
+    shouldPreload: null,
   },
   generate: {
     paths: [],
