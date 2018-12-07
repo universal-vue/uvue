@@ -9,7 +9,7 @@ export default {
         directory: 'dist',
         options: {
           immutable: true,
-          maxAge: '1y',
+          maxAge: '30d',
           setHeaders(res, path) {
             if (/service-worker\.js/.test(path)) {
               res.setHeader('Cache-Control', 'public, max-age=0');

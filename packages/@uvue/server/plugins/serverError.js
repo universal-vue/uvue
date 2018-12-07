@@ -27,6 +27,9 @@ export default {
       console.error(youchTerminal(json));
     } else {
       html = await readFile(this.options.path, 'utf-8');
+
+      // tslint:disable-next-line
+      console.error(err.stack || err);
     }
 
     response.status = 500;
