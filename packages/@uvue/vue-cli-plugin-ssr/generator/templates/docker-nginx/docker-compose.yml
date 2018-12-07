@@ -6,7 +6,6 @@ volumes:
 services:
   app:
     build: .
-    restart: always
     volumes:
       - app-dist:/home/node/app/dist
 
