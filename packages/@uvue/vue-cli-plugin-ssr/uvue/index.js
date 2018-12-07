@@ -45,7 +45,10 @@ module.exports = class {
     });
 
     // Core package need to be transpiled
-    api.service.projectOptions.transpileDependencies.push(/@uvue(\\|\/)core/);
+    api.service.projectOptions.transpileDependencies.push(
+      /@uvue(\\|\/)core/,
+      /\.uvue(\\|\/)main\.js/,
+    );
   }
 
   /**
