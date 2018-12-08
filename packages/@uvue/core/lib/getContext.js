@@ -2,7 +2,8 @@
  * Return a new context based on app context with route informations
  * Used in routeResolve
  */
-export default (context, route) => {
+export default (context, guardContext = {}) => {
+  let { to: route, from } = guardContext;
   const { router } = context;
 
   // Take the right current route to resolve
@@ -12,6 +13,7 @@ export default (context, route) => {
   return {
     ...context,
     route,
+    from,
     routeComponents: router.getMatchedComponents(route),
     params: route.params,
     query: route.query,

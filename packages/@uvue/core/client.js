@@ -27,8 +27,8 @@ if (module.hot) {
   // On router ready
   router.onReady(async () => {
     // Router resolve route
-    router.beforeResolve((to, _, next) => {
-      routeResolve(context, { to, next });
+    router.beforeResolve((to, from, next) => {
+      routeResolve(context, { to, from, next });
     });
 
     await catchErrorAsync(context, async () => {
