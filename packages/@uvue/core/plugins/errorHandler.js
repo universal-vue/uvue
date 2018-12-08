@@ -54,6 +54,16 @@ export default {
     };
 
     Vue.error.clear = () => this.clearError(context);
+
+    // Catch errors in navigation guard
+    context.router.onError(error => {
+      this.setError(
+        {
+          error,
+        },
+        context,
+      );
+    });
   },
 
   /**
