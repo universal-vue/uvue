@@ -32,21 +32,25 @@ export default {
     }
 
     context.router.beforeEach(async (to, from, next) => {
-      const ctx = getContext(context, to);
-      const middlewares = [...this.$options.middlewares, ...this.getComponentsMiddlewares(ctx)];
-      for (const m of middlewares) {
-        if (typeof m === 'function') {
-          await m(ctx);
+      try {
+        const ctx = getContext(context, { to, from, next });
+        const middlewares = [...this.$options.middlewares, ...this.getRoutesMiddlewares(ctx)];
+        for (const m of middlewares) {
+          if (typeof m === 'function') {
+            await m(ctx);
+          }
         }
+        next();
+      } catch (err) {
+        next(err);
       }
-      next();
     });
   },
 
   /**
    * Get middlewares defined on pages components
    */
-  getComponentsMiddlewares(context) {
+  getRoutesMiddlewares(context) {
     let middlewares = [];
 
     // Get middlewares from routes metas
