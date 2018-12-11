@@ -47,6 +47,8 @@ export default {
           doRedirect(context, err);
           return next(err.location);
         }
+        UVue.invoke('catchError', context, err);
+
         next(err);
       }
     });

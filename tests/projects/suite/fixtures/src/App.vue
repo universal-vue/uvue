@@ -7,7 +7,9 @@
       {{ $route.fullPath }}
     </pre>
     <side-menu/>
-    <router-view/>
+    <router-view
+      :key="$route.fullPath"
+    />
     <div
       v-if="mounted"
       id="mounted"
