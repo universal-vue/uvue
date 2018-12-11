@@ -8,6 +8,9 @@ module.exports = (api, chainConfig, isClient) => {
   const normalTypes = ['normal', 'normal-modules'];
   const vueTypes = ['vue', 'vue-module'];
 
+  const shadowMode = !!process.env.VUE_CLI_CSS_SHADOW_MODE;
+  const { sourceMap = false } = api.service.projectOptions.css || {};
+
   // Normal CSS
   if (cssConfig.normal !== 'extract') {
     for (const lang of preProcessors) {
@@ -19,6 +22,10 @@ module.exports = (api, chainConfig, isClient) => {
           rule
             .use('vue-style-loader')
             .loader('vue-style-loader')
+            .options({
+              sourceMap,
+              shadowMode,
+            })
             .before('css-loader');
         }
       }
@@ -53,6 +60,10 @@ module.exports = (api, chainConfig, isClient) => {
           rule
             .use('vue-style-loader')
             .loader('vue-style-loader')
+            .options({
+              sourceMap,
+              shadowMode,
+            })
             .before('css-loader');
         }
       }
