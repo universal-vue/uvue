@@ -79,9 +79,13 @@ export class ConnectAdapter implements IAdapter {
   /**
    * Middleware to render pages
    */
-  public async renderMiddleware(req: http.IncomingMessage, res: http.ServerResponse) {
-    const response: IResponseContext = this.createResponseContext(req, res);
-    const context: IRequestContext = this.createRequestContext(req, res);
+  public async renderMiddleware(
+    req: http.IncomingMessage,
+    res: http.ServerResponse,
+    middlewareContext: any = {},
+  ) {
+    const response: IResponseContext = this.createResponseContext(req, res, middlewareContext);
+    const context: IRequestContext = this.createRequestContext(req, res, middlewareContext);
 
     try {
       // Hook before render

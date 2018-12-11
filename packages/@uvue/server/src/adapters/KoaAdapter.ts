@@ -48,13 +48,17 @@ export class KoaAdapter extends ConnectAdapter {
   // @ts-ignore
   public async renderMiddleware(ctx: any) {
     const { req, res } = ctx;
-    return super.renderMiddleware(req, res);
+    return super.renderMiddleware(req, res, { ctx });
   }
 
-  protected createRequestContext(ctx: any): IRequestContext {
-    const { req, res } = ctx;
-    const context = super.createRequestContext(req, res);
+  protected createRequestContext(
+    req: http.IncomingMessage,
+    res: http.ServerResponse,
+    middlewareContext: any = {},
+  ): IRequestContext {
+    const context = super.createRequestContext(req, res, middlewareContext);
 
+    const { ctx } = middlewareContext;
     context.inject = {
       ctx,
     };
