@@ -1,5 +1,6 @@
 import UVue from '@uvue/core';
 import getContext from '../lib/getContext';
+import { RedirectError, doRedirect } from '../lib/redirect';
 
 export default {
   /**
@@ -42,6 +43,10 @@ export default {
         }
         next();
       } catch (err) {
+        if (err instanceof RedirectError) {
+          doRedirect(context, err);
+          return next(err.location);
+        }
         next(err);
       }
     });
