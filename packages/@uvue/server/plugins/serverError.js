@@ -1,5 +1,4 @@
 import { join } from 'path';
-import { readFile } from 'fs-extra';
 import Youch from 'youch';
 import youchTerminal from 'youch-terminal';
 import { merge } from 'lodash-es';
@@ -26,6 +25,7 @@ export default {
       // tslint:disable-next-line
       console.error(youchTerminal(json));
     } else {
+      const { readFile } = require('fs-extra');
       html = await readFile(this.options.path, 'utf-8');
 
       // tslint:disable-next-line

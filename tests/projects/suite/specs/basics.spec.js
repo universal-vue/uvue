@@ -6,7 +6,8 @@ describe('Basics', () => {
     .homeMount()
     .dataServer()
     .dataMount()
-    .dataServer();
+    .dataServer()
+    .serverError();
 
   metas
     .home()

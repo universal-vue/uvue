@@ -8,6 +8,7 @@ export default {
     ['@uvue/server/plugins/gzip'],
     ['@uvue/server/plugins/static'],
     ['@uvue/server/plugins/modernBuild'],
+    ['@uvue/server/plugins/serverError'],
     ['./serverPlugin'],
   ],
   static: {
