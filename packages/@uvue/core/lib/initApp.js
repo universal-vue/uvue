@@ -40,6 +40,13 @@ export default (options, context) => {
   // Create app and return it
   context.app = new Vue(options);
 
+  // Catch redirects in router nav guards
+  context.router.onError(err => {
+    if (err instanceof RedirectError) {
+      doRedirect(context, err);
+    }
+  });
+
   // Catch Vue errors
   Vue.config.errorHandler = (error, vm, info) => {
     if (error instanceof RedirectError) {
