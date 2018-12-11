@@ -41,13 +41,11 @@ export default async ssr => {
         await UVue.invokeAsync('beforeStart', context);
       });
 
-      await catchErrorAsync(context, async () => {
-        // Resolve current route
-        await routeResolve(context);
-      });
+      // Resolve current route
+      await routeResolve(context);
 
+      // Call beforeReady hook
       await catchErrorAsync(context, async () => {
-        // Call beforeReady hook
         await UVue.invokeAsync('beforeReady', context);
       });
 

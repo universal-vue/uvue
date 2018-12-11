@@ -31,20 +31,18 @@ if (module.hot) {
       routeResolve(context, { to, from, next });
     });
 
+    // Call created hook
     await catchErrorAsync(context, async () => {
-      // Call created hook
       await UVue.invokeAsync('beforeStart', context);
     });
 
     // SPA mode or route
-    await catchErrorAsync(context, async () => {
-      if (!process.ssr || window.__SPA_ROUTE__) {
-        await routeResolve(context);
-      }
-    });
+    if (!process.ssr || window.__SPA_ROUTE__) {
+      await routeResolve(context);
+    }
 
+    // beforeReady hook
     await catchErrorAsync(context, async () => {
-      // beforeReady hook
       await UVue.invokeAsync('beforeReady', context);
     });
 
