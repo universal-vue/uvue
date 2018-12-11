@@ -106,8 +106,8 @@ export default {
    * Before SSR process finish: get current state for error handler
    * and set status code if needed
    */
-  beforeReady({ ssr, $errorHandler }) {
-    if (process.server && $errorHandler.error) {
+  sendSSRData({ ssr, $errorHandler }) {
+    if ($errorHandler.error) {
       // Try to serialize error object
       if ($errorHandler.error instanceof Error) {
         const error = {

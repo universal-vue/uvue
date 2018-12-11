@@ -51,6 +51,8 @@ export default async ssr => {
         await UVue.invokeAsync('beforeReady', context);
       });
 
+      UVue.invoke('sendSSRData', context);
+
       // Resolve app
       resolve(app);
 

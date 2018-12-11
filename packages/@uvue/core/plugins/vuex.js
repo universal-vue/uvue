@@ -61,7 +61,7 @@ export default {
   /**
    * Call onHttpRequest action and send data to __DATA__
    */
-  async beforeReady(context) {
+  sendSSRData(context) {
     const { store, ssr } = context;
 
     if (store && process.server) {
