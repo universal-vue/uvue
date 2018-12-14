@@ -92,8 +92,6 @@ export class ConnectAdapter implements IAdapter {
       this.uvueServer.logger.error(error);
     });
 
-    context.events.on('error', onError);
-
     try {
       // Hook before render
       await this.uvueServer.invokeAsync('beforeRender', context, this);
