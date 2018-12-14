@@ -1,9 +1,11 @@
 import { readFileSync } from 'fs-extra';
+import { merge } from 'lodash-es';
 import { join } from 'path';
+import * as pino from 'pino';
+import 'pino-pretty';
 import { ConnectAdapter } from './adapters/ConnectAdapter';
 import { setupDevMiddleware } from './devMiddleware';
 import { IAdapter, IRenderer, IServer, IServerOptions } from './interfaces';
-import { logger } from './logger';
 import { Renderer } from './Renderer';
 
 export class Server implements IServer {
@@ -16,6 +18,11 @@ export class Server implements IServer {
    * Vue renderer
    */
   public renderer: IRenderer;
+
+  /**
+   * Logger instance
+   */
+  public logger: pino.Logger;
 
   /**
    * HTTP server adapter
@@ -39,6 +46,15 @@ export class Server implements IServer {
     }
     this.adapter = new this.options.adapter(this, options.httpOptions);
     this.adapter.createApp(options.adapterArgs);
+
+    this.logger = pino(
+      merge(
+        {
+          prettyPrint: process.env.NODE_ENV !== 'production',
+        },
+        options.logger,
+      ),
+    );
   }
 
   /**
@@ -125,13 +141,12 @@ export class Server implements IServer {
     return this.adapter.start().then(() => {
       this.started = true;
 
-      logger.info(`Server listening: ${this.getListenUri()}`);
+      this.logger.info(`Server listening: ${this.getListenUri()}`);
 
       // Handle kill
       const signals = ['SIGINT', 'SIGTERM'];
       for (const signal of signals) {
         (process.once as any)(signal, () => {
-          logger.info(`Stopping server...`);
           this.stop().then(() => process.exit(0));
         });
       }
@@ -142,6 +157,7 @@ export class Server implements IServer {
    * Stop server
    */
   public async stop() {
+    this.logger.info(`Stopping server...`);
     if (this.started) {
       process.removeAllListeners('SIGINT');
       process.removeAllListeners('SIGTERM');

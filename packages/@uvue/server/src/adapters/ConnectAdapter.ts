@@ -4,7 +4,6 @@ import * as https from 'https';
 import * as killable from 'killable';
 import * as micromatch from 'micromatch';
 import { IAdapter, IAdapterOptions, IRequestContext, IResponseContext } from '../interfaces';
-import { logger } from '../logger';
 import { Server } from '../Server';
 
 /**
@@ -90,7 +89,7 @@ export class ConnectAdapter implements IAdapter {
     const context: IRequestContext = this.createRequestContext(req, res, middlewareContext);
 
     const onError = ({ error, from }) => {
-      logger.error(error);
+      this.uvueServer.logger.error(error);
     };
 
     context.events.on('error', onError);
@@ -128,7 +127,7 @@ export class ConnectAdapter implements IAdapter {
         await this.uvueServer.invokeAsync('rendered', response, context, this);
       }
     } catch (err) {
-      logger.error(err);
+      this.uvueServer.logger.error(err);
 
       // Catch errors
       await this.uvueServer.invokeAsync('routeError', err, response, context, this);

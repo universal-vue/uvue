@@ -1,3 +1,4 @@
+import * as pino from 'pino';
 import { RenderCache } from 'vue-server-renderer';
 import { IAdapterOptions } from './IAdapterOptions';
 import { IPlugin } from './IPlugin';
@@ -16,6 +17,9 @@ export interface IServerOptions {
       spa: string;
     };
   };
+
+  // Logger options
+  logger?: pino.LoggerOptions;
 
   // SPA paths with no SSR
   spaPaths?: string[];
