@@ -1,5 +1,5 @@
 import { KoaAdapter } from '@uvue/server';
-import { merge } from 'lodash-es';
+import merge from 'lodash/merge';
 
 export default {
   install(server, pluginOptions = {}) {

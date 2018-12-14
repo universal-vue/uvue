@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs-extra';
-import { merge } from 'lodash-es';
+import merge from 'lodash/merge';
 import { join } from 'path';
 import * as pino from 'pino';
 import 'pino-pretty';
