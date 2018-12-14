@@ -1,12 +1,9 @@
-import * as consola from 'consola';
-import { readFile, readFileSync } from 'fs-extra';
-import { IncomingMessage, ServerResponse } from 'http';
+import { readFileSync } from 'fs-extra';
 import { join } from 'path';
-import * as Youch from 'youch';
-import * as youchTerminal from 'youch-terminal';
 import { ConnectAdapter } from './adapters/ConnectAdapter';
 import { setupDevMiddleware } from './devMiddleware';
 import { IAdapter, IRenderer, IServer, IServerOptions } from './interfaces';
+import { logger } from './logger';
 import { Renderer } from './Renderer';
 
 export class Server implements IServer {
@@ -114,9 +111,8 @@ export class Server implements IServer {
       readyPromise = setupDevMiddleware(this, (serverBundle, { clientManifest, templates }) => {
         this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
       });
-
-      // Production mode
     } else {
+      // Production mode
       const { clientManifest, serverBundle, templates } = this.getBuiltFiles();
       this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
     }
@@ -129,11 +125,13 @@ export class Server implements IServer {
     return this.adapter.start().then(() => {
       this.started = true;
 
+      logger.info(`Server listening: ${this.getListenUri()}`);
+
       // Handle kill
       const signals = ['SIGINT', 'SIGTERM'];
       for (const signal of signals) {
         (process.once as any)(signal, () => {
-          consola.info(`Stopping server...`);
+          logger.info(`Stopping server...`);
           this.stop().then(() => process.exit(0));
         });
       }
@@ -176,5 +174,13 @@ export class Server implements IServer {
         ssr: readFileSync(join(outputDir, ssr), 'utf-8'),
       },
     };
+  }
+
+  /**
+   * Return listening URI
+   */
+  private getListenUri() {
+    const protocol = this.adapter.isHttps() ? 'https' : 'http';
+    return `${protocol}://${this.adapter.getHost()}:${this.adapter.getPort()}`;
   }
 }

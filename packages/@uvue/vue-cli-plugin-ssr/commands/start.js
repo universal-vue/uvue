@@ -88,11 +88,6 @@ module.exports = (api, options) => {
        * Start server
        */
       await server.start();
-
-      // eslint-disable-next-line
-      consola.ready(
-        `Server listening: ${server.getAdapter().isHttps() ? 'https' : 'http'}://${host}:${port}`,
-      );
     },
   );
 };
