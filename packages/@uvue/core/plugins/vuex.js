@@ -78,6 +78,8 @@ export default {
       if (routeComponents.length) {
         await Promise.all(
           routeComponents.map(c => {
+            if (!c) return;
+
             const Component = sanitizeComponent(c);
             // For each component lookup for fetch() method
             if (Component.options.fetch) {

@@ -12,7 +12,7 @@ const getAsyncDataComponents = (components = []) => {
     .map(component => {
       return sanitizeComponent(component);
     })
-    .filter(Component => (Component.options.asyncData ? true : false));
+    .filter(Component => (Component && Component.options.asyncData ? true : false));
 };
 
 /**
@@ -26,6 +26,8 @@ const resolveComponentsAsyncData = (context, route, components) => {
 
   return Promise.all(
     getAsyncDataComponents(components).map(async Component => {
+      if (!Component) return;
+
       const data = await Component.options.asyncData(context);
       if (data) applyAsyncData(Component, data);
       return data;
