@@ -52,11 +52,12 @@ module.exports = (api, options) => {
       /**
        * Create server
        */
-      const { adapter, https, spaPaths, renderer } = api.uvue.getServerConfig();
+      const { adapter, https, spaPaths, renderer, logger } = api.uvue.getServerConfig();
       const { Server } = require('@uvue/server');
 
       const server = new Server({
         adapter,
+        logger,
 
         // Set files destinations
         paths: {
