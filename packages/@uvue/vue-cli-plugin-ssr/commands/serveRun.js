@@ -73,16 +73,6 @@ async function startServer({ api, host, port, args }) {
     adapter,
     logger,
 
-    // Set files destinations
-    paths: {
-      serverBundle: '.uvue/server-bundle.json',
-      clientManifest: '.uvue/client-manifest.json',
-      templates: {
-        spa: '.uvue/spa.html',
-        ssr: '.uvue/ssr.html',
-      },
-    },
-
     // Set webpakc config for webpack compiler
     webpack: {
       client: clientConfig,

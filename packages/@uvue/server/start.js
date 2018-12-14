@@ -58,19 +58,14 @@ process.env.NODE_ENV = 'production';
    * Create server
    */
   const server = new Server({
-    adapter,
-    logger,
+    // Built files directory
+    distPath: resolve(argv.dist),
 
-    // Set files destinations
-    paths: {
-      outputDir: resolve(argv.dist),
-      serverBundle: '.uvue/server-bundle.json',
-      clientManifest: '.uvue/client-manifest.json',
-      templates: {
-        spa: '.uvue/spa.html',
-        ssr: '.uvue/ssr.html',
-      },
-    },
+    // Adapter to use
+    adapter,
+
+    // Logger options
+    logger,
 
     // Set server configuration
     httpOptions: {

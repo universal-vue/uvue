@@ -56,19 +56,9 @@ module.exports = (api, options) => {
       const { Server } = require('@uvue/server');
 
       const server = new Server({
+        distPath: api.resolve(options.outputDir),
         adapter,
         logger,
-
-        // Set files destinations
-        paths: {
-          outputDir: api.resolve(options.outputDir),
-          serverBundle: '.uvue/server-bundle.json',
-          clientManifest: '.uvue/client-manifest.json',
-          templates: {
-            spa: '.uvue/spa.html',
-            ssr: '.uvue/ssr.html',
-          },
-        },
 
         // Set server configuration
         httpOptions: {

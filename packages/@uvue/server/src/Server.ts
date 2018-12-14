@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs-extra';
-import merge from 'lodash/merge';
+import * as merge from 'lodash/merge';
 import { join } from 'path';
 import * as pino from 'pino';
 import 'pino-pretty';
@@ -41,6 +41,22 @@ export class Server implements IServer {
    * Constructor
    */
   constructor(public options: IServerOptions) {
+    // Default options
+    this.options = merge(
+      {
+        distPath: 'dist',
+        paths: {
+          clientManifest: '.uvue/client-manifest.json',
+          serverBundle: '.uvue/server-bundle.json',
+          templates: {
+            spa: '.uvue/spa.html',
+            ssr: '.uvue/ssr.html',
+          },
+        },
+      },
+      this.options,
+    );
+
     if (!this.options.adapter) {
       this.options.adapter = ConnectAdapter;
     }
@@ -180,14 +196,15 @@ export class Server implements IServer {
    * Read files content for renderer
    */
   private getBuiltFiles() {
-    const { outputDir, serverBundle, clientManifest } = this.options.paths;
+    const { distPath } = this.options;
+    const { serverBundle, clientManifest } = this.options.paths;
     const { spa, ssr } = this.options.paths.templates;
     return {
-      clientManifest: require(join(outputDir, clientManifest)),
-      serverBundle: require(join(outputDir, serverBundle)),
+      clientManifest: require(join(distPath, clientManifest)),
+      serverBundle: require(join(distPath, serverBundle)),
       templates: {
-        spa: readFileSync(join(outputDir, spa), 'utf-8'),
-        ssr: readFileSync(join(outputDir, ssr), 'utf-8'),
+        spa: readFileSync(join(distPath, spa), 'utf-8'),
+        ssr: readFileSync(join(distPath, ssr), 'utf-8'),
       },
     };
   }

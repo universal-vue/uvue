@@ -10,11 +10,11 @@ export default {
    * Check if there is a legacy bundle
    */
   install(server) {
-    const { outputDir } = server.options.paths;
+    const { distPath } = server.options;
 
-    if (outputDir) {
-      const modernPath = path.join(outputDir, '.uvue/client-manifest.json');
-      const legacyPath = path.join(outputDir, '.uvue/legacy-manifest.json');
+    if (distPath) {
+      const modernPath = path.join(distPath, '.uvue/client-manifest.json');
+      const legacyPath = path.join(distPath, '.uvue/legacy-manifest.json');
 
       if (fs.existsSync(legacyPath)) {
         this.legacyManifest = JSON.parse(fs.readFileSync(legacyPath, 'utf-8'));
