@@ -24,6 +24,14 @@ export default async (context, guardContext = {}) => {
         doRedirect(context, error);
       }
     } else {
+      if (process.server && context.ssr.events) {
+        const { events } = context.ssr;
+        events.emit('error', {
+          from: 'routeResolve',
+          error,
+        });
+      }
+
       if (process.env.NODE_ENV !== 'production') {
         // eslint-disable-next-line
         console.error(error);

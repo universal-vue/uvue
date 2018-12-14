@@ -13,11 +13,16 @@ export class VueError extends Error {
 export const catchError = (context, run) => {
   try {
     run();
-  } catch (err) {
-    if (err instanceof RedirectError) {
-      doRedirect(context, err);
+  } catch (error) {
+    if (error instanceof RedirectError) {
+      doRedirect(context, error);
     } else {
-      UVue.invoke('catchError', context, err);
+      UVue.invoke('catchError', context, error);
+
+      emitServerError(context, {
+        from: 'errorHandler',
+        error,
+      });
     }
   }
 };
@@ -25,11 +30,23 @@ export const catchError = (context, run) => {
 export const catchErrorAsync = async (context, run) => {
   try {
     await run();
-  } catch (err) {
-    if (err instanceof RedirectError) {
-      doRedirect(context, err);
+  } catch (error) {
+    if (error instanceof RedirectError) {
+      doRedirect(context, error);
     } else {
-      UVue.invoke('catchError', context, err);
+      UVue.invoke('catchError', context, error);
+
+      emitServerError(context, {
+        from: 'errorHandler',
+        error,
+      });
     }
+  }
+};
+
+export const emitServerError = (context, data) => {
+  if (process.server && context.ssr.events) {
+    const { events } = context.ssr;
+    events.emit('error', data);
   }
 };

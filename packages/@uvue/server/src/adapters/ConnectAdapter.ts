@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events';
 import * as http from 'http';
 import * as https from 'https';
 import * as killable from 'killable';
@@ -185,6 +186,7 @@ export class ConnectAdapter implements IAdapter {
   ): IRequestContext {
     return {
       data: {},
+      events: new EventEmitter(),
       redirected: false,
       req,
       res,
