@@ -46,8 +46,12 @@ module.exports = [
     name: 'serverPlugins',
     type: 'checkbox',
     message: 'Install server plugins?',
-    default: ['serverError', 'static', 'gzip', 'modernBuild'],
+    default: ['gzip', 'serverError', 'static', 'modernBuild'],
     choices: [
+      {
+        name: 'GZIP compression',
+        value: 'gzip',
+      },
       {
         name: 'Server error page',
         value: 'serverError',
@@ -55,10 +59,6 @@ module.exports = [
       {
         name: 'Static files serving',
         value: 'static',
-      },
-      {
-        name: 'GZIP compression',
-        value: 'gzip',
       },
       {
         name: 'Modern build',
