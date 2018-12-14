@@ -32,11 +32,6 @@ export default async (context, guardContext = {}) => {
         });
       }
 
-      if (process.env.NODE_ENV !== 'production') {
-        // eslint-disable-next-line
-        console.error(error);
-      }
-
       // Call hooks if there is an error
       await UVue.invokeAsync('routeError', routeContext, error);
     }

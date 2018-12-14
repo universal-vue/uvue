@@ -1689,6 +1689,8 @@
     lru-cache "^4.1.3"
     memory-fs "^0.4.1"
     micromatch "^3.1.10"
+    pino "^5.10.1"
+    pino-pretty "^2.5.0"
     serve-static "^1.13.2"
     vue "^2.5.17"
     vue-server-renderer "^2.5.17"
@@ -1697,7 +1699,6 @@
     webpack-hot-middleware "^2.24.0"
     yargs "^12.0.2"
     youch "^2.0.10"
-    youch-terminal "^1.0.0"
 
 "@uvue/vue-cli-plugin-ssr@link:packages/@uvue/vue-cli-plugin-ssr":
   version "0.1.0-alpha.8"
@@ -15661,13 +15662,6 @@ yorkie@^2.0.0:
     is-ci "^1.0.10"
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
-
-youch-terminal@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/youch-terminal/-/youch-terminal-1.0.0.tgz#03e2096ee360ef915816e62ea9ec94a6ff094d9e"
-  integrity sha512-rOVcJi5juKSUI3/mwAKOP+gjrUWUgb5AUTe2LZlfLBgLdfgnYtBKCrWc02GgRozDf/i6uXBu9/y3Vf6db+7k1A==
-  dependencies:
-    chalk "^2.3.0"
 
 youch@^2.0.10:
   version "2.0.10"
