@@ -63,7 +63,7 @@ module.exports = class StaticGenerate {
       paths = paths.concat(await this.scanRouter());
     }
 
-    if (this.staticConfig.params) {
+    if (this.staticConfig.params && Object.keys(this.staticConfig.params).length) {
       paths = this.generatePathsParams(paths, this.staticConfig.params);
     }
 
