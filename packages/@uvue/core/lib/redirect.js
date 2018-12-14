@@ -3,7 +3,7 @@
  * Will stop next executions to do a clean redirect
  */
 export class RedirectError extends Error {
-  constructor(location, statusCode = 301) {
+  constructor(location, statusCode = 302) {
     super('REDIRECT_ERROR');
     this.location = location;
     this.statusCode = statusCode;
@@ -14,7 +14,7 @@ export class RedirectError extends Error {
  * Return redirect function for context
  */
 export const getRedirect = ({ ssr }) => {
-  return (location, statusCode = 301) => {
+  return (location, statusCode = 302) => {
     const redirectError = new RedirectError(location, statusCode);
     if (process.server) ssr.redirected = statusCode;
     throw redirectError;
@@ -39,7 +39,10 @@ export const doRedirect = ({ app, res, ssr, router }, { location, statusCode }) 
     router.replace(location);
   } else {
     // Server side
-    ssr.redirected = res.statusCode = statusCode;
+    ssr.redirected = {
+      location,
+      statusCode,
+    };
 
     res.writeHead(statusCode, {
       Location: location,
