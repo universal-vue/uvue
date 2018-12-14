@@ -63,7 +63,7 @@ module.exports = class StaticGenerate {
       paths = paths.concat(await this.scanRouter());
     }
 
-    if (this.staticConfig.params) {
+    if (this.staticConfig.params && Object.keys(this.staticConfig.params).length) {
       paths = this.generatePathsParams(paths, this.staticConfig.params);
     }
 
@@ -181,30 +181,37 @@ module.exports = class StaticGenerate {
   async buildPage(path) {
     let status = null;
 
-    // SSR route
-    const context = this.createRequestContext(path);
+    // Tests for forbidden characters
+    const forbiddenChars = /[:\\+*?()[]]*/g;
 
-    // Plugins hook
-    await this.server.invokeAsync('beforeRender', context, this.server);
+    if (!forbiddenChars.test(path)) {
+      // SSR route
+      const context = this.createRequestContext(path);
 
-    if (this.spaPaths.length && mm.some(path, this.spaPaths)) {
-      // SPA route
-      status = await this.buildSPAPage(path);
+      // Plugins hook
+      await this.server.invokeAsync('beforeRender', context, this.server);
+
+      if (this.spaPaths.length && mm.some(path, this.spaPaths)) {
+        // SPA route
+        status = await this.buildSPAPage(path);
+      } else {
+        // Render page
+        status = await this.buildSSRPage(context);
+      }
+
+      let boxFunc = greenBox;
+      if (status === 'SPA') {
+        boxFunc = blueBox;
+      } else if (status >= 300 && status < 400) {
+        boxFunc = yellowBox;
+      } else if (status >= 400) {
+        boxFunc = redBox;
+      }
+
+      process.stdout.write(`${boxFunc(status)}\t${path}\n`);
     } else {
-      // Render page
-      status = await this.buildSSRPage(context);
+      process.stdout.write(`${redBox('SKP')}\t${path}\n`);
     }
-
-    let boxFunc = greenBox;
-    if (status === 'SPA') {
-      boxFunc = blueBox;
-    } else if (status >= 300 && status < 400) {
-      boxFunc = yellowBox;
-    } else if (status >= 400) {
-      boxFunc = redBox;
-    }
-
-    process.stdout.write(`${boxFunc(status)}\t${path}\n`);
   }
 
   async buildSSRPage(context) {
