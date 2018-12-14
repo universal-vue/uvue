@@ -78,6 +78,7 @@ module.exports = class VueSSRClientPlugin {
         }
       });
 
+      // UVue patch: fix missing source maps
       for (const id in manifest.modules) {
         manifest.modules[id] = manifest.modules[id].filter(index => index != -1);
       }

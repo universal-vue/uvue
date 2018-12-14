@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events';
 import { IncomingMessage, ServerResponse } from 'http';
 
 export interface IRequestContext {
@@ -12,6 +13,9 @@ export interface IRequestContext {
   // Reponse variables
   redirected: boolean | number;
   statusCode?: number;
+
+  // Events from app
+  events: EventEmitter;
 
   // Body and head addition from app
   bodyAdd?: string;

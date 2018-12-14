@@ -1,6 +1,5 @@
 import { join } from 'path';
 import Youch from 'youch';
-import youchTerminal from 'youch-terminal';
 import { merge } from 'lodash-es';
 
 export default {
@@ -20,16 +19,9 @@ export default {
     if (process.env.NODE_ENV !== 'production') {
       const youch = new Youch(err, req);
       html = await youch.toHTML();
-
-      const json = await youch.toJSON();
-      // tslint:disable-next-line
-      console.error(youchTerminal(json));
     } else {
       const { readFile } = require('fs-extra');
       html = await readFile(this.options.path, 'utf-8');
-
-      // tslint:disable-next-line
-      console.error(err.stack || err);
     }
 
     response.status = 500;

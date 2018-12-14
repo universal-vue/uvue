@@ -1,9 +1,8 @@
-import * as consola from 'consola';
-import { readFile, readFileSync } from 'fs-extra';
-import { IncomingMessage, ServerResponse } from 'http';
+import { readFileSync } from 'fs-extra';
+import { merge } from 'lodash-es';
 import { join } from 'path';
-import * as Youch from 'youch';
-import * as youchTerminal from 'youch-terminal';
+import * as pino from 'pino';
+import 'pino-pretty';
 import { ConnectAdapter } from './adapters/ConnectAdapter';
 import { setupDevMiddleware } from './devMiddleware';
 import { IAdapter, IRenderer, IServer, IServerOptions } from './interfaces';
@@ -19,6 +18,11 @@ export class Server implements IServer {
    * Vue renderer
    */
   public renderer: IRenderer;
+
+  /**
+   * Logger instance
+   */
+  public logger: pino.Logger;
 
   /**
    * HTTP server adapter
@@ -42,6 +46,15 @@ export class Server implements IServer {
     }
     this.adapter = new this.options.adapter(this, options.httpOptions);
     this.adapter.createApp(options.adapterArgs);
+
+    this.logger = pino(
+      merge(
+        {
+          prettyPrint: process.env.NODE_ENV !== 'production',
+        },
+        options.logger,
+      ),
+    );
   }
 
   /**
@@ -114,9 +127,8 @@ export class Server implements IServer {
       readyPromise = setupDevMiddleware(this, (serverBundle, { clientManifest, templates }) => {
         this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
       });
-
-      // Production mode
     } else {
+      // Production mode
       const { clientManifest, serverBundle, templates } = this.getBuiltFiles();
       this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
     }
@@ -129,11 +141,12 @@ export class Server implements IServer {
     return this.adapter.start().then(() => {
       this.started = true;
 
+      this.logger.info(`Server listening: ${this.getListenUri()}`);
+
       // Handle kill
       const signals = ['SIGINT', 'SIGTERM'];
       for (const signal of signals) {
         (process.once as any)(signal, () => {
-          consola.info(`Stopping server...`);
           this.stop().then(() => process.exit(0));
         });
       }
@@ -144,6 +157,7 @@ export class Server implements IServer {
    * Stop server
    */
   public async stop() {
+    this.logger.info(`Stopping server...`);
     if (this.started) {
       process.removeAllListeners('SIGINT');
       process.removeAllListeners('SIGTERM');
@@ -176,5 +190,13 @@ export class Server implements IServer {
         ssr: readFileSync(join(outputDir, ssr), 'utf-8'),
       },
     };
+  }
+
+  /**
+   * Return listening URI
+   */
+  private getListenUri() {
+    const protocol = this.adapter.isHttps() ? 'https' : 'http';
+    return `${protocol}://${this.adapter.getHost()}:${this.adapter.getPort()}`;
   }
 }
