@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 require = require('esm')(module);
-const consola = require('consola');
 const yargs = require('yargs');
 const { exists } = require('fs-extra');
 const { resolve } = require('path');
@@ -102,11 +101,7 @@ process.env.NODE_ENV = 'production';
    * Start server
    */
   await server.start();
-
-  consola.ready(
-    `Server listening: ${server.getAdapter().isHttps() ? 'https' : 'http'}://${host}:${port}`,
-  );
 })().catch(err => {
-  consola.error(err);
+  server.logger.error(err);
   process.exit(1);
 });
