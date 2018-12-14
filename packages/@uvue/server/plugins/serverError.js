@@ -1,7 +1,6 @@
 import { join } from 'path';
 import Youch from 'youch';
 import { merge } from 'lodash-es';
-import { logger } from '@uvue/server/lib/logger';
 
 export default {
   install(server, options) {
@@ -16,8 +15,6 @@ export default {
 
   async routeError(err, response, { req }) {
     let html = '';
-
-    logger.error(err);
 
     if (process.env.NODE_ENV !== 'production') {
       const youch = new Youch(err, req);

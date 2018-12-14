@@ -128,6 +128,8 @@ export class ConnectAdapter implements IAdapter {
         await this.uvueServer.invokeAsync('rendered', response, context, this);
       }
     } catch (err) {
+      logger.error(err);
+
       // Catch errors
       await this.uvueServer.invokeAsync('routeError', err, response, context, this);
     }
