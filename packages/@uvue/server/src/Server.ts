@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs-extra';
 import * as merge from 'lodash/merge';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import * as pino from 'pino';
 import 'pino-pretty';
 import { ConnectAdapter } from './adapters/ConnectAdapter';
@@ -40,11 +40,11 @@ export class Server implements IServer {
   /**
    * Constructor
    */
-  constructor(public options: IServerOptions) {
+  constructor(public options: IServerOptions = {}) {
     // Default options
     this.options = merge(
       {
-        distPath: 'dist',
+        distPath: resolve('dist'),
         paths: {
           clientManifest: '.uvue/client-manifest.json',
           serverBundle: '.uvue/server-bundle.json',
@@ -60,8 +60,8 @@ export class Server implements IServer {
     if (!this.options.adapter) {
       this.options.adapter = ConnectAdapter;
     }
-    this.adapter = new this.options.adapter(this, options.httpOptions);
-    this.adapter.createApp(options.adapterArgs);
+    this.adapter = new this.options.adapter(this, this.options.httpOptions);
+    this.adapter.createApp(this.options.adapterArgs);
 
     this.logger = pino(
       merge(
