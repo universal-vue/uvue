@@ -5,6 +5,8 @@ import Vue from 'vue';
  * From NuxtJS
  */
 export default Component => {
+  if (!Component) return;
+
   // If Component already sanitized
   if (Component.options && Component._Ctor === Component) {
     return Component;

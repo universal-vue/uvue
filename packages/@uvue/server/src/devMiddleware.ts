@@ -32,10 +32,6 @@ export const setupDevMiddleware = async (
     callback(...args);
   };
 
-  // Config for dev middleware
-  client.entry.app.unshift('webpack-hot-middleware/client');
-  client.output.filename = '[name].js';
-
   // Instanciate virtual file system
   const mfs = new MFS();
 
@@ -63,15 +59,32 @@ export const setupDevMiddleware = async (
 
     const middleware = await koaWebpack({
       compiler: compiler.compilers[0],
+      devMiddleware: {
+        logLevel: 'silent',
+        publicPath: client.output.publicPath,
+        serverSideRender: true,
+        stats: false,
+        ...(app.options.devServer.middleware || {}),
+      },
+      hotClient: {
+        logLevel: 'silent',
+        ...(app.options.devServer.hot || {}),
+      },
     });
 
     app.use(middleware);
   } else {
+    // Add hot-middleware client
+    client.entry.app.unshift('webpack-hot-middleware/client');
+    client.output.filename = '[name].js';
+
     // Install dev middlewares
     app.use(
       webpackDevMiddleware(compiler.compilers[0], {
+        log: false,
         logLevel: 'silent',
         publicPath: client.output.publicPath,
+        serverSideRender: true,
         stats: false,
         ...(app.options.devServer.middleware || {}),
       }),
@@ -79,8 +92,8 @@ export const setupDevMiddleware = async (
 
     app.use(
       webpackHotMiddleware(compiler.compilers[0], {
-        heartbeat: 10000,
         log: false,
+        logLevel: 'silent',
         ...(app.options.devServer.hot || {}),
       }),
     );

@@ -74,19 +74,14 @@ function build(api, options, args) {
     if (args.report || args['report-json']) {
       const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
       modifyConfig(clientConfig, config => {
-        const bundleName =
-          args.target !== 'app'
-            ? config.output.filename.replace(/\.js$/, '-')
-            : isLegacyBuild
-            ? 'legacy-'
-            : '';
+        const bundleName = `${isLegacyBuild ? 'legacy-' : ''}`;
         config.plugins.push(
           new BundleAnalyzerPlugin({
             logLevel: 'warn',
             openAnalyzer: false,
             analyzerMode: args.report ? 'static' : 'disabled',
-            reportFilename: `${bundleName}report.html`,
-            statsFilename: `${bundleName}report.json`,
+            reportFilename: `.uvue/${bundleName}report.html`,
+            statsFilename: `.uvue/${bundleName}report.json`,
             generateStatsFile: !!args['report-json'],
           }),
         );

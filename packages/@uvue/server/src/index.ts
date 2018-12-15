@@ -1,4 +1,4 @@
-// tslint:disable
-// @ts-ignore
-require = require('esm')(module);
-module.exports = require('./main');
+export * from './interfaces';
+export * from './adapters';
+export * from './Server';
+export * from './Renderer';

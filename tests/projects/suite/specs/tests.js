@@ -50,6 +50,16 @@ export const basics = {
     });
     return this;
   },
+  serverError() {
+    it('Catch errors on server side and display page', async () => {
+      const $ = await gotoSSR('/server-route-error');
+
+      expect($('title').text()).toBe('Server error');
+      expect($('h1').text()).toBe('Server error');
+      expect($('p').text()).toBe('Please try again later');
+    });
+    return this;
+  },
 };
 
 /**

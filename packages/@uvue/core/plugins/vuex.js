@@ -61,7 +61,7 @@ export default {
   /**
    * Call onHttpRequest action and send data to __DATA__
    */
-  async beforeReady(context) {
+  sendSSRData(context) {
     const { store, ssr } = context;
 
     if (store && process.server) {
@@ -78,6 +78,8 @@ export default {
       if (routeComponents.length) {
         await Promise.all(
           routeComponents.map(c => {
+            if (!c) return;
+
             const Component = sanitizeComponent(c);
             // For each component lookup for fetch() method
             if (Component.options.fetch) {

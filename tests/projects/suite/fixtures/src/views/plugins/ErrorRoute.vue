@@ -13,7 +13,6 @@
 
 <script>
 import { promiseData } from '@/shared/utils';
-import { routeError } from '@/shared/middlewares';
 
 export default {
   data: () => ({
@@ -25,6 +24,11 @@ export default {
     return {
       foo: await promiseData('error'),
     };
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    this.$error.clear();
+    next();
   },
 
   beforeRouteLeave(to, from, next) {

@@ -52,22 +52,13 @@ module.exports = (api, options) => {
       /**
        * Create server
        */
-      const { adapter, https, spaPaths, renderer } = api.uvue.getServerConfig();
+      const { adapter, https, spaPaths, renderer, logger } = api.uvue.getServerConfig();
       const { Server } = require('@uvue/server');
 
       const server = new Server({
+        distPath: api.resolve(options.outputDir),
         adapter,
-
-        // Set files destinations
-        paths: {
-          outputDir: api.resolve(options.outputDir),
-          serverBundle: '.uvue/server-bundle.json',
-          clientManifest: '.uvue/client-manifest.json',
-          templates: {
-            spa: '.uvue/spa.html',
-            ssr: '.uvue/ssr.html',
-          },
-        },
+        logger,
 
         // Set server configuration
         httpOptions: {
@@ -88,11 +79,6 @@ module.exports = (api, options) => {
        * Start server
        */
       await server.start();
-
-      // eslint-disable-next-line
-      consola.ready(
-        `Server listening: ${server.getAdapter().isHttps() ? 'https' : 'http'}://${host}:${port}`,
-      );
     },
   );
 };

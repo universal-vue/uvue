@@ -1,6 +1,6 @@
 import { KoaAdapter } from '@uvue/server';
 import consola from 'consola';
-import { merge } from 'lodash-es';
+import merge from 'lodash/merge';
 
 export default {
   install(server, options = {}) {

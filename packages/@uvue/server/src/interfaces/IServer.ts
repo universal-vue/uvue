@@ -1,5 +1,5 @@
 import { HandleFunction } from 'connect';
-import { IncomingMessage, ServerResponse } from 'http';
+import * as pino from 'pino';
 import { IAdapter } from './IAdapter';
 import { IServerOptions } from './IServerOptions';
 
@@ -7,6 +7,10 @@ export interface IServer {
   // Options
   options: IServerOptions;
 
+  // Logger
+  logger: pino.Logger;
+
+  // Instances getters
   getAdapter(): IAdapter;
   getApp(): any;
 

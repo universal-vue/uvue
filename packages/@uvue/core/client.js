@@ -27,20 +27,22 @@ if (module.hot) {
   // On router ready
   router.onReady(async () => {
     // Router resolve route
-    router.beforeResolve((to, _, next) => {
-      routeResolve(context, { to, next });
+    router.beforeResolve((to, from, next) => {
+      routeResolve(context, { to, from, next });
     });
 
+    // Call created hook
     await catchErrorAsync(context, async () => {
-      // Call created hook
       await UVue.invokeAsync('beforeStart', context);
+    });
 
-      // SPA mode or route
-      if (!process.ssr || window.__SPA_ROUTE__) {
-        await routeResolve(context);
-      }
+    // SPA mode or route
+    if (!process.ssr || window.__SPA_ROUTE__) {
+      await routeResolve(context);
+    }
 
-      // beforeReady hook
+    // beforeReady hook
+    await catchErrorAsync(context, async () => {
       await UVue.invokeAsync('beforeReady', context);
     });
 

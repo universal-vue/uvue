@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events';
 import * as http from 'http';
 import * as https from 'https';
 import * as killable from 'killable';
@@ -79,9 +80,17 @@ export class ConnectAdapter implements IAdapter {
   /**
    * Middleware to render pages
    */
-  public async renderMiddleware(req: http.IncomingMessage, res: http.ServerResponse) {
-    const response: IResponseContext = this.createResponseContext(req, res);
-    const context: IRequestContext = this.createRequestContext(req, res);
+  public async renderMiddleware(
+    req: http.IncomingMessage,
+    res: http.ServerResponse,
+    middlewareContext: any = {},
+  ) {
+    const response: IResponseContext = this.createResponseContext(req, res, middlewareContext);
+    const context: IRequestContext = this.createRequestContext(req, res, middlewareContext);
+
+    context.events.on('error', ({ error, from }) => {
+      this.uvueServer.logger.error(error);
+    });
 
     try {
       // Hook before render
@@ -116,6 +125,8 @@ export class ConnectAdapter implements IAdapter {
         await this.uvueServer.invokeAsync('rendered', response, context, this);
       }
     } catch (err) {
+      this.uvueServer.logger.error(err);
+
       // Catch errors
       await this.uvueServer.invokeAsync('routeError', err, response, context, this);
     }
@@ -125,6 +136,9 @@ export class ConnectAdapter implements IAdapter {
 
     // Hook after response was sent
     this.uvueServer.invoke('afterResponse', context, this);
+
+    // Remove listeners
+    context.events.removeAllListeners();
 
     return {
       context,
@@ -167,7 +181,14 @@ export class ConnectAdapter implements IAdapter {
   /**
    * Send HTTP response
    */
-  protected send(response: { body: string; status: number }, { res, statusCode }: IRequestContext) {
+  protected send(
+    response: { body: string; status: number },
+    { req, res, statusCode }: IRequestContext,
+  ) {
+    if (res.finished) {
+      return;
+    }
+
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Content-Length', response.body.length);
     res.statusCode = statusCode || response.status;
@@ -181,6 +202,7 @@ export class ConnectAdapter implements IAdapter {
   ): IRequestContext {
     return {
       data: {},
+      events: new EventEmitter(),
       redirected: false,
       req,
       res,

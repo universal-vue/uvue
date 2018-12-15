@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import UVue from '@uvue/core';
 import { doRedirect, getRedirect, RedirectError } from '@uvue/core/lib/redirect';
-import { catchError, VueError } from './catchError';
+import { catchError, VueError, emitServerError } from './catchError';
 
 /**
  * Simple function to create main context with
@@ -40,10 +40,17 @@ export default (options, context) => {
   // Create app and return it
   context.app = new Vue(options);
 
-  // Catch redirect in router
-  context.router.onError(err => {
-    if (err instanceof RedirectError) {
-      doRedirect(context, err);
+  // Catch redirects in router nav guards
+  context.router.onError(error => {
+    if (error instanceof RedirectError) {
+      doRedirect(context, error);
+    } else {
+      if (process.server && context.ssr.events) {
+        emitServerError(context, {
+          from: 'router',
+          error,
+        });
+      }
     }
   });
 

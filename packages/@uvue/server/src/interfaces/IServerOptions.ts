@@ -1,3 +1,4 @@
+import * as pino from 'pino';
 import { RenderCache } from 'vue-server-renderer';
 import { IAdapterOptions } from './IAdapterOptions';
 import { IPlugin } from './IPlugin';
@@ -6,16 +7,20 @@ import { IPlugin } from './IPlugin';
  * Options to init server
  */
 export interface IServerOptions {
+  distPath?: string;
+
   // Project path (where webpack bundled files are located)
-  paths: {
-    outputDir?: string;
-    serverBundle: string;
-    clientManifest: string;
-    templates: {
-      ssr: string;
-      spa: string;
+  paths?: {
+    serverBundle?: string;
+    clientManifest?: string;
+    templates?: {
+      ssr?: string;
+      spa?: string;
     };
   };
+
+  // Logger options
+  logger?: pino.LoggerOptions;
 
   // SPA paths with no SSR
   spaPaths?: string[];
