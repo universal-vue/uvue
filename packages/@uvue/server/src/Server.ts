@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs-extra';
+import { readFileSync, readJsonSync } from 'fs-extra';
 import * as merge from 'lodash/merge';
 import { join, resolve } from 'path';
 import * as pino from 'pino';
@@ -102,11 +102,12 @@ export class Server implements IServer {
   /**
    * Method to declare a plugin
    */
-  public addPlugin(plugin: any, options: any = {}) {
+  public addPlugin(plugin: any, options: any = {}): Server {
     this.plugins.push(plugin);
     if (typeof plugin.install === 'function') {
       plugin.install(this, options);
     }
+    return this;
   }
 
   /**
@@ -137,22 +138,19 @@ export class Server implements IServer {
   public async start() {
     let readyPromise = Promise.resolve();
 
-    // Setup renderer
+    // Setup
     if (this.options.webpack) {
       // Development mode
       readyPromise = setupDevMiddleware(this, (serverBundle, { clientManifest, templates }) => {
         this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
       });
+      this.adapter.setupRenderer();
     } else {
       // Production mode
-      const { clientManifest, serverBundle, templates } = this.getBuiltFiles();
-      this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
+      this.setup();
     }
 
     await readyPromise;
-
-    // Setup last middleware: renderer
-    this.adapter.setupRenderer();
 
     return this.adapter.start().then(() => {
       this.started = true;
@@ -193,6 +191,16 @@ export class Server implements IServer {
   }
 
   /**
+   * Setup adapter, renderer and middleware
+   */
+  public setup() {
+    const { clientManifest, serverBundle, templates } = this.getBuiltFiles();
+    this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
+    this.adapter.setupRenderer();
+    return this;
+  }
+
+  /**
    * Read files content for renderer
    */
   private getBuiltFiles() {
@@ -200,8 +208,8 @@ export class Server implements IServer {
     const { serverBundle, clientManifest } = this.options.paths;
     const { spa, ssr } = this.options.paths.templates;
     return {
-      clientManifest: require(join(distPath, clientManifest)),
-      serverBundle: require(join(distPath, serverBundle)),
+      clientManifest: readJsonSync(join(distPath, clientManifest)),
+      serverBundle: readJsonSync(join(distPath, serverBundle)),
       templates: {
         spa: readFileSync(join(distPath, spa), 'utf-8'),
         ssr: readFileSync(join(distPath, ssr), 'utf-8'),
