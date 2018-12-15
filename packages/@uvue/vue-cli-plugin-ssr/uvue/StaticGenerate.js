@@ -19,15 +19,7 @@ module.exports = class StaticGenerate {
 
     // Fake server to resolve renderer
     this.server = new Server({
-      paths: {
-        outputDir: api.resolve(options.outputDir),
-        serverBundle: '.uvue/server-bundle.json',
-        clientManifest: '.uvue/client-manifest.json',
-        templates: {
-          spa: '.uvue/spa.html',
-          ssr: '.uvue/ssr.html',
-        },
-      },
+      distPath: api.resolve(options.outputDir),
     });
 
     // Install plugins

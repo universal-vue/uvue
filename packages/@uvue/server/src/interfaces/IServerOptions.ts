@@ -7,14 +7,15 @@ import { IPlugin } from './IPlugin';
  * Options to init server
  */
 export interface IServerOptions {
+  distPath?: string;
+
   // Project path (where webpack bundled files are located)
-  paths: {
-    outputDir?: string;
-    serverBundle: string;
-    clientManifest: string;
-    templates: {
-      ssr: string;
-      spa: string;
+  paths?: {
+    serverBundle?: string;
+    clientManifest?: string;
+    templates?: {
+      ssr?: string;
+      spa?: string;
     };
   };
 

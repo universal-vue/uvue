@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 require = require('esm')(module);
-const consola = require('consola');
 const yargs = require('yargs');
 const { exists } = require('fs-extra');
 const { resolve } = require('path');
@@ -53,24 +52,20 @@ process.env.NODE_ENV = 'production';
     options = require(resolve(argv.config)).default;
   }
 
-  const { adapter, https, spaPaths, renderer } = options;
+  const { adapter, https, spaPaths, renderer, logger } = options;
 
   /**
    * Create server
    */
   const server = new Server({
+    // Built files directory
+    distPath: resolve(argv.dist),
+
+    // Adapter to use
     adapter,
 
-    // Set files destinations
-    paths: {
-      outputDir: resolve(argv.dist),
-      serverBundle: '.uvue/server-bundle.json',
-      clientManifest: '.uvue/client-manifest.json',
-      templates: {
-        spa: '.uvue/spa.html',
-        ssr: '.uvue/ssr.html',
-      },
-    },
+    // Logger options
+    logger,
 
     // Set server configuration
     httpOptions: {
@@ -101,11 +96,7 @@ process.env.NODE_ENV = 'production';
    * Start server
    */
   await server.start();
-
-  consola.ready(
-    `Server listening: ${server.getAdapter().isHttps() ? 'https' : 'http'}://${host}:${port}`,
-  );
 })().catch(err => {
-  consola.error(err);
+  server.logger.error(err);
   process.exit(1);
 });

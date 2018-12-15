@@ -1,6 +1,6 @@
-import { readFileSync } from 'fs-extra';
-import { merge } from 'lodash-es';
-import { join } from 'path';
+import { readFileSync, readJsonSync } from 'fs-extra';
+import * as merge from 'lodash/merge';
+import { join, resolve } from 'path';
 import * as pino from 'pino';
 import 'pino-pretty';
 import { ConnectAdapter } from './adapters/ConnectAdapter';
@@ -40,12 +40,28 @@ export class Server implements IServer {
   /**
    * Constructor
    */
-  constructor(public options: IServerOptions) {
+  constructor(public options: IServerOptions = {}) {
+    // Default options
+    this.options = merge(
+      {
+        distPath: resolve('dist'),
+        paths: {
+          clientManifest: '.uvue/client-manifest.json',
+          serverBundle: '.uvue/server-bundle.json',
+          templates: {
+            spa: '.uvue/spa.html',
+            ssr: '.uvue/ssr.html',
+          },
+        },
+      },
+      this.options,
+    );
+
     if (!this.options.adapter) {
       this.options.adapter = ConnectAdapter;
     }
-    this.adapter = new this.options.adapter(this, options.httpOptions);
-    this.adapter.createApp(options.adapterArgs);
+    this.adapter = new this.options.adapter(this, this.options.httpOptions);
+    this.adapter.createApp(this.options.adapterArgs);
 
     this.logger = pino(
       merge(
@@ -86,11 +102,12 @@ export class Server implements IServer {
   /**
    * Method to declare a plugin
    */
-  public addPlugin(plugin: any, options: any = {}) {
+  public addPlugin(plugin: any, options: any = {}): Server {
     this.plugins.push(plugin);
     if (typeof plugin.install === 'function') {
       plugin.install(this, options);
     }
+    return this;
   }
 
   /**
@@ -121,22 +138,19 @@ export class Server implements IServer {
   public async start() {
     let readyPromise = Promise.resolve();
 
-    // Setup renderer
+    // Setup
     if (this.options.webpack) {
       // Development mode
       readyPromise = setupDevMiddleware(this, (serverBundle, { clientManifest, templates }) => {
         this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
       });
+      this.adapter.setupRenderer();
     } else {
       // Production mode
-      const { clientManifest, serverBundle, templates } = this.getBuiltFiles();
-      this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
+      this.setup();
     }
 
     await readyPromise;
-
-    // Setup last middleware: renderer
-    this.adapter.setupRenderer();
 
     return this.adapter.start().then(() => {
       this.started = true;
@@ -177,17 +191,28 @@ export class Server implements IServer {
   }
 
   /**
+   * Setup adapter, renderer and middleware
+   */
+  public setup() {
+    const { clientManifest, serverBundle, templates } = this.getBuiltFiles();
+    this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
+    this.adapter.setupRenderer();
+    return this;
+  }
+
+  /**
    * Read files content for renderer
    */
   private getBuiltFiles() {
-    const { outputDir, serverBundle, clientManifest } = this.options.paths;
+    const { distPath } = this.options;
+    const { serverBundle, clientManifest } = this.options.paths;
     const { spa, ssr } = this.options.paths.templates;
     return {
-      clientManifest: require(join(outputDir, clientManifest)),
-      serverBundle: require(join(outputDir, serverBundle)),
+      clientManifest: readJsonSync(join(distPath, clientManifest)),
+      serverBundle: readJsonSync(join(distPath, serverBundle)),
       templates: {
-        spa: readFileSync(join(outputDir, spa), 'utf-8'),
-        ssr: readFileSync(join(outputDir, ssr), 'utf-8'),
+        spa: readFileSync(join(distPath, spa), 'utf-8'),
+        ssr: readFileSync(join(distPath, ssr), 'utf-8'),
       },
     };
   }

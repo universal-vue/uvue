@@ -1,12 +1,7 @@
 import * as http from 'http';
 import * as https from 'https';
-import * as micromatch from 'micromatch';
-import { IRequestContext, IResponseContext } from '../interfaces';
+import { IRequestContext } from '../interfaces';
 import { ConnectAdapter } from './ConnectAdapter';
-
-/*
-Required deps: koa koa-mount koa-compress koa-static koa-webpack
-*/
 
 export class KoaAdapter extends ConnectAdapter {
   /**

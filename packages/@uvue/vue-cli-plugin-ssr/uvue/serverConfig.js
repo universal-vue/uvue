@@ -1,7 +1,10 @@
+const path = require('path');
+
 /**
  * Default config
  */
 module.exports = () => ({
+  distPath: path.resolve('dist'),
   adapter: null,
   adapterArgs: [],
   https: {

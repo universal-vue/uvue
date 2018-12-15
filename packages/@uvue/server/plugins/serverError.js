@@ -1,6 +1,6 @@
 import { join } from 'path';
 import Youch from 'youch';
-import { merge } from 'lodash-es';
+import merge from 'lodash/merge';
 
 export default {
   install(server, options) {

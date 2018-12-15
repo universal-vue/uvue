@@ -88,11 +88,9 @@ export class ConnectAdapter implements IAdapter {
     const response: IResponseContext = this.createResponseContext(req, res, middlewareContext);
     const context: IRequestContext = this.createRequestContext(req, res, middlewareContext);
 
-    const onError = ({ error, from }) => {
+    context.events.on('error', ({ error, from }) => {
       this.uvueServer.logger.error(error);
-    };
-
-    context.events.on('error', onError);
+    });
 
     try {
       // Hook before render
@@ -183,7 +181,14 @@ export class ConnectAdapter implements IAdapter {
   /**
    * Send HTTP response
    */
-  protected send(response: { body: string; status: number }, { res, statusCode }: IRequestContext) {
+  protected send(
+    response: { body: string; status: number },
+    { req, res, statusCode }: IRequestContext,
+  ) {
+    if (res.finished) {
+      return;
+    }
+
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Content-Length', response.body.length);
     res.statusCode = statusCode || response.status;

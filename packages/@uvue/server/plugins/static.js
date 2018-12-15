@@ -1,5 +1,5 @@
 import { KoaAdapter } from '@uvue/server';
-import { merge } from 'lodash-es';
+import merge from 'lodash/merge';
 
 export default {
   install(server, pluginOptions = {}) {
@@ -8,6 +8,7 @@ export default {
       {
         directory: 'dist',
         options: {
+          dotfiles: 'ignore',
           immutable: true,
           maxAge: '30d',
           setHeaders(res, path) {
