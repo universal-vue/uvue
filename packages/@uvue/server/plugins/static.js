@@ -8,6 +8,7 @@ export default {
       {
         directory: 'dist',
         options: {
+          dotfiles: 'ignore',
           immutable: true,
           maxAge: '30d',
           setHeaders(res, path) {
