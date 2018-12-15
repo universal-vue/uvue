@@ -242,7 +242,7 @@ module.exports = class StaticGenerate {
         const url = context.res.__body;
         if (!/https?:\/\//.test(url)) {
           response.body = this.redirectPage(context.res.__body);
-          response.status = context.redirected;
+          response.status = context.redirected.statusCode;
         } else {
           return;
         }
