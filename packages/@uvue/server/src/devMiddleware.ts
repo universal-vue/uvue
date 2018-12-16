@@ -50,6 +50,9 @@ export const setupDevMiddleware = async (
     );
   }
 
+  // Set simple filename for compiled files
+  client.output.filename = '[name].js';
+
   // Create Webpack compiler
   const compiler = webpack([client, server]);
   compiler.outputFileSystem = mfs;
@@ -76,7 +79,6 @@ export const setupDevMiddleware = async (
   } else {
     // Add hot-middleware client
     client.entry.app.unshift('webpack-hot-middleware/client');
-    client.output.filename = '[name].js';
 
     // Install dev middlewares
     app.use(
