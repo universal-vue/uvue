@@ -144,13 +144,17 @@ export class Server implements IServer {
       readyPromise = setupDevMiddleware(this, (serverBundle, { clientManifest, templates }) => {
         this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
       });
-      this.adapter.setupRenderer();
     } else {
       // Production mode
       this.setup();
     }
 
     await readyPromise;
+
+    // In dev mode, setup middleware after build is ready
+    if (this.options.webpack) {
+      this.adapter.setupRenderer();
+    }
 
     return this.adapter.start().then(() => {
       this.started = true;
