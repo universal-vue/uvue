@@ -19,12 +19,13 @@ module.exports = (api, chainConfig) => {
   // Server needs
   chainConfig
     .target('node')
+    .devtool(process.env.NODE !== 'production' ? undefined : 'cheap-eval-source-map')
     .externals(
       nodeExternals({
         whitelist: [].concat(
           [/\.css$/, /\?vue&type=style/],
           api.service.projectOptions.transpileDependencies || [],
-          api.uvue.getConfig('externalsWhitelist') || [],
+          api.uvue.getServerConfig('externalsWhitelist') || [],
         ),
       }),
     )
@@ -48,7 +49,7 @@ module.exports = (api, chainConfig) => {
           '@vue/app',
           {
             targets: { node: 'current' },
-            // No need to regenator on node
+            // No need to regenerator on node
             exclude: ['transform-regenerator'],
           },
         ],

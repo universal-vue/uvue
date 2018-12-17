@@ -48,6 +48,7 @@ module.exports = class {
     api.service.projectOptions.transpileDependencies.push(
       /@uvue(\\|\/)core/,
       /\.uvue(\\|\/)main\.js/,
+      // PWA: register service worker module
       /register-service-worker/,
     );
   }
