@@ -190,7 +190,7 @@ export class ConnectAdapter implements IAdapter {
     }
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Content-Length', response.body.length);
+    res.setHeader('Content-Length', Buffer.byteLength(response.body, 'utf-8'));
     res.statusCode = statusCode || response.status;
     res.end(response.body);
   }
