@@ -48,7 +48,10 @@ module.exports = (api, chainConfig, isClient) => {
           }
         }
       }
-      chainConfig.plugins.get('extract-css').use(SSRMiniCssExtractPlugin);
+      const ExtractCSSPlugin = chainConfig.plugins.get('extract-css');
+      if (ExtractCSSPlugin) {
+        ExtractCSSPlugin.use(SSRMiniCssExtractPlugin);
+      }
     }
   } else {
     for (const lang of preProcessors) {
