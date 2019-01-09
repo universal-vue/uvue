@@ -63,6 +63,7 @@ export const setupDevMiddleware = async (
     const middleware = await koaWebpack({
       compiler: compiler.compilers[0],
       devMiddleware: {
+        index: false,
         logLevel: 'silent',
         publicPath: client.output.publicPath,
         serverSideRender: true,
@@ -83,6 +84,7 @@ export const setupDevMiddleware = async (
     // Install dev middlewares
     app.use(
       webpackDevMiddleware(compiler.compilers[0], {
+        index: false,
         log: false,
         logLevel: 'silent',
         publicPath: client.output.publicPath,
