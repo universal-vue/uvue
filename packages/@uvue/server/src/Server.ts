@@ -105,7 +105,7 @@ export class Server implements IServer {
   public addPlugin(plugin: any, options: any = {}): Server {
     this.plugins.push(plugin);
     if (typeof plugin.install === 'function') {
-      plugin.install(this, options);
+      plugin.install.bind(plugin)(this, options);
     }
     return this;
   }
