@@ -40,6 +40,7 @@
     "cookie-parser": "^1.4.3",
     "core-js": "^2.5.7",
     "escape-string-regexp": "^1.0.5",
+    "esm": "^3.0.84",
     "fast-safe-stringify": "^2.0.6",
     "fg-loadcss": "^2.0.1",
     "fs-extra": "^7.0.0",
