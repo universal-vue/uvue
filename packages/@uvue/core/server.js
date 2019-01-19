@@ -17,12 +17,7 @@ export default async ssr => {
   };
 
   // Call app main
-  createApp(context);
-
-  // Call beforeRouterReady hook
-  await catchErrorAsync(context, async () => {
-    await UVue.invokeAsync('beforeRouterReady', context);
-  });
+  await createApp(context);
 
   // Get some vars from context
   const { app, router } = context;

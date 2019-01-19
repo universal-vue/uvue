@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import UVue from '@uvue/core';
 import { doRedirect, getRedirect, RedirectError } from '@uvue/core/lib/redirect';
-import { catchError, VueError, emitServerError } from './catchError';
+import { VueError, emitServerError, catchErrorAsync } from './catchError';
 
 /**
  * Simple function to create main context with
  * some vue options and invoke beforeCreate() hook
  * before main component creation
  */
-export default (options, context) => {
+export default async (options, context) => {
   // Build context from Vue options
   context.router = options.router;
 
@@ -33,26 +33,12 @@ export default (options, context) => {
   };
 
   // beforeCreate hook call
-  catchError(context, () => {
-    UVue.invoke('beforeCreate', context, inject, options);
+  await catchErrorAsync(context, async () => {
+    await UVue.invokeAsync('beforeCreate', context, inject, options);
   });
 
   // Create app and return it
   context.app = new Vue(options);
-
-  // Catch redirects in router nav guards
-  context.router.onError(error => {
-    if (error instanceof RedirectError) {
-      doRedirect(context, error);
-    } else {
-      if (process.server && context.ssr.events) {
-        emitServerError(context, {
-          from: 'router',
-          error,
-        });
-      }
-    }
-  });
 
   // Catch Vue errors
   Vue.config.errorHandler = (error, vm, info) => {
@@ -73,6 +59,25 @@ export default (options, context) => {
       }
     }
   };
+
+  // afterCreate hook call
+  await catchErrorAsync(context, async () => {
+    await UVue.invokeAsync('afterCreate', context, inject, options);
+  });
+
+  // Catch redirects in router nav guards
+  context.router.onError(error => {
+    if (error instanceof RedirectError) {
+      doRedirect(context, error);
+    } else {
+      if (process.server && context.ssr.events) {
+        emitServerError(context, {
+          from: 'router',
+          error,
+        });
+      }
+    }
+  });
 
   return context.app;
 };
