@@ -49,6 +49,8 @@ module.exports = (api, options) => {
 
 function build(api, options, args) {
   return new Promise(async (resolve, reject) => {
+    const uvueDir = api.uvue.getServerConfig('uvueDir');
+
     const isLegacyBuild = !process.env.VUE_CLI_MODERN_BUILD && process.env.VUE_CLI_MODERN_MODE;
     const isModernBuild = process.env.VUE_CLI_MODERN_MODE && process.env.VUE_CLI_MODERN_BUILD;
 
@@ -80,8 +82,8 @@ function build(api, options, args) {
             logLevel: 'warn',
             openAnalyzer: false,
             analyzerMode: args.report ? 'static' : 'disabled',
-            reportFilename: `.uvue/${bundleName}report.html`,
-            statsFilename: `.uvue/${bundleName}report.json`,
+            reportFilename: `${uvueDir}/${bundleName}report.html`,
+            statsFilename: `${uvueDir}/${bundleName}report.json`,
             generateStatsFile: !!args['report-json'],
           }),
         );

@@ -49,7 +49,7 @@ async function startServer({ api, host, port, args }) {
 
   const {
     adapter,
-    paths,
+    uvueDir,
     https,
     devServer,
     spaPaths,
@@ -76,7 +76,7 @@ async function startServer({ api, host, port, args }) {
   const server = new Server({
     adapter,
     logger,
-    paths,
+    uvueDir,
 
     // Set webpakc config for webpack compiler
     webpack: {

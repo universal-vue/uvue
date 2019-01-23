@@ -3,6 +3,8 @@ const VueSSRClientPlugin = require('./plugins/VueSSRClientPlugin');
 const ModernModePlugin = require('./plugins/ModernModePlugin');
 
 module.exports = (api, chainConfig) => {
+  const uvueDir = api.uvue.getServerConfig('uvueDir');
+
   // Change main entry
   chainConfig.entryPoints
     .get('app')
@@ -10,12 +12,12 @@ module.exports = (api, chainConfig) => {
     .add(require.resolve('@uvue/core/client'));
 
   // Add Vue SSR plugin
-  let clientManifestFilename = '.uvue/client-manifest.json';
+  let clientManifestFilename = `${uvueDir}/client-manifest.json`;
 
   // Modern build
   if (process.env.VUE_CLI_MODERN_MODE) {
     if (!process.env.VUE_CLI_MODERN_BUILD) {
-      clientManifestFilename = '.uvue/legacy-manifest.json';
+      clientManifestFilename = `${uvueDir}/legacy-manifest.json`;
 
       // Use ModernModePlugin to update SPA template
       chainConfig.plugin('modern-mode-legacy').use(ModernModePlugin, [

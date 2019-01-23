@@ -23,13 +23,16 @@ module.exports = (api, options) => {
       },
     },
     async function(args) {
+      const serverConfig = api.uvue.getServerConfig();
+      const { uvueDir } = serverConfig;
+
       /**
        * Check files before start
        */
       try {
-        existsSync(api.resolve(join(options.outputDir, '.uvue/server-bundle.json')));
-        existsSync(api.resolve(join(options.outputDir, '.uvue/client-manifest.json')));
-        existsSync(api.resolve(join(options.outputDir, '.uvue/ssr.html')));
+        existsSync(api.resolve(join(options.outputDir, uvueDir, 'server-bundle.json')));
+        existsSync(api.resolve(join(options.outputDir, uvueDir, 'client-manifest.json')));
+        existsSync(api.resolve(join(options.outputDir, uvueDir, 'ssr.html')));
       } catch (err) {
         // eslint-disable-next-line
         consola.fatal('Incorrect SSR build, did you run "ssr:build" command before ?');
@@ -52,12 +55,12 @@ module.exports = (api, options) => {
       /**
        * Create server
        */
-      const { adapter, paths, https, spaPaths, renderer, logger } = api.uvue.getServerConfig();
+      const { adapter, https, spaPaths, renderer, logger } = serverConfig;
       const { Server } = require('@uvue/server');
 
       const server = new Server({
         distPath: api.resolve(options.outputDir),
-        paths,
+        uvueDir,
         adapter,
         logger,
 

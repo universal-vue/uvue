@@ -45,14 +45,7 @@ export class Server implements IServer {
     this.options = merge(
       {
         distPath: resolve('dist'),
-        paths: {
-          clientManifest: '.uvue/client-manifest.json',
-          serverBundle: '.uvue/server-bundle.json',
-          templates: {
-            spa: '.uvue/spa.html',
-            ssr: '.uvue/ssr.html',
-          },
-        },
+        uvueDir: '.uvue',
       },
       this.options,
     );
@@ -208,9 +201,13 @@ export class Server implements IServer {
    * Read files content for renderer
    */
   private getBuiltFiles() {
-    const { distPath } = this.options;
-    const { serverBundle, clientManifest } = this.options.paths;
-    const { spa, ssr } = this.options.paths.templates;
+    const { distPath, uvueDir } = this.options;
+
+    const serverBundle = join(uvueDir, 'server-bundle.json');
+    const clientManifest = join(uvueDir, 'client-manifest.json');
+    const ssr = join(uvueDir, 'ssr.html');
+    const spa = join(uvueDir, 'spa.html');
+
     return {
       clientManifest: readJsonSync(join(distPath, clientManifest)),
       serverBundle: readJsonSync(join(distPath, serverBundle)),

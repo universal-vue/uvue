@@ -11,10 +11,12 @@ module.exports = (api, options = {}) => {
   // Get base config from SPA
   const chainConfig = api.resolveChainableWebpackConfig();
 
+  const uvueDir = api.uvue.getServerConfig('uvueDir');
+
   // Change template for HTMLWebpackPlugin
   let htmlOptions = {
     template: api.resolve(api.uvue.getConfig('paths.template')),
-    filename: 'uvue/ssr.html',
+    filename: `${uvueDir}/ssr.html`,
   };
 
   // Override HTMLWebpackPlugin behavior
@@ -25,7 +27,7 @@ module.exports = (api, options = {}) => {
 
     return [
       merge({}, args[0] || {}, htmlOptions, {
-        filename: '.uvue/ssr.html',
+        filename: `${uvueDir}/ssr.html`,
         inject: false,
         templateParameters: params,
       }),
@@ -35,7 +37,7 @@ module.exports = (api, options = {}) => {
   // Add a index template for SPA pages
   chainConfig.plugin('html-spa').use(HtmlWebpack, [
     merge({}, htmlOptions, {
-      filename: '.uvue/spa.html',
+      filename: `${uvueDir}/spa.html`,
       inject: true,
       templateParameters: merge({}, htmlOptions.templateParameters, {
         uvue: {
