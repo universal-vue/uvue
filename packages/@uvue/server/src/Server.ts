@@ -105,7 +105,7 @@ export class Server implements IServer {
   public addPlugin(plugin: any, options: any = {}): Server {
     this.plugins.push(plugin);
     if (typeof plugin.install === 'function') {
-      plugin.install.bind(plugin)(this, options);
+      plugin.install(this, options);
     }
     return this;
   }
@@ -116,7 +116,7 @@ export class Server implements IServer {
   public invoke(name: string, ...args: any[]) {
     for (const plugin of this.plugins) {
       if (typeof plugin[name] === 'function') {
-        plugin[name].bind(plugin)(...args);
+        plugin[name](...args);
       }
     }
   }
@@ -127,7 +127,7 @@ export class Server implements IServer {
   public async invokeAsync(name: string, ...args: any[]) {
     for (const plugin of this.plugins) {
       if (typeof plugin[name] === 'function') {
-        await plugin[name].bind(plugin)(...args);
+        await plugin[name](...args);
       }
     }
   }
