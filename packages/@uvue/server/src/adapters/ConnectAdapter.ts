@@ -94,7 +94,7 @@ export class ConnectAdapter implements IAdapter {
 
     try {
       // Hook before render
-      await this.uvueServer.invokeAsync('beforeRender', context, this);
+      await this.uvueServer.invokeAsync('beforeRender', context, this.uvueServer);
 
       if (!res.finished) {
         const { spaPaths } = this.uvueServer.options;
@@ -115,27 +115,27 @@ export class ConnectAdapter implements IAdapter {
           }
 
           // Hook before building the page
-          await this.uvueServer.invokeAsync('beforeBuild', response, context, this);
+          await this.uvueServer.invokeAsync('beforeBuild', response, context, this.uvueServer);
 
           // Build page
           response.body = await this.uvueServer.renderer.renderSSRPage(response.body, context);
         }
 
         // Hook on rendered
-        await this.uvueServer.invokeAsync('rendered', response, context, this);
+        await this.uvueServer.invokeAsync('rendered', response, context, this.uvueServer);
       }
     } catch (err) {
       this.uvueServer.logger.error(err);
 
       // Catch errors
-      await this.uvueServer.invokeAsync('routeError', err, response, context, this);
+      await this.uvueServer.invokeAsync('routeError', err, response, context, this.uvueServer);
     }
 
     // Send response
     this.send(response, context);
 
     // Hook after response was sent
-    this.uvueServer.invoke('afterResponse', context, this);
+    this.uvueServer.invoke('afterResponse', context, this.uvueServer);
 
     // Remove listeners
     context.events.removeAllListeners();
