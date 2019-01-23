@@ -15,7 +15,7 @@ export default async (options, context) => {
   // Attach redirect function to context
   context.redirect = getRedirect(context);
 
-  // Make it available on all components
+  // Make redirect function available in all components
   Vue.prototype.$redirect = (location, statusCode = 301) => {
     doRedirect(context, {
       location,
@@ -60,9 +60,9 @@ export default async (options, context) => {
     }
   };
 
-  // afterCreate hook call
+  // created hook call
   await catchErrorAsync(context, async () => {
-    await UVue.invokeAsync('afterCreate', context, inject, options);
+    await UVue.invokeAsync('created', context);
   });
 
   // Catch redirects in router nav guards

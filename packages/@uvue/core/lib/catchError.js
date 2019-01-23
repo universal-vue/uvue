@@ -47,6 +47,6 @@ export const catchErrorAsync = async (context, run) => {
 export const emitServerError = (context, data) => {
   if (process.server && context.ssr.events) {
     const { events } = context.ssr;
-    events.emit('error', data);
+    if (events) events.emit('error', data);
   }
 };
