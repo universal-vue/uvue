@@ -17,7 +17,7 @@ export default async ssr => {
   };
 
   // Call app main
-  createApp(context);
+  await createApp(context);
 
   // Get some vars from context
   const { app, router } = context;

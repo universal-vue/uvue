@@ -63,6 +63,7 @@ export const setupDevMiddleware = async (
     const middleware = await koaWebpack({
       compiler: compiler.compilers[0],
       devMiddleware: {
+        index: false,
         logLevel: 'silent',
         publicPath: client.output.publicPath,
         serverSideRender: true,
@@ -83,6 +84,7 @@ export const setupDevMiddleware = async (
     // Install dev middlewares
     app.use(
       webpackDevMiddleware(compiler.compilers[0], {
+        index: false,
         log: false,
         logLevel: 'silent',
         publicPath: client.output.publicPath,
@@ -103,17 +105,17 @@ export const setupDevMiddleware = async (
 
   // When a compilation finished
   const handleCompilation = () => {
-    const { paths } = app.options;
+    const { uvueDir } = app.options;
 
     // Get templates
     const templates = {
-      spa: readFile(paths.templates.spa),
-      ssr: readFile(paths.templates.ssr),
+      spa: readFile(path.join(uvueDir, 'spa.html')),
+      ssr: readFile(path.join(uvueDir, 'ssr.html')),
     };
 
     // Get bundled files
-    clientManifest = JSON.parse(readFile(paths.clientManifest));
-    serverBundle = JSON.parse(readFile(paths.serverBundle));
+    clientManifest = JSON.parse(readFile(path.join(uvueDir, 'client-manifest.json')));
+    serverBundle = JSON.parse(readFile(path.join(uvueDir, 'server-bundle.json')));
 
     if (clientManifest && serverBundle) {
       ready(serverBundle, { clientManifest, templates });

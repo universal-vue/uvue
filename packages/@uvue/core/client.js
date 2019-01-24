@@ -19,7 +19,7 @@ if (module.hot) {
   };
 
   // Call app main
-  createApp(context);
+  await createApp(context);
 
   // Get some vars from context
   const { app, router } = context;
@@ -31,7 +31,7 @@ if (module.hot) {
       routeResolve(context, { to, from, next });
     });
 
-    // Call created hook
+    // Call beforeStart hook
     await catchErrorAsync(context, async () => {
       await UVue.invokeAsync('beforeStart', context);
     });

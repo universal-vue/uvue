@@ -28,7 +28,7 @@ export default {
   invoke(name, ...args) {
     for (const plugin of this.plugins) {
       if (typeof plugin[name] === 'function') {
-        plugin[name].bind(plugin)(...args);
+        plugin[name](...args);
       }
     }
   },
@@ -39,7 +39,7 @@ export default {
   async invokeAsync(name, ...args) {
     for (const plugin of this.plugins) {
       if (typeof plugin[name] === 'function') {
-        await plugin[name].bind(plugin)(...args);
+        await plugin[name](...args);
       }
     }
   },

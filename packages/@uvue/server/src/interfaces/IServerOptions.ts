@@ -8,16 +8,7 @@ import { IPlugin } from './IPlugin';
  */
 export interface IServerOptions {
   distPath?: string;
-
-  // Project path (where webpack bundled files are located)
-  paths?: {
-    serverBundle?: string;
-    clientManifest?: string;
-    templates?: {
-      ssr?: string;
-      spa?: string;
-    };
-  };
+  uvueDir?: string;
 
   // Logger options
   logger?: pino.LoggerOptions;

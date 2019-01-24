@@ -46,15 +46,19 @@ module.exports = (api, options) => {
 async function startServer({ api, host, port, args }) {
   const { Server } = require('@uvue/server');
   const getWebpackConfig = require('../webpack/ssr');
-  const { adapter, https, devServer, spaPaths, renderer, logger } = api.uvue.getServerConfig();
+
+  const {
+    adapter,
+    uvueDir,
+    https,
+    devServer,
+    spaPaths,
+    renderer,
+    logger,
+  } = api.uvue.getServerConfig();
 
   const serverConfig = getWebpackConfig(api, { serve: true, client: false, host, port });
   const clientConfig = getWebpackConfig(api, { serve: true, client: true, host, port });
-
-  if (ipc) {
-    ipc.disconnect();
-    ipc = null;
-  }
 
   // Expose advanced stats
   if (args.dashboard) {
@@ -72,6 +76,7 @@ async function startServer({ api, host, port, args }) {
   const server = new Server({
     adapter,
     logger,
+    uvueDir,
 
     // Set webpakc config for webpack compiler
     webpack: {

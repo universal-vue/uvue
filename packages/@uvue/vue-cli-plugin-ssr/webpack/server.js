@@ -2,6 +2,8 @@ const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const nodeExternals = require('webpack-node-externals');
 
 module.exports = (api, chainConfig) => {
+  const { uvueDir, externalsWhitelist } = api.uvue.getServerConfig();
+
   // Change entry point
   chainConfig.entryPoints
     .get('app')
@@ -13,7 +15,7 @@ module.exports = (api, chainConfig) => {
     // Add Vue SSR plugin
     chainConfig
       .plugin('vue-ssr-plugin')
-      .use(VueSSRServerPlugin, [{ filename: '.uvue/server-bundle.json' }]);
+      .use(VueSSRServerPlugin, [{ filename: `${uvueDir}/server-bundle.json` }]);
   }
 
   // Server needs
@@ -25,7 +27,7 @@ module.exports = (api, chainConfig) => {
         whitelist: [].concat(
           [/\.css$/, /\?vue&type=style/],
           api.service.projectOptions.transpileDependencies || [],
-          api.uvue.getServerConfig('externalsWhitelist') || [],
+          externalsWhitelist || [],
         ),
       }),
     )
