@@ -20,7 +20,7 @@ export class RQuery {
 
   public static print(element: AstElement, options: IPrintOptions = {}): string {
     let code = Recast.print(element.node);
-    options = Object.assign({ resolveFrom: process.cwd(), prettier: 'babylon' }, options);
+    options = Object.assign({ resolveFrom: process.cwd(), prettier: 'babel' }, options);
     if (options.prettier) {
       code = this.prettify(code, options);
     }
@@ -28,7 +28,7 @@ export class RQuery {
   }
 
   public static prettify(code, options) {
-    options = Object.assign({ resolveFrom: process.cwd(), prettier: 'babylon' }, options);
+    options = Object.assign({ resolveFrom: process.cwd(), prettier: 'babel' }, options);
     return prettier.format(code, {
       ...(options.prettierConfig || {}),
       parser: options.prettier,
