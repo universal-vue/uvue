@@ -6,7 +6,7 @@
 <p align="center">Build universal Vue applications with ease</p>
 
 - [Documentation](https://universal-vue.github.io/docs/)
-- [Live demo](http://uvue.yabab.net)
+- [Live demo](https://uvue.yabab.net)
 - [CodeSandbox template](https://codesandbox.io/s/github/universal-vue/uvue-codesandbox)
 - [Discord chat](https://discord.gg/3ZZBmFs)
 
@@ -53,6 +53,12 @@ npm run ssr:static
 
 ```bash
 npm run ssr:fix
+```
+
+**Try to fix Vuex states to be SSR compatible**
+
+```bash
+npm run ssr:fix-vuex
 ```
 
 ## License
