@@ -51,15 +51,14 @@ module.exports = (api, options = {}) => {
   // Ignore copying base index.html
   chainConfig.plugin('copy').tap(args => {
     const items = args[0];
-
     for (const item of items) {
       if (item.from == api.resolve('public')) {
         const ignore = item.ignore || [];
         ignore.push('index.html');
-
         item.ignore = ignore;
       }
     }
+    return args;
   });
 
   // Friendly Errors with server URL
