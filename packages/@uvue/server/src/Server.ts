@@ -1,6 +1,8 @@
+import * as loadEnv from '@vue/cli-service/lib/util/loadEnv';
 import { readFileSync, readJsonSync } from 'fs-extra';
 import * as merge from 'lodash/merge';
 import { join, resolve } from 'path';
+import * as path from 'path';
 import * as pino from 'pino';
 import 'pino-pretty';
 import { ConnectAdapter } from './adapters/ConnectAdapter';
@@ -9,6 +11,27 @@ import { IAdapter, IRenderer, IServer, IServerOptions } from './interfaces';
 import { Renderer } from './Renderer';
 
 export class Server implements IServer {
+  /**
+   * Utility function to loadEnv from @vue/cli
+   */
+  public static loadEnv(name?: string, basePath: string = process.cwd()) {
+    const load = (filepath: string) => {
+      try {
+        loadEnv(filepath);
+      } catch (err) {
+        // Notihing
+      }
+    };
+
+    if (name) {
+      load(path.join(basePath, `.env.${name}.local`));
+      load(path.join(basePath, `.env.${name}`));
+    }
+
+    load(path.join(basePath, `.env.local`));
+    load(path.join(basePath, `.env`));
+  }
+
   /**
    * Started boolean
    */
