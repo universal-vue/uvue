@@ -92,8 +92,12 @@ module.exports = class CodeFixer {
 
       // Check UVue config
       const requireEsm = require('esm')(module);
-      const uvueConfig = requireEsm(api.resolve('uvue.config.js')).default;
+
+      const configModule = requireEsm(api.resolve('uvue.config.js'));
+      const uvueConfig = configModule.default || configModule || {};
+
       if (
+        uvueConfig.plugins &&
         uvueConfig.plugins.findIndex(item => {
           return item == pluginPath || item[0] == pluginPath;
         }) < 0

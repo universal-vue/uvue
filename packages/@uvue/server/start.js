@@ -44,6 +44,8 @@ process.env.NODE_ENV = 'production';
 
 // Start function
 (async () => {
+  Server.loadEnv(process.env.NODE_ENV);
+
   const { host, port } = argv;
 
   // Load config from current project

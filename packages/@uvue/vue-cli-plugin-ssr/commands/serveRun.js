@@ -45,6 +45,8 @@ module.exports = (api, options) => {
 
 async function startServer({ api, host, port, args }) {
   const { Server } = require('@uvue/server');
+  Server.loadEnv(args.mode || process.env.NODE_ENV);
+
   const getWebpackConfig = require('../webpack/ssr');
 
   const {
