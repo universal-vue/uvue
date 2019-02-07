@@ -1,3 +1,8 @@
+import SsrPromise from './lib/SsrPromise';
+import SsrMixin from './lib/SsrMixin';
+
+export { SsrPromise, SsrMixin };
+
 /**
  * Main UVue object to install and call plugins
  */
