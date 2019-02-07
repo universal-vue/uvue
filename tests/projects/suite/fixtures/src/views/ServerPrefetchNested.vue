@@ -4,20 +4,23 @@
 
     <h3>Native</h3>
     <test-case
-      expected="bar"
+      expected="nested"
       :result="foo"
     />
 
-    <h3>SSR Promise component</h3>
+    <h3>Renderless component</h3>
     <SsrPromise
-      :promise="load('bar')"
+      :promise="load('nested')"
       v-slot="{ result }"
     >
       <test-case
-        expected="bar"
+        expected="nested"
         :result="result"
       />
     </SsrPromise>
+
+    <h3>Mixin</h3>
+    <SsrComponent value="nested"/>
 
   </div>
 </template>
@@ -25,10 +28,12 @@
 <script>
 import { promiseData } from '@/shared/utils';
 import { SsrPromise } from '@uvue/core';
+import SsrComponent from '../components/SsrComponent.vue';
 
 export default {
   components: {
     SsrPromise,
+    SsrComponent,
   },
 
   data: () => ({
@@ -36,12 +41,12 @@ export default {
   }),
 
   async serverPrefetch() {
-    this.foo = await promiseData('bar');
+    this.foo = await promiseData('nested');
   },
 
   async mounted() {
     if (!this.foo) {
-      this.foo = await promiseData('bar');
+      this.foo = await promiseData('nested');
     }
   },
 

@@ -8,7 +8,7 @@
       :result="foo"
     />
 
-    <h3>SSR Promise component</h3>
+    <h3>Renderless component</h3>
     <SsrPromise
       :promise="load('bar')"
       v-slot="{ result }"
@@ -19,6 +19,9 @@
       />
     </SsrPromise>
 
+    <h3>Mixin</h3>
+    <SsrComponent/>
+
     <router-view/>
   </div>
 </template>
@@ -26,10 +29,12 @@
 <script>
 import { promiseData } from '@/shared/utils';
 import { SsrPromise } from '@uvue/core';
+import SsrComponent from '../components/SsrComponent.vue';
 
 export default {
   components: {
     SsrPromise,
+    SsrComponent,
   },
 
   head() {

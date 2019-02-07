@@ -16,11 +16,11 @@
 export default {
   props: {
     expected: {
-      type: String,
+      type: [String, null],
       required: true,
     },
     result: {
-      type: String,
+      type: [String, null],
       required: true,
     },
   },
