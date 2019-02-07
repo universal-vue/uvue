@@ -9,8 +9,8 @@ export default {
   },
 
   data: () => ({
-    settled: false,
     state: {
+      settled: false,
       pending: false,
       result: null,
       error: null,
@@ -29,16 +29,18 @@ export default {
   },
 
   created() {
-    if (process.client && window.__DATA__.ssrPromise) {
-      this.state = window.__DATA__.ssrPromise.shift();
+    if (process.client) {
+      if (window.__DATA__.ssrPromise && window.__DATA__.ssrPromise.length) {
+        this.state = window.__DATA__.ssrPromise.shift();
+      }
+
+      if (!this.state.settled) {
+        this.resolve();
+      }
     }
   },
 
   mounted() {
-    if (!this.settled) {
-      this.resolve();
-    }
-
     if (process.dev) {
       onHotReload(() => {
         this.$nextTick(() => {
