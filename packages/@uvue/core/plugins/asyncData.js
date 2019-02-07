@@ -12,7 +12,7 @@ const getAsyncDataComponents = (components = []) => {
     .map(component => {
       return sanitizeComponent(component);
     })
-    .filter(Component => (Component && Component.options.asyncData ? true : false));
+    .filter(Component => Component && Component.options.asyncData);
 };
 
 /**
