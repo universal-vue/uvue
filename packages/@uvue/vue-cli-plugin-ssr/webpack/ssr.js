@@ -49,17 +49,21 @@ module.exports = (api, options = {}) => {
   ]);
 
   // Ignore copying base index.html
-  chainConfig.plugin('copy').tap(args => {
-    const items = args[0];
-    for (const item of items) {
-      if (item.from == api.resolve('public')) {
-        const ignore = item.ignore || [];
-        ignore.push('index.html');
-        item.ignore = ignore;
+  if (chainConfig.plugins.has('copy')) {
+    chainConfig.plugin('copy').tap(args => {
+      if (!args.lentgh) return;
+
+      const items = args[0];
+      for (const item of items) {
+        if (item.from == api.resolve('public')) {
+          const ignore = item.ignore || [];
+          ignore.push('index.html');
+          item.ignore = ignore;
+        }
       }
-    }
-    return args;
-  });
+      return args;
+    });
+  }
 
   // Friendly Errors with server URL
   chainConfig.plugin('friendly-errors').tap(args => {
