@@ -35,18 +35,21 @@ module.exports = (api, options = {}) => {
   });
 
   // Add a index template for SPA pages
-  chainConfig.plugin('html-spa').use(HtmlWebpack, [
-    merge({}, htmlOptions, {
-      filename: `${uvueDir}/spa.html`,
-      inject: true,
-      templateParameters: merge({}, htmlOptions.templateParameters, {
-        uvue: {
-          ssr: false,
-          client: true,
-        },
+  chainConfig
+    .plugin('html-spa')
+    .use(HtmlWebpack, [
+      merge({}, htmlOptions, {
+        filename: `${uvueDir}/spa.html`,
+        inject: true,
+        templateParameters: merge({}, htmlOptions.templateParameters, {
+          uvue: {
+            ssr: false,
+            client: true,
+          },
+        }),
       }),
-    }),
-  ]);
+    ])
+    .after('html');
 
   // Ignore copying base index.html
   if (chainConfig.plugins.has('copy')) {
