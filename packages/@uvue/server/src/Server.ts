@@ -68,7 +68,7 @@ export class Server implements IServer {
     this.options = merge(
       {
         distPath: resolve('dist'),
-        uvueDir: '.uvue',
+        uvueDir: 'uvue',
       },
       this.options,
     );

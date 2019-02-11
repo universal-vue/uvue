@@ -5,7 +5,7 @@ const path = require('path');
  */
 module.exports = () => ({
   distPath: path.resolve('dist'),
-  uvueDir: '.uvue',
+  uvueDir: 'uvue',
   adapter: null,
   adapterArgs: [],
   https: {

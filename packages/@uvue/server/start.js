@@ -54,7 +54,7 @@ process.env.NODE_ENV = 'production';
     options = require(resolve(argv.config)).default;
   }
 
-  const { adapter, paths, https, spaPaths, renderer, logger } = options;
+  const { adapter, uvueDir, https, spaPaths, renderer, logger } = options;
 
   /**
    * Create server
@@ -63,8 +63,8 @@ process.env.NODE_ENV = 'production';
     // Built files directory
     distPath: resolve(argv.dist),
 
-    // Paths to required files
-    paths,
+    // Path to UVue/SSR files
+    uvueDir,
 
     // Adapter to use
     adapter,
