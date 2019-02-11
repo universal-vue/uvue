@@ -8,6 +8,7 @@ import execa from 'execa';
 import { TestManager, uvueInvokePrompts } from './TestManager';
 
 const waitOnPromise = options => new Promise(resolve => waitOn(options, resolve));
+const wait = time => new Promise(resolve => setTimeout(resolve, time));
 
 const buildProject = async (tm, name) => {
   await tm.cliService(name, 'ssr:build');
@@ -30,6 +31,8 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
     resources: [`tcp:localhost:7357`],
     timeout: 60 * 1000,
   });
+
+  await wait(1000);
 
   return new Promise((resolve, reject) => {
     const jest = execa(
