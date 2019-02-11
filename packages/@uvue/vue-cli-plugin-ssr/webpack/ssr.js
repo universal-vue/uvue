@@ -25,13 +25,13 @@ module.exports = (api, options = {}) => {
       uvue: opts,
     });
 
-    return [
-      merge({}, args[0] || {}, htmlOptions, {
-        filename: `${uvueDir}/ssr.html`,
-        inject: false,
-        templateParameters: params,
-      }),
-    ];
+    htmlOptions = merge({}, args[0] || {}, htmlOptions, {
+      filename: `${uvueDir}/ssr.html`,
+      inject: false,
+      templateParameters: params,
+    });
+
+    return [htmlOptions];
   });
 
   // Add a index template for SPA pages
