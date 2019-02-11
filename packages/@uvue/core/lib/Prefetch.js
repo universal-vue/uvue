@@ -1,6 +1,8 @@
 import onHotReload from '@uvue/core/lib/onHotReload';
 
 export default {
+  name: 'Prefetch',
+
   props: {
     promise: {
       type: [Function, Promise],

@@ -1,7 +1,7 @@
-import SsrPromise from './lib/SsrPromise';
-import SsrMixin from './lib/SsrMixin';
+import Prefetch from './lib/Prefetch';
+import PrefetchMixin from './lib/PrefetchMixin';
 
-export { SsrPromise, SsrMixin };
+export { Prefetch, PrefetchMixin };
 
 /**
  * Main UVue object to install and call plugins
