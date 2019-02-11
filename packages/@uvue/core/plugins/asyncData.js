@@ -41,15 +41,19 @@ const resolveComponentsAsyncData = (context, route, components) => {
 const applyAsyncData = (Component, asyncData) => {
   const ComponentData = Component.options.data || noopData;
 
-  if (!asyncData) {
+  if (!asyncData && Component.options.hasAsyncData) {
     return;
   }
 
   Component.options.hasAsyncData = true;
   Component.options.data = function() {
     const data = ComponentData.call(this);
-    return { ...data, ...asyncData };
+    return { ...data, ...(asyncData || {}) };
   };
+
+  if (Component._Ctor && Component._Ctor.options) {
+    Component._Ctor.options.data = Component.options.data;
+  }
 };
 
 /**
