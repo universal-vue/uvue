@@ -8,26 +8,25 @@
 </template>
 
 <script>
-import { SsrMixin } from '@uvue/core';
+import { PrefetchMixin } from '@uvue/core';
 import { promiseData } from '@/shared/utils';
 
 export default {
-  mixins: [SsrMixin],
+  mixins: [PrefetchMixin],
 
   props: {
     value: {
       type: String,
-      default: 'bar',
+      default: '',
     },
   },
 
   data: () => ({
-    result: null,
+    result: '',
   }),
 
   async prefetch() {
-    console.log('prefetch');
-    this.result = await promiseData('bar');
+    this.result = await promiseData(this.value);
   },
 };
 </script>

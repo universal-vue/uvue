@@ -4,36 +4,36 @@
 
     <h3>Native</h3>
     <test-case
-      expected="nested"
+      expected="nested-native"
       :result="foo"
     />
 
     <h3>Renderless component</h3>
-    <SsrPromise
-      :promise="load('nested')"
+    <Prefetch
+      :promise="load('nested-renderless')"
       v-slot="{ result }"
     >
       <test-case
-        expected="nested"
+        expected="nested-renderless"
         :result="result"
       />
-    </SsrPromise>
+    </Prefetch>
 
     <h3>Mixin</h3>
-    <SsrComponent value="nested"/>
+    <PrefetchComponent value="nested-mixin"/>
 
   </div>
 </template>
 
 <script>
 import { promiseData } from '@/shared/utils';
-import { SsrPromise } from '@uvue/core';
-import SsrComponent from '../components/SsrComponent.vue';
+import { Prefetch } from '@uvue/core';
+import PrefetchComponent from '../components/PrefetchComponent.vue';
 
 export default {
   components: {
-    SsrPromise,
-    SsrComponent,
+    Prefetch,
+    PrefetchComponent,
   },
 
   data: () => ({
@@ -41,12 +41,12 @@ export default {
   }),
 
   async serverPrefetch() {
-    this.foo = await promiseData('nested');
+    this.foo = await promiseData('nested-native');
   },
 
   async mounted() {
     if (!this.foo) {
-      this.foo = await promiseData('nested');
+      this.foo = await promiseData('nested-native');
     }
   },
 
