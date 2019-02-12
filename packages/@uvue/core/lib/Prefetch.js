@@ -22,18 +22,18 @@ export default {
   serverPrefetch() {
     return this.resolve().then(() => {
       const { data } = this.$context.ssr;
-      if (!data.ssrPromise) {
-        data.ssrPromise = [];
+      if (!data.prefetchComponents) {
+        data.prefetchComponents = [];
       }
 
-      data.ssrPromise.push(this.state);
+      data.prefetchComponents.push(this.state);
     });
   },
 
   created() {
     if (process.client) {
-      if (window.__DATA__.ssrPromise && window.__DATA__.ssrPromise.length) {
-        this.state = window.__DATA__.ssrPromise.shift();
+      if (window.__DATA__ && window.__DATA__.prefetchComponents) {
+        this.state = window.__DATA__.prefetchComponents.shift();
       }
 
       if (!this.state.settled) {
@@ -48,7 +48,7 @@ export default {
         this.$nextTick(() => {
           this.resolve();
         });
-      }, `ssr-promise--${this._uid}`);
+      }, `prefetch-components--${this._uid}`);
     }
   },
 

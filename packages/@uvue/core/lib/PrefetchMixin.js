@@ -2,7 +2,7 @@ import onHotReload from './onHotReload';
 
 export default {
   data: () => ({
-    $ssrPrefetched: false,
+    $prefetched: false,
   }),
 
   async serverPrefetch() {
@@ -10,39 +10,42 @@ export default {
       await this.$options.prefetch.bind(this)();
 
       const { data } = this.$context.ssr;
-      if (!data.ssrPrefetch) {
-        data.ssrPrefetch = [];
+      if (!data.prefetch) {
+        data.prefetch = [];
       }
 
-      data.ssrPrefetch.push({
+      data.prefetch.push({
         ...this.$data,
-        $ssrPrefetched: true,
+        $prefetched: true,
       });
     }
   },
 
-  async created() {
-    if (process.client && window.__DATA__.ssrPrefetch) {
-      const data = window.__DATA__.ssrPrefetch.shift();
-      if (data) {
-        for (const key in data) {
-          this[key] = data[key];
+  created() {
+    if (process.client) {
+      if (window.__DATA__ && window.__DATA__.prefetch) {
+        const data = window.__DATA__.prefetch.shift();
+
+        if (data) {
+          for (const key in data) {
+            this[key] = data[key];
+          }
         }
       }
 
-      if (!this.$ssrPrefetched && this.$options.prefetch) {
-        await this.$options.prefetch.bind(this)();
+      if (!this.$prefetched && this.$options.prefetch) {
+        this.$options.prefetch.bind(this)();
       }
     }
   },
 
-  async mounted() {
+  mounted() {
     if (process.dev) {
       onHotReload(() => {
         this.$nextTick(() => {
           this.$options.prefetch.bind(this)();
         });
-      }, `ssr-prefetch--${this._uid}`);
+      }, `prefetch--${this._uid}`);
     }
   },
 };
