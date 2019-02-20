@@ -1,6 +1,6 @@
 {
   "name": "@uvue/server",
-  "version": "0.1.0-alpha.16",
+  "version": "0.1.0-alpha.17",
   "description": "UVue server package",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
