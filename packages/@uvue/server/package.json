@@ -40,6 +40,7 @@
     "consola": "^1.4.3",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.5.7",
+    "dotenv": "^6.2.0",
     "escape-string-regexp": "^1.0.5",
     "esm": "^3.0.84",
     "fast-safe-stringify": "^2.0.6",
@@ -53,8 +54,8 @@
     "pino": "^5.10.1",
     "pino-pretty": "^2.5.0",
     "serve-static": "^1.13.2",
-    "vue": "^2.5.22",
-    "vue-server-renderer": "^2.5.22",
+    "vue": "^2.6.0",
+    "vue-server-renderer": "^2.6.5",
     "webpack": "^4.19.0",
     "webpack-dev-middleware": "^3.3.0",
     "webpack-hot-middleware": "^2.24.0",
@@ -62,6 +63,7 @@
     "youch": "^2.0.10"
   },
   "devDependencies": {
+    "@types/dotenv": "^6.1.0",
     "@types/express": "^4.16.0",
     "@types/koa": "^2.0.46",
     "@types/koa-mount": "^3.0.1",

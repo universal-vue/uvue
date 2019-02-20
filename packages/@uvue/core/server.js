@@ -34,7 +34,7 @@ export default async ssr => {
   router.push(ssr.url);
 
   // On router ready
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     router.onReady(async () => {
       // Call beforeStart hook
       await catchErrorAsync(context, async () => {
@@ -49,7 +49,9 @@ export default async ssr => {
         await UVue.invokeAsync('beforeReady', context);
       });
 
-      UVue.invoke('sendSSRData', context);
+      ssr.rendered = () => {
+        UVue.invoke('sendSSRData', context);
+      };
 
       // Resolve app
       resolve(app);
@@ -58,6 +60,6 @@ export default async ssr => {
       catchError(context, () => {
         UVue.invoke('ready', context);
       });
-    });
+    }, reject);
   });
 };

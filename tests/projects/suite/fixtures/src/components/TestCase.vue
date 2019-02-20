@@ -14,15 +14,6 @@
 
 <script>
 export default {
-  props: {
-    expected: {
-      type: String,
-      required: true,
-    },
-    result: {
-      type: String,
-      required: true,
-    },
-  },
+  props: ['result', 'expected'],
 };
 </script>

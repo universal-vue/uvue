@@ -4,7 +4,7 @@ import { Store } from 'vuex';
 import VueRouter, { Route } from 'vue-router';
 
 /**
- * VueNeue
+ * UVue
  */
 declare module 'vue/types/vue' {
   interface Vue {

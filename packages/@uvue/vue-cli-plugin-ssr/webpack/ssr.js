@@ -25,41 +25,48 @@ module.exports = (api, options = {}) => {
       uvue: opts,
     });
 
-    return [
-      merge({}, args[0] || {}, htmlOptions, {
-        filename: `${uvueDir}/ssr.html`,
-        inject: false,
-        templateParameters: params,
-      }),
-    ];
+    htmlOptions = merge({}, args[0] || {}, htmlOptions, {
+      filename: `${uvueDir}/ssr.html`,
+      inject: false,
+      templateParameters: params,
+    });
+
+    return [htmlOptions];
   });
 
   // Add a index template for SPA pages
-  chainConfig.plugin('html-spa').use(HtmlWebpack, [
-    merge({}, htmlOptions, {
-      filename: `${uvueDir}/spa.html`,
-      inject: true,
-      templateParameters: merge({}, htmlOptions.templateParameters, {
-        uvue: {
-          ssr: false,
-          client: true,
-        },
+  chainConfig
+    .plugin('html-spa')
+    .use(HtmlWebpack, [
+      merge({}, htmlOptions, {
+        filename: `${uvueDir}/spa.html`,
+        inject: true,
+        templateParameters: merge({}, htmlOptions.templateParameters, {
+          uvue: {
+            ssr: false,
+            client: true,
+          },
+        }),
       }),
-    }),
-  ]);
+    ])
+    .after('html');
 
   // Ignore copying base index.html
-  chainConfig.plugin('copy').tap(args => {
-    const items = args[0];
-    for (const item of items) {
-      if (item.from == api.resolve('public')) {
-        const ignore = item.ignore || [];
-        ignore.push('index.html');
-        item.ignore = ignore;
+  if (chainConfig.plugins.has('copy')) {
+    chainConfig.plugin('copy').tap(args => {
+      if (!args.lentgh) return;
+
+      const items = args[0];
+      for (const item of items) {
+        if (item.from == api.resolve('public')) {
+          const ignore = item.ignore || [];
+          ignore.push('index.html');
+          item.ignore = ignore;
+        }
       }
-    }
-    return args;
-  });
+      return args;
+    });
+  }
 
   // Friendly Errors with server URL
   chainConfig.plugin('friendly-errors').tap(args => {

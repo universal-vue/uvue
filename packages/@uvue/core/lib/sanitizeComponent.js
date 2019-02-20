@@ -13,11 +13,12 @@ export default Component => {
   }
   if (!Component.options) {
     Component = Vue.extend(Component);
-    Component._Ctor = Component;
   } else {
-    Component._Ctor = Component;
     Component.extendOptions = Component.options;
   }
+
+  Component._Ctor = Component;
+
   // For debugging purpose
   if (!Component.options.name && Component.options.__file) {
     Component.options.name = Component.options.__file;

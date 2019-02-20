@@ -1,5 +1,5 @@
-node_modules/
-dist/
-docker-compose.yml
-nginx/
+node_modules
+/dist
+/docker-compose.yml
+/nginx
 

@@ -32,6 +32,9 @@ export default async (options, context) => {
     }
   };
 
+  // Attach context to components
+  Vue.prototype.$context = context;
+
   // beforeCreate hook call
   await catchErrorAsync(context, async () => {
     await UVue.invokeAsync('beforeCreate', context, inject, options);

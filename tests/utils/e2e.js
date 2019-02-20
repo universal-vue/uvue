@@ -75,7 +75,7 @@ const isSPA = async () => {
  * Check Vue app is mounted
  */
 const isMounted = async () => {
-  return page.waitForFunction('document.querySelector("#mounted") != null;');
+  return page.waitForFunction('document.querySelector("#mounted") != null');
 };
 
 /**

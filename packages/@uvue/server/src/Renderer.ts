@@ -81,7 +81,7 @@ export class Renderer implements IRenderer {
       .replace(/data-html-attrs(="")?/i, htmlAttrs)
       .replace(/data-body-attrs(="")?/i, bodyAttrs)
       .replace(/<ssr-head\s*\/?>/i, head)
-      .replace(/<ssr-body\s*\/?>/i, body)
+      .replace(/(<div id="?app"?><\/div>|<ssr-body\s*\/?>)/i, body)
       .replace(/<\/ssr-head>/i, '')
       .replace(/<\/ssr-body>/i, '');
 
@@ -90,7 +90,7 @@ export class Renderer implements IRenderer {
 
   public async renderSPAPage() {
     return this.templates.spa.replace(/<ssr-head\s*\/?>/i, '').replace(
-      /<ssr-body\s*\/?>/i,
+      /(<div id="?app"?><\/div>|<ssr-body\s*\/?>)/i,
       `<div id="app"></div>
         <script data-vue-spa>window.__SPA_ROUTE__=true;</script>`,
     );

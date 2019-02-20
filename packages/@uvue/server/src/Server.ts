@@ -1,4 +1,4 @@
-import * as loadEnv from '@vue/cli-service/lib/util/loadEnv';
+import * as dotenv from 'dotenv';
 import { readFileSync, readJsonSync } from 'fs-extra';
 import * as merge from 'lodash/merge';
 import { join, resolve } from 'path';
@@ -12,14 +12,18 @@ import { Renderer } from './Renderer';
 
 export class Server implements IServer {
   /**
-   * Utility function to loadEnv from @vue/cli
+   * Utility function to replicate loadEnv from @vue/cli-service
    */
   public static loadEnv(name?: string, basePath: string = process.cwd()) {
     const load = (filepath: string) => {
       try {
-        loadEnv(filepath);
+        dotenv.config({
+          path: filepath,
+        });
       } catch (err) {
-        // Notihing
+        if (err.toString().indexOf('ENOENT') < 0) {
+          throw err;
+        }
       }
     };
 
@@ -68,7 +72,7 @@ export class Server implements IServer {
     this.options = merge(
       {
         distPath: resolve('dist'),
-        uvueDir: '.uvue',
+        uvueDir: 'uvue',
       },
       this.options,
     );
