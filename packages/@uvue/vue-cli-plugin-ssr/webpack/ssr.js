@@ -54,7 +54,7 @@ module.exports = (api, options = {}) => {
   // Ignore copying base index.html
   if (chainConfig.plugins.has('copy')) {
     chainConfig.plugin('copy').tap(args => {
-      if (!args.lentgh) return;
+      if (!args.length) return;
 
       const items = args[0];
       for (const item of items) {
