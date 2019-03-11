@@ -7,7 +7,7 @@ if (process.server) {
 }
 
 export default {
-  async routeResolve({ app, ssr, error }) {
+  async sendSSRData({ app, ssr, error }) {
     if (process.server) {
       try {
         ssr.bodyAdd = `<script>window.__APOLLO_STATE__=${JSON.stringify(
