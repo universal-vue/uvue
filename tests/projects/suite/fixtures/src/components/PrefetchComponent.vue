@@ -8,12 +8,9 @@
 </template>
 
 <script>
-import { PrefetchMixin } from '@uvue/core';
 import { promiseData } from '@/shared/utils';
 
 export default {
-  mixins: [PrefetchMixin],
-
   props: {
     value: {
       type: String,

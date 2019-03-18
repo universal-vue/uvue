@@ -21,6 +21,7 @@ export default {
     ],
     '@uvue/core/plugins/asyncData',
     '@uvue/core/plugins/errorHandler',
+    '@uvue/core/plugins/prefetch',
   ],
   css: {
     normal: 'inline',

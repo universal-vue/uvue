@@ -8,17 +8,6 @@
       :result="foo"
     />
 
-    <h3>Renderless component</h3>
-    <Prefetch
-      :promise="load('renderless')"
-      v-slot="{ result }"
-    >
-      <test-case
-        expected="renderless"
-        :result="result"
-      />
-    </Prefetch>
-
     <h3>Mixin</h3>
     <PrefetchComponent
       value="mixin"
@@ -30,12 +19,10 @@
 
 <script>
 import { promiseData } from '@/shared/utils';
-import { Prefetch } from '@uvue/core';
 import PrefetchComponent from '../components/PrefetchComponent.vue';
 
 export default {
   components: {
-    Prefetch,
     PrefetchComponent,
   },
 
@@ -57,10 +44,6 @@ export default {
     if (!this.foo) {
       this.foo = await promiseData('native');
     }
-  },
-
-  methods: {
-    load: value => () => promiseData(value),
   },
 };
 </script>
