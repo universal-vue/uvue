@@ -8,9 +8,16 @@ const stringify = require('javascript-stringify');
 const CodeFixer = require('../uvue/CodeFixer');
 
 module.exports = (api, options) => {
+  // Install router
+  if (!api.hasPlugin('router')) {
+    const routerGenerator = require('@vue/cli-service/generator/router');
+    routerGenerator(api, {
+      routerHistoryMode: true,
+    });
+  }
+
   const extendPackage = {
     dependencies: {
-      'vue-router': '^3.0.1',
       '@uvue/core': '^0.1.0-alpha',
       '@uvue/server': '^0.1.0-alpha',
       compression: '^1.7.3',
