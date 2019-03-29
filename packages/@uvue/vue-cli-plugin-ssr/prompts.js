@@ -21,6 +21,10 @@ module.exports = [
         name: 'Error handler',
         value: 'errorHandler',
       },
+      {
+        name: 'Apollo',
+        value: 'apollo',
+      },
     ],
   },
   {

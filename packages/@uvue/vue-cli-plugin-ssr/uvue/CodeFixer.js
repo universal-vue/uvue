@@ -1,5 +1,4 @@
 const fs = require('fs-extra');
-const { join } = require('path');
 const rreaddir = require('recursive-readdir');
 const findInFiles = require('find-in-files');
 const escapeStringRegexp = require('escape-string-regexp');
@@ -8,6 +7,7 @@ const { RQuery, Recast } = require('@uvue/rquery');
 const consola = require('consola');
 const { merge } = require('lodash');
 const chalk = require('chalk');
+const execa = require('execa');
 
 const fileSearchFilter = filename => {
   const regexp = new RegExp(`${filename}.(js|ts)$`);
@@ -44,10 +44,8 @@ module.exports = class CodeFixer {
       }
     };
 
-    const hasDependency = name => {
-      const packageJson = require(api.resolve('package.json'));
-      return packageJson.dependencies[name] ? true : false;
-    };
+    // Missing deps check
+    await this.fixMissingDependencies(api);
 
     // Router
     await fixPlugin('Router', [/import\s.*from\s.*vue-router/gm], 'fixRouter', true);
@@ -70,42 +68,6 @@ module.exports = class CodeFixer {
     // Apollo
     if (api.hasPlugin('apollo')) {
       await fixPlugin('Apollo', ['code:createApolloClient'], 'fixApollo');
-
-      // Check isomorphic fetch is installed
-      if (!hasDependency('isomorphic-fetch')) {
-        consola.warn(
-          '`isomorphic-fetch` package is required to use Vue Apollo in SSR mode\nhttps://universal-vue.github.io/docs/guide/vue-cli-plugins.html#apollo\n',
-        );
-      }
-
-      // Check UVue plugin presence
-      let pluginPath = './src/plugins/apollo';
-      const files = await this.findFiles(['code:__APOLLO_STATE__']);
-
-      if (!files.length) {
-        // Copy file from vue cli plugin
-        await fs.copy(join(__dirname, '..', 'generator', 'templates', 'apollo'), api.resolve(''));
-        consola.success(`UVue Apollo plugin installed in src/plugins/apollo.js`);
-      } else {
-        pluginPath = files[0];
-      }
-
-      // Check UVue config
-      const requireEsm = require('esm')(module);
-
-      const configModule = requireEsm(api.resolve('uvue.config.js'));
-      const uvueConfig = configModule.default || configModule || {};
-
-      if (
-        uvueConfig.plugins &&
-        uvueConfig.plugins.findIndex(item => {
-          return item == pluginPath || item[0] == pluginPath;
-        }) < 0
-      ) {
-        consola.warn(
-          'Need to install UVue Apollo plugin in your uvue.config.js file\nhttps://universal-vue.github.io/docs/guide/vue-cli-plugins.html#apollo\n',
-        );
-      }
     }
 
     // Main
@@ -531,9 +493,10 @@ module.exports = class CodeFixer {
     const exportDefault = doc.findOne('exportDefault funcArrow');
     const vueOptions = exportDefault.findOne('new#Vue {}');
 
-    const option = vueOptions.getProp(name).parent();
+    const prop = vueOptions.getProp(name);
+    if (prop) {
+      const option = prop.parent();
 
-    if (option) {
       // First check: prop value is function
       if (option.node.value.type === 'CallExpression') {
         return code;
@@ -659,6 +622,36 @@ module.exports = class CodeFixer {
       });
     }
     return code;
+  }
+
+  async fixMissingDependencies(api) {
+    consola.start('Checking missing dependencies...');
+
+    const hasDependency = name => {
+      const packageJson = require(api.resolve('package.json'));
+      return packageJson.dependencies[name] ? true : false;
+    };
+
+    const isYarn = () => {
+      return fs.existsSync(api.resolve('yarn.lock'));
+    };
+
+    // Missing Apollo deps
+    if (api.hasPlugin('apollo') && !hasDependency('isomorphic-fetch')) {
+      consola.info('Installing isomorphic-fetch for Apollo...');
+
+      if (isYarn()) {
+        await execa('yarn', ['add', 'isomorphic-fetch'], {
+          cwd: this.basePath,
+          stdio: 'inherit',
+        });
+      } else {
+        await execa('npm', ['install', '--save', 'isomorphic-fetch'], {
+          cwd: this.basePath,
+          stdio: 'inherit',
+        });
+      }
+    }
   }
 
   static warningMessage() {

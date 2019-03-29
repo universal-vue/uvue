@@ -55,13 +55,8 @@ module.exports = (api, options) => {
 
     // Apollo
     if (api.hasPlugin('apollo')) {
-      api.render('./templates/apollo');
-
       // Install isomorphic fetch
       extendPackage.dependencies['isomorphic-fetch'] = '^2.2.1';
-
-      // Add UVue plugin to config
-      uvueConfig.plugins.push('@/plugins/apollo');
     }
 
     if (options.uvuePlugins) {
