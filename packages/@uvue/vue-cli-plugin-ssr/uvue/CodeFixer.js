@@ -70,6 +70,9 @@ module.exports = class CodeFixer {
       await fixPlugin('Apollo', ['code:createApolloClient'], 'fixApollo');
     }
 
+    // TypeScript
+    await this.fixTsConfig(api);
+
     // Main
     {
       consola.start(`Try to fix main file...`);
@@ -650,6 +653,29 @@ module.exports = class CodeFixer {
           cwd: this.basePath,
           stdio: 'inherit',
         });
+      }
+    }
+  }
+
+  async fixTsConfig(api) {
+    const filepath = api.resolve('tsconfig.json');
+
+    if (api.hasPlugin('typescript') && fs.existsSync(filepath)) {
+      consola.start('Checking tsconfig...');
+
+      try {
+        const tsConfig = JSON.parse((await fs.readFile(filepath, 'utf-8')) || '{}');
+        tsConfig.compilerOptions = tsConfig.compilerOptions || {};
+        tsConfig.compilerOptions.types = tsConfig.compilerOptions.types || [];
+
+        if (!tsConfig.compilerOptions.types.includes('@uvue/core')) {
+          tsConfig.compilerOptions.types.push('@uvue/core');
+          await fs.writeFile(filepath, JSON.stringify(tsConfig, null, '  '));
+        }
+
+        consola.success('Types OK');
+      } catch (err) {
+        consola.error('Unable to check or fix tsconfig.json');
       }
     }
   }
