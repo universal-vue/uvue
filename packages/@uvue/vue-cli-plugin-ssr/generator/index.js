@@ -53,12 +53,6 @@ module.exports = (api, options) => {
       plugins: [],
     };
 
-    // Apollo
-    if (api.hasPlugin('apollo')) {
-      // Install isomorphic fetch
-      extendPackage.dependencies['isomorphic-fetch'] = '^2.2.1';
-    }
-
     if (options.uvuePlugins) {
       for (const name of options.uvuePlugins) {
         const pluginPath = `@uvue/core/plugins/${name}`;

@@ -8,6 +8,7 @@ const consola = require('consola');
 const { merge } = require('lodash');
 const chalk = require('chalk');
 const execa = require('execa');
+const path = require('path');
 
 const fileSearchFilter = filename => {
   const regexp = new RegExp(`${filename}.(js|ts)$`);
@@ -24,7 +25,7 @@ module.exports = class CodeFixer {
 
   async run(api, mainPath) {
     const fixPlugin = async (name, search, methodName, findByImport = false) => {
-      consola.start(`Searching ${name} file...`);
+      consola.start(`Checking ${name} file(s)...`);
 
       const files = await this.findFiles(search);
       if (!files.length) {
@@ -35,11 +36,10 @@ module.exports = class CodeFixer {
           const result = this[methodName](code, findByImport);
 
           if (code !== result) {
-            consola.success(`${name} file fixed!`);
             await fs.writeFile(file, result);
-          } else {
-            consola.info(`${name} file doesn't need to be fixed`);
           }
+
+          consola.success(`${name}: ${path.relative(api.resolve('.'), file)} OK`);
         }
       }
     };
@@ -75,7 +75,7 @@ module.exports = class CodeFixer {
 
     // Main
     {
-      consola.start(`Try to fix main file...`);
+      consola.start(`Checking main file...`);
 
       if (fs.existsSync(mainPath + '.ts')) {
         mainPath += '.ts';
@@ -96,11 +96,10 @@ module.exports = class CodeFixer {
       }
 
       if (code !== result) {
-        consola.success(`Main file fixed!`);
         await fs.writeFile(mainPath, result);
-      } else {
-        consola.info(`Main file doesn't need to be fixed`);
       }
+
+      consola.success(`Main: ${path.relative(api.resolve('.'), mainPath)} OK`);
     }
   }
 
