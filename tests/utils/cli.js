@@ -76,8 +76,16 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
     await tm.initBase();
   }
 
+  if (!fs.existsSync('packages/tests/minimal/src/main.js')) {
+    await tm.initMinimal();
+  }
+
+  if (yargv.rm) {
+    await fs.remove(`packages/tests/${name}`);
+  }
+
   if (!fs.existsSync(`packages/tests/${name}/src/main.js`)) {
-    await tm.create(name);
+    await tm.create(name, yargv.minimal);
   }
 
   switch (command) {
