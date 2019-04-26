@@ -8,7 +8,7 @@ module.exports = (api, chainConfig) => {
   chainConfig.entryPoints
     .get('app')
     .clear()
-    .add(require.resolve('@uvue/core/server'));
+    .add(require.resolve('@uvue/core/dist/server'));
 
   // Only include Vue SSR plugin in legacy mode
   if (!process.env.VUE_CLI_MODERN_MODE || !process.env.VUE_CLI_MODERN_BUILD) {

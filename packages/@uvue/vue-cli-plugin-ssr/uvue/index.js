@@ -27,7 +27,7 @@ module.exports = class {
       chainConfig.entryPoints
         .get('app')
         .clear()
-        .add(require.resolve('@uvue/core/client'));
+        .add(require.resolve('@uvue/core/dist/client'));
 
       // Add DefinePlugin
       chainConfig.plugin('uvue-defines').use(webpack.DefinePlugin, [defineOptions()]);
@@ -46,7 +46,6 @@ module.exports = class {
 
     // Core package need to be transpiled
     api.service.projectOptions.transpileDependencies.push(
-      /@uvue(\\|\/)core/,
       /\.uvue(\\|\/)main\.js/,
       // PWA: register service worker module
       /register-service-worker/,

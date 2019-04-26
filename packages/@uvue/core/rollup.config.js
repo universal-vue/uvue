@@ -6,9 +6,9 @@ export default {
     babel({
       runtimeHelpers: true,
     }),
-    minify({
-      comments: false,
-      sourceMap: false,
-    }),
+    // minify({
+    //   comments: false,
+    //   sourceMap: false,
+    // }),
   ],
 };

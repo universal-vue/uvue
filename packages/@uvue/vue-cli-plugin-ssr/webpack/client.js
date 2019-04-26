@@ -9,7 +9,7 @@ module.exports = (api, chainConfig) => {
   chainConfig.entryPoints
     .get('app')
     .clear()
-    .add(require.resolve('@uvue/core/client'));
+    .add(require.resolve('@uvue/core/dist/client'));
 
   // Add Vue SSR plugin
   let clientManifestFilename = `${uvueDir}/client-manifest.json`;
