@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import { Store } from 'vuex';
-import sanitizeComponent from '../lib/sanitizeComponent';
-import onHotReload from '../lib/onHotReload';
+import { sanitizeComponent, onHotReload } from '@uvue/core';
 
 /**
  * Vuex plugin

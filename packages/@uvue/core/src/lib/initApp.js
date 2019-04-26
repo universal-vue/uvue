@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import UVue from '@uvue/core';
-import { doRedirect, getRedirect, RedirectError } from '@uvue/core/lib/redirect';
+import UVue from './UVue';
+import { doRedirect, getRedirect, RedirectError } from './redirect';
 import { VueError, emitServerError, catchErrorAsync } from './catchError';
 
 /**
