@@ -2,7 +2,7 @@
   "name": "@uvue/core",
   "version": "0.1.0-alpha.9",
   "description": "UVue core package",
-  "main": "index.js",
+  "main": "dist/index.js",
   "types": "index.d.ts",
   "repository": "https://github.com/universal-vue/uvue",
   "bugs": {
@@ -26,5 +26,13 @@
     "lint": "eslint './**/*.js'",
     "lint:fix": "eslint --fix './**/*.js'",
     "format": "prettier --ignore-path .gitignore --write './**/*.js'"
-  }
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.4.3",
+    "babel-plugin-transform-async-to-promises": "^0.8.10",
+    "rollup": "^1.10.1",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-babel-minify": "^8.0.0"
+  },
+  "dependencies": {}
 }
