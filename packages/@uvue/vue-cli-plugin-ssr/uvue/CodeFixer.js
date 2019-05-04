@@ -645,12 +645,12 @@ module.exports = class CodeFixer {
       if (isYarn()) {
         await execa('yarn', ['add', 'isomorphic-fetch'], {
           cwd: this.basePath,
-          stdio: 'inherit',
+          // stdio: 'inherit',
         });
       } else {
         await execa('npm', ['install', '--save', 'isomorphic-fetch'], {
           cwd: this.basePath,
-          stdio: 'inherit',
+          // stdio: 'inherit',
         });
       }
     }
