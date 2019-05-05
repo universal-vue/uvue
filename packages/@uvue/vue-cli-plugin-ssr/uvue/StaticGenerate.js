@@ -17,9 +17,13 @@ module.exports = class StaticGenerate {
     this.api = api;
     this.options = options;
 
+    const { uvueDir, spaPaths, renderer, static: staticConfig } = api.uvue.getServerConfig();
+
     // Fake server to resolve renderer
     this.server = new Server({
       distPath: api.resolve(options.outputDir),
+      uvueDir,
+      renderer,
     });
 
     // Install plugins
@@ -30,17 +34,16 @@ module.exports = class StaticGenerate {
 
     // Generate config
     this.staticConfig = merge(
-      {},
       {
         scanRouter: true,
         params: null,
         paths: [],
       },
-      api.uvue.getServerConfig('static'),
+      staticConfig,
     );
 
     // Get SPA paths from config
-    this.spaPaths = api.uvue.getServerConfig('spaPaths') || [];
+    this.spaPaths = spaPaths || [];
   }
 
   /**
