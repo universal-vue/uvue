@@ -204,10 +204,30 @@ module.exports = class CodeFixer {
   fixRouter(code, findByImport = false) {
     if (!findByImport) {
       code = this.fixPlugin(code, 'Router');
-      return this.fixPlugin(code, 'VueRouter');
+      code = this.fixPlugin(code, 'VueRouter');
     } else {
-      return this.fixPlugin(code, 'vue-router', true);
+      code = this.fixPlugin(code, 'vue-router', true);
     }
+
+    // Force history mode
+    const doc = RQuery.parse(code);
+    const names = ['Router', 'VueRouter'];
+
+    const modeHistory = RQuery.parse('const obj = { mode: "history" };')
+      .findOne('{}')
+      .getProp('mode');
+
+    for (const name of names) {
+      const options = doc.findOne(`new#${name} {}`);
+      if (options) {
+        options.setProp('mode', modeHistory.node, 0);
+      }
+    }
+
+    const prettierOptions = this.resolveCodingStyle(code);
+    return RQuery.print(doc, {
+      prettierConfig: prettierOptions,
+    });
   }
 
   fixVuex(code, findByImport = false) {

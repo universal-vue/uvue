@@ -6,7 +6,6 @@ Vue.use(Router);
 
 export default () => {
   return new Router({
-    mode: 'history',
     base: process.env.BASE_URL,
     routes: views.reduce((routes, category) => {
       routes.push(...category.children);
