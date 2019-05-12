@@ -1,11 +1,11 @@
-import os from 'os';
-import fs from 'fs-extra';
-import path from 'path';
-import { execSync } from 'child_process';
-import waitOn from 'wait-on';
-import { argv as yargv } from 'yargs';
-import execa from 'execa';
-import { TestManager, uvueInvokePrompts } from './TestManager';
+const os = require('os');
+const fs = require('fs-extra');
+const path = require('path');
+const { execSync } = require('child_process');
+const waitOn = require('wait-on');
+const { argv: yargv } = require('yargs');
+const execa = require('execa');
+const { TestManager, uvueInvokePrompts } = require('./TestManager');
 
 const waitOnPromise = options => new Promise(resolve => waitOn(options, resolve));
 const wait = time => new Promise(resolve => setTimeout(resolve, time));

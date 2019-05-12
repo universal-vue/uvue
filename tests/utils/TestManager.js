@@ -1,14 +1,14 @@
-import fs from 'fs-extra';
-import path from 'path';
-import execa from 'execa';
-import vueCreate from '@vue/cli-test-utils/createTestProject';
-import deepMerge from 'deepmerge';
+const fs = require('fs-extra');
+const path = require('path');
+const execa = require('execa');
+const vueCreate = require('@vue/cli-test-utils/createTestProject');
+const deepMerge = require('deepmerge');
 
 const uvuePlugins = ['vuex', 'asyncData', 'errorHandler', 'middlewares', 'apollo'];
 const vuexOptions = ['fetch', 'onHttpRequest'];
 const serverPlugins = ['static', 'gzip', 'modernBuild', 'cookie'];
 
-export const uvueInvokePrompts = [
+const uvueInvokePrompts = [
   ...uvuePlugins.reduce((results, item) => {
     results.push('--uvuePlugins', item);
     return results;
@@ -25,7 +25,7 @@ export const uvueInvokePrompts = [
   'secret',
 ];
 
-export class TestManager {
+class TestManager {
   constructor(baseDir = process.cwd()) {
     this.baseDir = baseDir;
     this.baseProjectPath = path.join(this.baseDir, 'base');
@@ -213,3 +213,8 @@ export class TestManager {
     });
   }
 }
+
+module.exports = {
+  uvueInvokePrompts,
+  TestManager,
+};
