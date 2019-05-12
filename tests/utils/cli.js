@@ -165,8 +165,8 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
           await e2eProject(server, name, '**/specs/static/*.spec.js');
 
           // SPA mode
-          server = tm.cliService(name, 'serve', ['--port', '7357']);
-          await e2eProject(server, name, '**/specs/spa/*.spec.js');
+          // server = tm.cliService(name, 'serve', ['--port', '7357']);
+          // await e2eProject(server, name, '**/specs/spa/*.spec.js');
         }
       } catch (err) {
         if (typeof err === 'number') {
