@@ -1,12 +1,13 @@
 const nodemon = require('nodemon');
 const consola = require('consola');
+const fs = require('fs-extra');
 
 const defaults = {
   host: 'localhost',
   port: 8080,
 };
 
-module.exports = api => {
+module.exports = (api, options) => {
   api.registerCommand(
     'ssr:serve',
     {
@@ -21,6 +22,9 @@ module.exports = api => {
     async function() {
       const { watch, watchIgnore } = api.uvue.getServerConfig();
       const vueCliPath = require.resolve('@vue/cli-service/bin/vue-cli-service.js');
+
+      // Remove dist dir
+      await fs.remove(api.resolve(options.outputDir));
 
       nodemon({
         exec: `node ${vueCliPath} ssr:serve-run ${process.argv
