@@ -1,11 +1,11 @@
-import os from 'os';
-import fs from 'fs-extra';
-import path from 'path';
-import { execSync } from 'child_process';
-import waitOn from 'wait-on';
-import { argv as yargv } from 'yargs';
-import execa from 'execa';
-import { TestManager, uvueInvokePrompts } from './TestManager';
+const os = require('os');
+const fs = require('fs-extra');
+const path = require('path');
+const { execSync } = require('child_process');
+const waitOn = require('wait-on');
+const { argv: yargv } = require('yargs');
+const execa = require('execa');
+const { TestManager, uvueInvokePrompts } = require('./TestManager');
 
 const waitOnPromise = options => new Promise(resolve => waitOn(options, resolve));
 const wait = time => new Promise(resolve => setTimeout(resolve, time));
@@ -76,8 +76,16 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
     await tm.initBase();
   }
 
+  if (!fs.existsSync('packages/tests/minimal/src/main.js')) {
+    await tm.initMinimal();
+  }
+
+  if (yargv.rm) {
+    await fs.remove(`packages/tests/${name}`);
+  }
+
   if (!fs.existsSync(`packages/tests/${name}/src/main.js`)) {
-    await tm.create(name);
+    await tm.create(name, yargv.minimal);
   }
 
   switch (command) {
@@ -157,8 +165,8 @@ const e2eProject = async (server, name, match = '**/suite/specs/*.spec.js') => {
           await e2eProject(server, name, '**/specs/static/*.spec.js');
 
           // SPA mode
-          server = tm.cliService(name, 'serve', ['--port', '7357']);
-          await e2eProject(server, name, '**/specs/spa/*.spec.js');
+          // server = tm.cliService(name, 'serve', ['--port', '7357']);
+          // await e2eProject(server, name, '**/specs/spa/*.spec.js');
         }
       } catch (err) {
         if (typeof err === 'number') {

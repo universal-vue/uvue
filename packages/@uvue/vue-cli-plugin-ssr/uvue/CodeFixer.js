@@ -1,5 +1,4 @@
 const fs = require('fs-extra');
-const { join } = require('path');
 const rreaddir = require('recursive-readdir');
 const findInFiles = require('find-in-files');
 const escapeStringRegexp = require('escape-string-regexp');
@@ -7,7 +6,8 @@ const prettier = require('prettier');
 const { RQuery, Recast } = require('@uvue/rquery');
 const consola = require('consola');
 const { merge } = require('lodash');
-const chalk = require('chalk');
+const execa = require('execa');
+const path = require('path');
 
 const fileSearchFilter = filename => {
   const regexp = new RegExp(`${filename}.(js|ts)$`);
@@ -24,7 +24,7 @@ module.exports = class CodeFixer {
 
   async run(api, mainPath) {
     const fixPlugin = async (name, search, methodName, findByImport = false) => {
-      consola.start(`Searching ${name} file...`);
+      consola.start(`Checking ${name} file(s)...`);
 
       const files = await this.findFiles(search);
       if (!files.length) {
@@ -35,19 +35,16 @@ module.exports = class CodeFixer {
           const result = this[methodName](code, findByImport);
 
           if (code !== result) {
-            consola.success(`${name} file fixed!`);
             await fs.writeFile(file, result);
-          } else {
-            consola.info(`${name} file doesn't need to be fixed`);
           }
+
+          consola.success(`${name}: ${path.relative(api.resolve('.'), file)} OK`);
         }
       }
     };
 
-    const hasDependency = name => {
-      const packageJson = require(api.resolve('package.json'));
-      return packageJson.dependencies[name] ? true : false;
-    };
+    // Missing deps check
+    await this.fixMissingDependencies(api);
 
     // Router
     await fixPlugin('Router', [/import\s.*from\s.*vue-router/gm], 'fixRouter', true);
@@ -70,47 +67,14 @@ module.exports = class CodeFixer {
     // Apollo
     if (api.hasPlugin('apollo')) {
       await fixPlugin('Apollo', ['code:createApolloClient'], 'fixApollo');
-
-      // Check isomorphic fetch is installed
-      if (!hasDependency('isomorphic-fetch')) {
-        consola.warn(
-          '`isomorphic-fetch` package is required to use Vue Apollo in SSR mode\nhttps://universal-vue.github.io/docs/guide/vue-cli-plugins.html#apollo\n',
-        );
-      }
-
-      // Check UVue plugin presence
-      let pluginPath = './src/plugins/apollo';
-      const files = await this.findFiles(['code:__APOLLO_STATE__']);
-
-      if (!files.length) {
-        // Copy file from vue cli plugin
-        await fs.copy(join(__dirname, '..', 'generator', 'templates', 'apollo'), api.resolve(''));
-        consola.success(`UVue Apollo plugin installed in src/plugins/apollo.js`);
-      } else {
-        pluginPath = files[0];
-      }
-
-      // Check UVue config
-      const requireEsm = require('esm')(module);
-
-      const configModule = requireEsm(api.resolve('uvue.config.js'));
-      const uvueConfig = configModule.default || configModule || {};
-
-      if (
-        uvueConfig.plugins &&
-        uvueConfig.plugins.findIndex(item => {
-          return item == pluginPath || item[0] == pluginPath;
-        }) < 0
-      ) {
-        consola.warn(
-          'Need to install UVue Apollo plugin in your uvue.config.js file\nhttps://universal-vue.github.io/docs/guide/vue-cli-plugins.html#apollo\n',
-        );
-      }
     }
+
+    // TypeScript
+    await this.fixTsConfig(api);
 
     // Main
     {
-      consola.start(`Try to fix main file...`);
+      consola.start(`Checking main file...`);
 
       if (fs.existsSync(mainPath + '.ts')) {
         mainPath += '.ts';
@@ -131,11 +95,10 @@ module.exports = class CodeFixer {
       }
 
       if (code !== result) {
-        consola.success(`Main file fixed!`);
         await fs.writeFile(mainPath, result);
-      } else {
-        consola.info(`Main file doesn't need to be fixed`);
       }
+
+      consola.success(`Main: ${path.relative(api.resolve('.'), mainPath)} OK`);
     }
   }
 
@@ -240,10 +203,30 @@ module.exports = class CodeFixer {
   fixRouter(code, findByImport = false) {
     if (!findByImport) {
       code = this.fixPlugin(code, 'Router');
-      return this.fixPlugin(code, 'VueRouter');
+      code = this.fixPlugin(code, 'VueRouter');
     } else {
-      return this.fixPlugin(code, 'vue-router', true);
+      code = this.fixPlugin(code, 'vue-router', true);
     }
+
+    // Force history mode
+    const doc = RQuery.parse(code);
+    const names = ['Router', 'VueRouter'];
+
+    const modeHistory = RQuery.parse('const obj = { mode: "history" };')
+      .findOne('{}')
+      .getProp('mode');
+
+    for (const name of names) {
+      const options = doc.findOne(`new#${name} {}`);
+      if (options) {
+        options.setProp('mode', modeHistory.node, 0);
+      }
+    }
+
+    const prettierOptions = this.resolveCodingStyle(code);
+    return RQuery.print(doc, {
+      prettierConfig: prettierOptions,
+    });
   }
 
   fixVuex(code, findByImport = false) {
@@ -531,9 +514,10 @@ module.exports = class CodeFixer {
     const exportDefault = doc.findOne('exportDefault funcArrow');
     const vueOptions = exportDefault.findOne('new#Vue {}');
 
-    const option = vueOptions.getProp(name).parent();
+    const prop = vueOptions.getProp(name);
+    if (prop) {
+      const option = prop.parent();
 
-    if (option) {
       // First check: prop value is function
       if (option.node.value.type === 'CallExpression') {
         return code;
@@ -661,30 +645,56 @@ module.exports = class CodeFixer {
     return code;
   }
 
-  static warningMessage() {
-    consola.warn(chalk.red('PLEASE READ THIS MESSAGE'));
-    // eslint-disable-next-line
-    console.log(`
-${chalk.yellow(`At installation, this plugin will try to fix your current project code to make it compatible
-with Vue SSR. If you install others Vue CLI plugin after UVue, you have to run "ssr:fix" command`)}
+  async fixMissingDependencies(api) {
+    consola.start('Checking missing dependencies...');
 
-${chalk.yellow('Basically, you need to keep in mind two things:')}
+    const hasDependency = name => {
+      const packageJson = require(api.resolve('package.json'));
+      return packageJson.dependencies[name] ? true : false;
+    };
 
-${chalk.yellow('1) Avoid stateful singletons:')}
-${chalk.blue(`https://ssr.vuejs.org/guide/structure.html#avoid-stateful-singletons`)}
-Command "ssr:fix" try to fix common plugins
+    const isYarn = () => {
+      return fs.existsSync(api.resolve('yarn.lock'));
+    };
 
-List of supported plugins here:
-${chalk.blue(`https://universal-vue.github.io/docs/guide/vue-cli-plugins.html`)}
+    // Missing Apollo deps
+    if (api.hasPlugin('apollo') && !hasDependency('isomorphic-fetch')) {
+      consola.info('Installing isomorphic-fetch for Apollo...');
 
-${chalk.yellow('2) Use a factory function to delcare your Vuex states:')}
-${chalk.blue(`export default {
-  state: () => ({
-    // Your variables here
-  }),
-  // mutations, actions, getters...
-}`)}
-Command "ssr:fix-vuex" try to fix them automatically
-`);
+      if (isYarn()) {
+        await execa('yarn', ['add', 'isomorphic-fetch'], {
+          cwd: this.basePath,
+          // stdio: 'inherit',
+        });
+      } else {
+        await execa('npm', ['install', '--save', 'isomorphic-fetch'], {
+          cwd: this.basePath,
+          // stdio: 'inherit',
+        });
+      }
+    }
+  }
+
+  async fixTsConfig(api) {
+    const filepath = api.resolve('tsconfig.json');
+
+    if (api.hasPlugin('typescript') && fs.existsSync(filepath)) {
+      consola.start('Checking tsconfig...');
+
+      try {
+        const tsConfig = JSON.parse((await fs.readFile(filepath, 'utf-8')) || '{}');
+        tsConfig.compilerOptions = tsConfig.compilerOptions || {};
+        tsConfig.compilerOptions.types = tsConfig.compilerOptions.types || [];
+
+        if (!tsConfig.compilerOptions.types.includes('@uvue/core')) {
+          tsConfig.compilerOptions.types.push('@uvue/core');
+          await fs.writeFile(filepath, JSON.stringify(tsConfig, null, '  '));
+        }
+
+        consola.success('Types OK');
+      } catch (err) {
+        consola.error('Unable to check or fix tsconfig.json');
+      }
+    }
   }
 };
