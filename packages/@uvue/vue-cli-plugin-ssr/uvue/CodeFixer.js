@@ -6,7 +6,6 @@ const prettier = require('prettier');
 const { RQuery, Recast } = require('@uvue/rquery');
 const consola = require('consola');
 const { merge } = require('lodash');
-const chalk = require('chalk');
 const execa = require('execa');
 const path = require('path');
 
