@@ -1,4 +1,4 @@
-import * as consola from 'consola';
+import consola from 'consola';
 import * as MFS from 'memory-fs';
 import * as path from 'path';
 import * as webpack from 'webpack';
