@@ -16,7 +16,7 @@ COPY --chown=node:node . /home/node/app
 
 RUN yarn ssr:build && \
   yarn --production --pure-lock && \
-  yarn add core-js && \
+  yarn add core-js@2 && \
   yarn cache clean
 
 ###
