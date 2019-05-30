@@ -4,7 +4,7 @@ require = require('esm')(module);
 
 const fs = require('fs-extra');
 const path = require('path');
-const stringify = require('javascript-stringify');
+const { stringify } = require('javascript-stringify');
 const CodeFixer = require('../uvue/CodeFixer');
 const chalk = require('chalk');
 
