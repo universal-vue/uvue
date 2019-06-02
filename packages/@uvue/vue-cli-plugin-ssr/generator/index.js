@@ -4,8 +4,9 @@ require = require('esm')(module);
 
 const fs = require('fs-extra');
 const path = require('path');
-const stringify = require('javascript-stringify');
+const { stringify } = require('javascript-stringify');
 const CodeFixer = require('../uvue/CodeFixer');
+const chalk = require('chalk');
 
 module.exports = (api, options) => {
   // Install router
@@ -122,9 +123,18 @@ module.exports = (api, options) => {
     const cf = new CodeFixer(path.join(api.generator.context, 'src'));
     await cf.run(api, mainPath);
 
-    setTimeout(() => {
-      CodeFixer.warningMessage();
-    }, 1000);
+    const { blue, underline, bold } = chalk;
+
+    api.exitLog(
+      `UVue installed, please read this before starting:\n${bold(
+        underline(
+          blue(
+            'https://universal-vue.github.io/docs/guide/post-install.html#post-installation-notes',
+          ),
+        ),
+      )}`,
+      'done',
+    );
   });
 
   api.extendPackage(extendPackage);

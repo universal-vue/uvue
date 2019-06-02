@@ -1,7 +1,7 @@
 import jsonEncode from 'fast-safe-stringify';
-import * as lruCache from 'lru-cache';
 import { merge } from 'lodash';
-import { BundleRenderer, BundleRendererOptions, createBundleRenderer } from 'vue-server-renderer';
+import * as LRUCache from 'lru-cache';
+import { BundleRenderer, createBundleRenderer } from 'vue-server-renderer';
 import { IRenderer, IRendererOptions, IRequestContext } from './interfaces';
 
 export class Renderer implements IRenderer {
@@ -19,7 +19,7 @@ export class Renderer implements IRenderer {
       bundle,
       merge(
         {
-          cache: lruCache({
+          cache: new LRUCache({
             max: 1000,
             maxAge: 1000 * 60 * 15,
           }),

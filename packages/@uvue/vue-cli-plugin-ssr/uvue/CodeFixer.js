@@ -6,7 +6,6 @@ const prettier = require('prettier');
 const { RQuery, Recast } = require('@uvue/rquery');
 const consola = require('consola');
 const { merge } = require('lodash');
-const chalk = require('chalk');
 const execa = require('execa');
 const path = require('path');
 
@@ -204,10 +203,30 @@ module.exports = class CodeFixer {
   fixRouter(code, findByImport = false) {
     if (!findByImport) {
       code = this.fixPlugin(code, 'Router');
-      return this.fixPlugin(code, 'VueRouter');
+      code = this.fixPlugin(code, 'VueRouter');
     } else {
-      return this.fixPlugin(code, 'vue-router', true);
+      code = this.fixPlugin(code, 'vue-router', true);
     }
+
+    // Force history mode
+    const doc = RQuery.parse(code);
+    const names = ['Router', 'VueRouter'];
+
+    const modeHistory = RQuery.parse('const obj = { mode: "history" };')
+      .findOne('{}')
+      .getProp('mode');
+
+    for (const name of names) {
+      const options = doc.findOne(`new#${name} {}`);
+      if (options) {
+        options.setProp('mode', modeHistory.node, 0);
+      }
+    }
+
+    const prettierOptions = this.resolveCodingStyle(code);
+    return RQuery.print(doc, {
+      prettierConfig: prettierOptions,
+    });
   }
 
   fixVuex(code, findByImport = false) {
@@ -645,12 +664,12 @@ module.exports = class CodeFixer {
       if (isYarn()) {
         await execa('yarn', ['add', 'isomorphic-fetch'], {
           cwd: this.basePath,
-          stdio: 'inherit',
+          // stdio: 'inherit',
         });
       } else {
         await execa('npm', ['install', '--save', 'isomorphic-fetch'], {
           cwd: this.basePath,
-          stdio: 'inherit',
+          // stdio: 'inherit',
         });
       }
     }
@@ -677,32 +696,5 @@ module.exports = class CodeFixer {
         consola.error('Unable to check or fix tsconfig.json');
       }
     }
-  }
-
-  static warningMessage() {
-    consola.warn(chalk.red('PLEASE READ THIS MESSAGE'));
-    // eslint-disable-next-line
-    console.log(`
-${chalk.yellow(`At installation, this plugin will try to fix your current project code to make it compatible
-with Vue SSR. If you install others Vue CLI plugin after UVue, you have to run "ssr:fix" command`)}
-
-${chalk.yellow('Basically, you need to keep in mind two things:')}
-
-${chalk.yellow('1) Avoid stateful singletons:')}
-${chalk.blue(`https://ssr.vuejs.org/guide/structure.html#avoid-stateful-singletons`)}
-Command "ssr:fix" try to fix common plugins
-
-List of supported plugins here:
-${chalk.blue(`https://universal-vue.github.io/docs/guide/vue-cli-plugins.html`)}
-
-${chalk.yellow('2) Use a factory function to delcare your Vuex states:')}
-${chalk.blue(`export default {
-  state: () => ({
-    // Your variables here
-  }),
-  // mutations, actions, getters...
-}`)}
-Command "ssr:fix-vuex" try to fix them automatically
-`);
   }
 };

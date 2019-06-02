@@ -1,5 +1,2 @@
 #!/usr/bin/env node
-
-// ESM modules
-require = require('esm')(module);
 require('./utils/cli');

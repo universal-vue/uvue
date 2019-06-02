@@ -17,9 +17,13 @@ module.exports = class StaticGenerate {
     this.api = api;
     this.options = options;
 
+    const { uvueDir, spaPaths, renderer, static: staticConfig } = api.uvue.getServerConfig();
+
     // Fake server to resolve renderer
     this.server = new Server({
       distPath: api.resolve(options.outputDir),
+      uvueDir,
+      renderer,
     });
 
     // Install plugins
@@ -30,17 +34,16 @@ module.exports = class StaticGenerate {
 
     // Generate config
     this.staticConfig = merge(
-      {},
       {
         scanRouter: true,
         params: null,
         paths: [],
       },
-      api.uvue.getServerConfig('static'),
+      staticConfig,
     );
 
     // Get SPA paths from config
-    this.spaPaths = api.uvue.getServerConfig('spaPaths') || [];
+    this.spaPaths = spaPaths || [];
   }
 
   /**
@@ -67,6 +70,9 @@ module.exports = class StaticGenerate {
     for (const path of paths) {
       await this.buildPage(path);
     }
+
+    // Remove uvue dir
+    await fs.remove(`${this.options.outputDir}/${this.api.uvue.getServerConfig('uvueDir')}`);
   }
 
   /**
@@ -155,10 +161,10 @@ module.exports = class StaticGenerate {
     for (const paramName in params) {
       const paramValues = params[paramName];
       paths.forEach(pagePath => {
-        const regexp = new RegExp(`/:${paramName}`);
+        const regexp = new RegExp(`/:${paramName}[?+*]?`);
         if (regexp.exec(pagePath)) {
           for (const value of paramValues) {
-            const finalPath = pagePath.replace(regexp, value ? `/${value}` : '');
+            const finalPath = pagePath.replace(regexp, `/${value}`);
             if (finalPath !== '') newPaths.push(finalPath);
           }
         } else {
