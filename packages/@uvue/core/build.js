@@ -1,11 +1,9 @@
 const rollup = require('rollup');
 const babel = require('rollup-plugin-babel');
-const minify = require('rollup-plugin-babel-minify');
-const sourcemaps = require('rollup-plugin-sourcemaps');
 
 const libs = [
   // Core
-  ['src/index.js', 'dist/index.js'],
+  ['src/lib/index.js', 'dist/index.js'],
   ['src/client.js', 'dist/client.js'],
   ['src/server.js', 'dist/server.js'],
   // Plugins
@@ -30,13 +28,9 @@ async function buildLib(from, to) {
   const bundle = await rollup.rollup({
     input: from,
     plugins: [
-      sourcemaps(),
       babel({
         runtimeHelpers: true,
-        sourceMaps: 'both',
-      }),
-      minify({
-        comments: false,
+        sourceMaps: true,
       }),
     ],
   });

@@ -8,3 +8,4 @@ import sanitizeComponent from './sanitizeComponent';
 export { UVue, getContext, initApp, onHotReload, routeResolve, sanitizeComponent };
 export * from './catchError';
 export * from './redirect';
+export default UVue;
