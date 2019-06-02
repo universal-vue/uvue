@@ -2,7 +2,7 @@
   <div class="page">
     <h1>Vuex</h1>
 
-    <h3 class="code">fetch()</h3>
+    <h3 class="code">asyncData()</h3>
     <test-case
       expected="fetch"
       :result="$store.state.vuexPlugin"
@@ -28,7 +28,7 @@ export default {
     };
   },
 
-  async fetch({ store }) {
+  async asyncData({ store }) {
     const value = await promiseData('fetch');
     store.commit('setVuexPlugin', value);
   },
