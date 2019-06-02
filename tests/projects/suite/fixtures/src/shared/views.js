@@ -112,6 +112,19 @@ const views = [
         ],
       },
       {
+        path: '/plugin-prefetch',
+        label: 'Prefetch',
+        testName: 'plugin-prefetch',
+        component: () => import('@/views/plugins/Prefetch.vue'),
+        children: [
+          {
+            path: '',
+            name: 'plugin-prefetch',
+            component: () => import('@/views/plugins/PrefetchNested.vue'),
+          },
+        ],
+      },
+      {
         path: '/plugin-middlewares',
         label: 'Middlewares',
         testName: 'plugin-middlewares',

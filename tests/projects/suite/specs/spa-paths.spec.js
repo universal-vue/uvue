@@ -9,6 +9,7 @@ import {
   middlewares,
   errorHandler,
   serverPrefetch,
+  prefetch,
 } from './tests';
 
 describe('SPA paths', () => {
@@ -25,6 +26,8 @@ describe('SPA paths', () => {
   vuex.client();
 
   asyncData.client();
+
+  prefetch.client();
 
   middlewares.client();
 
