@@ -1,14 +1,14 @@
-import fs from 'fs-extra';
-import path from 'path';
-import execa from 'execa';
-import vueCreate from '@vue/cli-test-utils/createTestProject';
-import deepMerge from 'deepmerge';
+const fs = require('fs-extra');
+const path = require('path');
+const execa = require('execa');
+const vueCreate = require('@vue/cli-test-utils/createTestProject');
+const deepMerge = require('deepmerge');
 
-const uvuePlugins = ['vuex', 'asyncData', 'errorHandler', 'middlewares'];
+const uvuePlugins = ['vuex', 'asyncData', 'errorHandler', 'middlewares', 'apollo'];
 const vuexOptions = ['fetch', 'onHttpRequest'];
 const serverPlugins = ['static', 'gzip', 'modernBuild', 'cookie'];
 
-export const uvueInvokePrompts = [
+const uvueInvokePrompts = [
   ...uvuePlugins.reduce((results, item) => {
     results.push('--uvuePlugins', item);
     return results;
@@ -25,10 +25,11 @@ export const uvueInvokePrompts = [
   'secret',
 ];
 
-export class TestManager {
+class TestManager {
   constructor(baseDir = process.cwd()) {
     this.baseDir = baseDir;
     this.baseProjectPath = path.join(this.baseDir, 'base');
+    this.minimalProjectPath = path.join(this.baseDir, 'minimal');
   }
 
   /**
@@ -70,6 +71,35 @@ export class TestManager {
   }
 
   /**
+   * Create minimal project
+   */
+  async initMinimal() {
+    // Clean base project
+    await fs.remove(this.minimalProjectPath);
+
+    // Base preset for tests
+    const preset = {
+      plugins: {
+        '@vue/cli-plugin-babel': {},
+      },
+    };
+
+    // Check tests path exists
+    await fs.ensureDir(this.baseDir);
+
+    // Vue create command
+    await vueCreate('minimal', preset, this.baseDir);
+
+    // Setup symlink
+    await this.updatePackage('minimal', {
+      devDependencies: {
+        '@uvue/vue-cli-plugin-ssr': 'link:../../@uvue/vue-cli-plugin-ssr',
+        '@uvue/devtools': 'link:../../@uvue/devtools',
+      },
+    });
+  }
+
+  /**
    * Simply override package.json
    */
   async updatePackage(name, data) {
@@ -86,14 +116,18 @@ export class TestManager {
   /**
    * Create a clone of base project
    */
-  async create(name) {
+  async create(name, minimal = false) {
     const projectPath = path.join(this.baseDir, name);
 
     // Clean old project
     await fs.remove(projectPath);
 
     // Clone base project
-    await fs.copy(this.baseProjectPath, projectPath);
+    if (!minimal) {
+      await fs.copy(this.baseProjectPath, projectPath);
+    } else {
+      await fs.copy(this.minimalProjectPath, projectPath);
+    }
 
     // Change package name
     await this.updatePackage(name, {
@@ -147,12 +181,15 @@ export class TestManager {
    */
   async installPlugins(name, installPath) {
     if (await fs.exists(path.join(__dirname, installPath))) {
-      const deps = require(installPath)(this);
-      if (deps.plugins) {
-        for (const pluginName in deps.plugins) {
-          await this.add(name, pluginName, deps.plugins[pluginName]);
+      const options = require(installPath)(this);
+
+      if (options.plugins) {
+        for (const pluginName in options.plugins) {
+          await this.add(name, pluginName, options.plugins[pluginName]);
         }
       }
+
+      return options;
     }
   }
 
@@ -176,3 +213,8 @@ export class TestManager {
     });
   }
 }
+
+module.exports = {
+  uvueInvokePrompts,
+  TestManager,
+};

@@ -1,6 +1,7 @@
 import jsonEncode from 'fast-safe-stringify';
-import * as lruCache from 'lru-cache';
-import { BundleRenderer, BundleRendererOptions, createBundleRenderer } from 'vue-server-renderer';
+import { merge } from 'lodash';
+import * as LRUCache from 'lru-cache';
+import { BundleRenderer, createBundleRenderer } from 'vue-server-renderer';
 import { IRenderer, IRendererOptions, IRequestContext } from './interfaces';
 
 export class Renderer implements IRenderer {
@@ -14,16 +15,19 @@ export class Renderer implements IRenderer {
     this.templates = options.templates;
     delete options.templates;
 
-    this.vue = createBundleRenderer(bundle, {
-      ...{
-        cache: lruCache({
-          max: 1000,
-          maxAge: 1000 * 60 * 15,
-        }),
-        runInNewContext: false,
-      },
-      ...((options as BundleRendererOptions) || {}),
-    });
+    this.vue = createBundleRenderer(
+      bundle,
+      merge(
+        {
+          cache: new LRUCache({
+            max: 1000,
+            maxAge: 1000 * 60 * 15,
+          }),
+          runInNewContext: false,
+        },
+        options || {},
+      ),
+    );
   }
 
   public render(context: IRequestContext): Promise<string> {

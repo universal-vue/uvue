@@ -4,13 +4,21 @@ require = require('esm')(module);
 
 const fs = require('fs-extra');
 const path = require('path');
-const stringify = require('javascript-stringify');
+const { stringify } = require('javascript-stringify');
 const CodeFixer = require('../uvue/CodeFixer');
+const chalk = require('chalk');
 
 module.exports = (api, options) => {
+  // Install router
+  if (!api.hasPlugin('router')) {
+    const routerGenerator = require('@vue/cli-service/generator/router');
+    routerGenerator(api, {
+      routerHistoryMode: true,
+    });
+  }
+
   const extendPackage = {
     dependencies: {
-      'vue-router': '^3.0.1',
       '@uvue/core': '^0.1.0-alpha',
       '@uvue/server': '^0.1.0-alpha',
       compression: '^1.7.3',
@@ -45,17 +53,6 @@ module.exports = (api, options) => {
     const uvueConfig = {
       plugins: [],
     };
-
-    // Apollo
-    if (api.hasPlugin('apollo')) {
-      api.render('./templates/apollo');
-
-      // Install isomorphic fetch
-      extendPackage.dependencies['isomorphic-fetch'] = '^2.2.1';
-
-      // Add UVue plugin to config
-      uvueConfig.plugins.push('@/plugins/apollo');
-    }
 
     if (options.uvuePlugins) {
       for (const name of options.uvuePlugins) {
@@ -126,9 +123,18 @@ module.exports = (api, options) => {
     const cf = new CodeFixer(path.join(api.generator.context, 'src'));
     await cf.run(api, mainPath);
 
-    setTimeout(() => {
-      CodeFixer.warningMessage();
-    }, 1000);
+    const { blue, underline, bold } = chalk;
+
+    api.exitLog(
+      `UVue installed, please read this before starting:\n${bold(
+        underline(
+          blue(
+            'https://universal-vue.github.io/docs/guide/post-install.html#post-installation-notes',
+          ),
+        ),
+      )}`,
+      'done',
+    );
   });
 
   api.extendPackage(extendPackage);
