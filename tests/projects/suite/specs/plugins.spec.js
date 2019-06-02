@@ -1,4 +1,4 @@
-import { vuex, asyncData, middlewares, errorHandler, serverPrefetch } from './tests';
+import { vuex, asyncData, middlewares, errorHandler } from './tests';
 
 describe('Core plugins', () => {
   vuex
@@ -21,9 +21,4 @@ describe('Core plugins', () => {
     .mount()
     .client()
     .method();
-
-  serverPrefetch
-    .server()
-    .mount()
-    .client();
 });
