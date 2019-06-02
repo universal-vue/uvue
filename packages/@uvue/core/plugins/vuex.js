@@ -1,11 +1,23 @@
 import Vue from 'vue';
 import { Store } from 'vuex';
+import sanitizeComponent from '../lib/sanitizeComponent';
 import onHotReload from '../lib/onHotReload';
 
 /**
  * Vuex plugin
  */
 export default {
+  /**
+   * Install with options
+   */
+  install(options) {
+    this.$options = {
+      fetch: false,
+      onHttpRequest: true,
+      ...options,
+    };
+  },
+
   /**
    * Get store from Vue options and inject it to context
    */
@@ -40,6 +52,13 @@ export default {
   },
 
   /**
+   * Call fetch() methods on pages components
+   */
+  async routeResolve(context) {
+    await this.resolveFetch(context);
+  },
+
+  /**
    * Call onHttpRequest action and send data to __DATA__
    */
   sendSSRData(context) {
@@ -51,11 +70,34 @@ export default {
     }
   },
 
+  async resolveFetch(context) {
+    const { routeComponents, store } = context;
+
+    if (store && this.$options.fetch) {
+      // Get pages components
+      if (routeComponents.length) {
+        await Promise.all(
+          routeComponents.map(c => {
+            if (!c) return;
+
+            const Component = sanitizeComponent(c);
+            // For each component lookup for fetch() method
+            if (Component.options.fetch) {
+              return Component.options.fetch(context);
+            }
+          }),
+        );
+      }
+    }
+  },
+
   async resolveOnHttpRequest(context, fromHMR = false) {
     const { store } = context;
 
-    if (process.server || !process.ssr || window.__SPA_ROUTE__ || fromHMR) {
-      await store.dispatch('onHttpRequest', context);
+    if (this.$options.onHttpRequest && store._actions.onHttpRequest) {
+      if (process.server || !process.ssr || window.__SPA_ROUTE__ || fromHMR) {
+        await store.dispatch('onHttpRequest', context);
+      }
     }
   },
 };
