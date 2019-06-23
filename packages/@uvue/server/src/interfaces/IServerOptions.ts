@@ -42,6 +42,7 @@ export interface IServerOptions {
   devServer?: {
     middleware?: any;
     hot?: any;
+    proxy?: any;
   };
 
   // Plugins to install

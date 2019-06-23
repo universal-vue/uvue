@@ -1,10 +1,13 @@
 import consola from 'consola';
+// @ts-ignore
 import * as MFS from 'memory-fs';
 import * as path from 'path';
 import * as webpack from 'webpack';
 import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import * as webpackHotMiddleware from 'webpack-hot-middleware';
+import * as httpProxy from 'http-proxy-middleware';
 import { IServer } from './interfaces';
+import { ExpressAdapter, ConnectAdapter, FastifyAdapter, KoaAdapter } from './adapters';
 
 export const setupDevMiddleware = async (
   app: IServer,
@@ -101,6 +104,20 @@ export const setupDevMiddleware = async (
         ...(app.options.devServer.hot || {}),
       }),
     );
+  }
+
+  if (app.options.devServer.proxy) {
+    const { proxy } = app.options.devServer;
+
+    if (app instanceof ConnectAdapter || app instanceof ExpressAdapter) {
+      for (const path in proxy) {
+        app.use(path, httpProxy(proxy[path]));
+      }
+    } else if (app instanceof FastifyAdapter) {
+      // TODO
+    } else if (app instanceof KoaAdapter) {
+      // TODO
+    }
   }
 
   // When a compilation finished
