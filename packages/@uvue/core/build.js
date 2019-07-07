@@ -12,6 +12,7 @@ const libs = [
   ['src/plugins/errorHandler.js', 'plugins/errorHandler.js'],
   ['src/plugins/middlewares.js', 'plugins/middlewares.js'],
   ['src/plugins/vuex.js', 'plugins/vuex.js'],
+  ['src/plugins/prefetch/index.js', 'plugins/prefetch.js'],
 ];
 
 (async () => {

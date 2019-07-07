@@ -335,6 +335,33 @@ export const asyncData = {
 };
 
 /**
+ * Vuex
+ */
+export const prefetch = {
+  server() {
+    it('Prefetch plugin is working (server)', async () => {
+      const $ = await gotoSSR('/plugin-prefetch');
+      pageRunTestsSSR($);
+    });
+    return this;
+  },
+  mount() {
+    it('Prefetch plugin is working (mount)', async () => {
+      await isMounted();
+      await pageRunTests();
+    });
+    return this;
+  },
+  client() {
+    it('Prefetch plugin is working (client)', async () => {
+      await gotoSPA('plugin-prefetch');
+      await pageRunTests();
+    });
+    return this;
+  },
+};
+
+/**
  * Middlewares
  */
 export const middlewares = {
@@ -423,6 +450,33 @@ export const errorHandler = {
 
       expect(data.error).toBeNull();
       expect(data.statusCode).toBeNull();
+    });
+    return this;
+  },
+};
+
+/**
+ * serverPrefetch
+ */
+export const serverPrefetch = {
+  server() {
+    it('serverPrefetch is working (server)', async () => {
+      const $ = await gotoSSR('/server-prefetch');
+      pageRunTestsSSR($);
+    });
+    return this;
+  },
+  mount() {
+    it('serverPrefetch is working (mount)', async () => {
+      await isMounted();
+      await pageRunTests();
+    });
+    return this;
+  },
+  client() {
+    it('serverPrefetch is working (client)', async () => {
+      await gotoSPA('server-prefetch');
+      await pageRunTests();
     });
     return this;
   },

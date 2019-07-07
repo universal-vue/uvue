@@ -9,6 +9,8 @@ import {
   asyncData,
   middlewares,
   errorHandler,
+  serverPrefetch,
+  prefetch,
 } from '../tests';
 
 describe('(SPA) Core', () => {
@@ -29,6 +31,10 @@ describe('(SPA) Core plugins', () => {
   vuex.client();
 
   asyncData.client();
+
+  serverPrefetch.client();
+
+  prefetch.client();
 
   middlewares.client();
 

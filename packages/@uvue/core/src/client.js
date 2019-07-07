@@ -12,6 +12,8 @@ if (module.hot) {
 (async () => {
   // Create context object
   const context = {
+    isClient: true,
+    isServer: false,
     url: window.location.pathname + window.location.search,
   };
 

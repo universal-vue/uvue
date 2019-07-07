@@ -25,6 +25,19 @@ const views = [
         ],
       },
       {
+        path: '/server-prefetch',
+        label: 'Server prefetch',
+        testName: 'server-prefetch',
+        component: () => import('@/views/ServerPrefetch.vue'),
+        children: [
+          {
+            path: '',
+            name: 'server-prefetch',
+            component: () => import('@/views/ServerPrefetchNested.vue'),
+          },
+        ],
+      },
+      {
         path: '/server-route-error',
         name: 'server-route-error',
         label: 'Route error',
@@ -95,6 +108,19 @@ const views = [
             path: '',
             name: 'plugin-async-data',
             component: () => import('@/views/plugins/AsyncDataNested.vue'),
+          },
+        ],
+      },
+      {
+        path: '/plugin-prefetch',
+        label: 'Prefetch',
+        testName: 'plugin-prefetch',
+        component: () => import('@/views/plugins/Prefetch.vue'),
+        children: [
+          {
+            path: '',
+            name: 'plugin-prefetch',
+            component: () => import('@/views/plugins/PrefetchNested.vue'),
           },
         ],
       },

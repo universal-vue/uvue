@@ -13,14 +13,10 @@ export default {
         middlewares: [global],
       },
     ],
-    [
-      '@uvue/core/plugins/vuex',
-      {
-        fetch: true,
-      },
-    ],
+    ['@uvue/core/plugins/vuex', { fetch: true }],
     '@uvue/core/plugins/asyncData',
     '@uvue/core/plugins/errorHandler',
+    '@uvue/core/plugins/prefetch',
   ],
   css: {
     normal: 'inline',

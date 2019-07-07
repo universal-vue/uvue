@@ -1,8 +1,8 @@
 <template>
   <div>
     <test-case
-      :expected="value"
-      :result="result"
+      :expected="expect"
+      :result="value"
     />
   </div>
 </template>
@@ -12,18 +12,15 @@ import { promiseData } from '@/shared/utils';
 
 export default {
   props: {
-    value: {
-      type: String,
-      default: '',
-    },
+    expect: null,
   },
 
   data: () => ({
-    result: '',
+    value: null,
   }),
 
   async prefetch() {
-    this.result = await promiseData(this.value);
+    this.value = await promiseData(this.expect);
   },
 };
 </script>
