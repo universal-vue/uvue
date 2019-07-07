@@ -3,9 +3,9 @@ const babel = require('rollup-plugin-babel');
 
 const libs = [
   // Core
-  ['src/lib/index.js', 'dist/index.js'],
-  ['src/client.js', 'dist/client.js'],
-  ['src/server.js', 'dist/server.js'],
+  ['src/lib/index.js', 'lib/index.js'],
+  ['src/client.js', 'lib/client.js'],
+  ['src/server.js', 'lib/server.js'],
   // Plugins
   ['src/plugins/apollo.js', 'plugins/apollo.js'],
   ['src/plugins/asyncData.js', 'plugins/asyncData.js'],

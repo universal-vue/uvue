@@ -2,7 +2,7 @@
   "name": "@uvue/core",
   "version": "0.1.0-alpha.9",
   "description": "UVue core package",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "types": "index.d.ts",
   "repository": "https://github.com/universal-vue/uvue",
   "bugs": {

@@ -27,7 +27,7 @@ module.exports = class {
       chainConfig.entryPoints
         .get('app')
         .clear()
-        .add(require.resolve('@uvue/core/dist/client'));
+        .add(require.resolve('@uvue/core/lib/client'));
 
       // Add DefinePlugin
       chainConfig.plugin('uvue-defines').use(webpack.DefinePlugin, [defineOptions()]);

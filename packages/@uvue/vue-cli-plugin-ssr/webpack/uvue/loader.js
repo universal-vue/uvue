@@ -13,7 +13,7 @@ module.exports = async function(content, map, meta) {
   const { uvue } = this.query.api;
   const mainPath = uvue.getMainPath();
 
-  if (mm.isMatch(this.resourcePath, '**/@uvue/core/dist/(client|server).js')) {
+  if (mm.isMatch(this.resourcePath, '**/@uvue/core/lib/(client|server).js')) {
     // Get absolute path to generated main.js
     const dirPath = path.join(uvue.getProjectPath(), 'node_modules', '.uvue');
     let mainPath = path.join(dirPath, 'main.js');
