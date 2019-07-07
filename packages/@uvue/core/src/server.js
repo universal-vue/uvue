@@ -12,6 +12,8 @@ export default async ssr => {
     url: ssr.url,
     req: ssr.req,
     res: ssr.res,
+    isClient: false,
+    isServer: true,
   };
 
   // Call app main

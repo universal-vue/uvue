@@ -2,8 +2,8 @@
  * This code come from Nuxt.JS: https://nuxtjs.org/
  */
 import Vue from 'vue';
-import { hasPrefetch } from './';
-import onHotReload from '../../lib/onHotReload';
+import { hasPrefetch } from './utils';
+import { onHotReload } from '@uvue/core';
 
 const isSsrHydration = vm =>
   vm.$vnode && vm.$vnode.elm && vm.$vnode.elm.dataset && vm.$vnode.elm.dataset.ssrKey;

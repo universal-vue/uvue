@@ -1,7 +1,7 @@
 /**
  * This code come from Nuxt.JS: https://nuxtjs.org/
  */
-import { hasPrefetch } from './';
+import { hasPrefetch } from './utils';
 
 function getDataDiff(o1, o2) {
   return Object.keys(o2).reduce((diff, key) => {
