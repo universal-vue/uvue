@@ -13,7 +13,9 @@ export default {
   //   cert: fs.readFileSync('ssl.cert'),
   // },
 
-  logger: false,
+  logger: {
+    level: 'silent',
+  },
 
   plugins: [
     ['@uvue/server/plugins/cookie', { secret: 'secret' }],
