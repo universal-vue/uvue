@@ -32,6 +32,8 @@ describe('(SPA) Core plugins', () => {
 
   asyncData.client();
 
+  serverPrefetch.client();
+
   prefetch.client();
 
   middlewares.client();

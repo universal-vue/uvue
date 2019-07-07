@@ -27,6 +27,8 @@ describe('SPA paths', () => {
 
   asyncData.client();
 
+  serverPrefetch.client();
+
   prefetch.client();
 
   middlewares.client();

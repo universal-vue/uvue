@@ -11,6 +11,11 @@ describe('Core plugins', () => {
     .mount()
     .client();
 
+  serverPrefetch
+    .server()
+    .mount()
+    .client();
+
   prefetch
     .server()
     .mount()
