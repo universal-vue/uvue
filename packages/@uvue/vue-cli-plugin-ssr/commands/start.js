@@ -55,7 +55,7 @@ module.exports = (api, options) => {
       /**
        * Create server
        */
-      const { adapter, https, spaPaths, renderer, logger } = serverConfig;
+      const { adapter, adapterArgs, https, spaPaths, renderer, logger } = serverConfig;
       const { Server } = require('@uvue/server');
       Server.loadEnv(args.mode || process.env.NODE_ENV);
 
@@ -63,6 +63,7 @@ module.exports = (api, options) => {
         distPath: api.resolve(options.outputDir),
         uvueDir,
         adapter,
+        adapterArgs,
         logger,
 
         // Set server configuration

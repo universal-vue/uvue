@@ -1,5 +1,3 @@
-import * as http from 'http';
-import * as https from 'https';
 import * as killable from 'killable';
 import { IRequestContext } from '../interfaces';
 import { ConnectAdapter } from './ConnectAdapter';
@@ -10,31 +8,22 @@ export class FastifyAdapter extends ConnectAdapter {
    */
   protected app: any;
 
-  public createApp(adatperArgs: any[] = []) {
-    const serverFactory = (handler, opts) => {
-      const httpsOptions = this.options.https || { key: null, cert: null };
-      if (httpsOptions.key && httpsOptions.cert) {
-        this.server = https.createServer(httpsOptions, (req, res) => {
-          handler(req, res);
-        });
-      } else {
-        this.server = http.createServer((req, res) => {
-          handler(req, res);
-        });
-      }
-      killable(this.server);
-      return this.server;
-    };
+  public createApp(adapterArgs: any[] = []) {
+    const httpsOptions = this.options.https || { key: null, cert: null };
+    let [fastifyOptions] = adapterArgs;
 
-    if (adatperArgs[0]) {
-      adatperArgs[0].serverFactory = serverFactory;
-    } else {
-      adatperArgs[0] = {
-        serverFactory,
-      };
+    if (!fastifyOptions) {
+      fastifyOptions = {};
     }
 
-    this.app = require('fastify')(...adatperArgs);
+    if (!fastifyOptions.https && httpsOptions.key && httpsOptions.cert) {
+      fastifyOptions.https = httpsOptions;
+    }
+
+    this.app = require('fastify')(fastifyOptions);
+
+    killable(this.app.server);
+    this.server = this.app.server;
   }
 
   /**

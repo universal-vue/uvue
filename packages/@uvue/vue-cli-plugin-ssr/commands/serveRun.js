@@ -51,6 +51,7 @@ async function startServer({ api, host, port, args }) {
 
   const {
     adapter,
+    adapterArgs,
     uvueDir,
     https,
     devServer,
@@ -77,6 +78,7 @@ async function startServer({ api, host, port, args }) {
   // Create server
   const server = new Server({
     adapter,
+    adapterArgs,
     logger,
     uvueDir,
 
