@@ -2,14 +2,10 @@
   <div>
     <h2>Nested route</h2>
 
-    <h3>Native</h3>
     <test-case
       expected="nested-native"
       :result="foo"
     />
-
-    <h3>Mixin</h3>
-    <PrefetchComponent value="nested-mixin"/>
 
   </div>
 </template>

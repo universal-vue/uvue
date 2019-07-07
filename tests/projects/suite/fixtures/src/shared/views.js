@@ -25,6 +25,19 @@ const views = [
         ],
       },
       {
+        path: '/server-prefetch',
+        label: 'Server prefetch',
+        testName: 'server-prefetch',
+        component: () => import('@/views/ServerPrefetch.vue'),
+        children: [
+          {
+            path: '',
+            name: 'server-prefetch',
+            component: () => import('@/views/ServerPrefetchNested.vue'),
+          },
+        ],
+      },
+      {
         path: '/server-route-error',
         name: 'server-route-error',
         label: 'Route error',

@@ -2,15 +2,9 @@
   <div class="page">
     <h1><span class="code">serverPrefetch()</span></h1>
 
-    <h3>Native</h3>
     <test-case
       expected="native"
       :result="foo"
-    />
-
-    <h3>Mixin</h3>
-    <PrefetchComponent
-      value="mixin"
     />
 
     <router-view/>
