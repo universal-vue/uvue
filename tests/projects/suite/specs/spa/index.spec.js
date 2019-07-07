@@ -37,6 +37,4 @@ describe('(SPA) Core plugins', () => {
   middlewares.client();
 
   errorHandler.client().method();
-
-  serverPrefetch.client();
 });

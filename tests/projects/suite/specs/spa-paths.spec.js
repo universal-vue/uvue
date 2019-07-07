@@ -32,6 +32,4 @@ describe('SPA paths', () => {
   middlewares.client();
 
   errorHandler.client().method();
-
-  serverPrefetch.client();
 });

@@ -26,9 +26,4 @@ describe('Core plugins', () => {
     .mount()
     .client()
     .method();
-
-  serverPrefetch
-    .server()
-    .mount()
-    .client();
 });

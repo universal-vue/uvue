@@ -1,6 +1,6 @@
-import UVue from '@uvue/core';
+import UVue from './UVue';
 import getContext from './getContext';
-import { doRedirect, RedirectError } from '@uvue/core/lib/redirect';
+import { doRedirect, RedirectError } from './redirect';
 
 /**
  * Function called when a route is being resolved

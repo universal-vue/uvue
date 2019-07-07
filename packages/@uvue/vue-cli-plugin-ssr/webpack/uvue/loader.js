@@ -13,7 +13,7 @@ module.exports = async function(content, map, meta) {
   const { uvue } = this.query.api;
   const mainPath = uvue.getMainPath();
 
-  if (mm.isMatch(this.resourcePath, '**/@uvue/core/(client|server).js')) {
+  if (mm.isMatch(this.resourcePath, '**/@uvue/core/lib/(client|server).js')) {
     // Get absolute path to generated main.js
     const dirPath = path.join(uvue.getProjectPath(), 'node_modules', '.uvue');
     let mainPath = path.join(dirPath, 'main.js');
@@ -22,7 +22,7 @@ module.exports = async function(content, map, meta) {
     }
 
     // Replace import main path to generated file by Webpack plugin
-    content = content.replace('./main', mainPath);
+    content = content.replace('@uvue/core/main', mainPath);
   } else if (this.resourcePath === `${mainPath}.js` || this.resourcePath === `${mainPath}.ts`) {
     // Replace new Vue by a simple return object
 
@@ -45,7 +45,7 @@ module.exports = async function(content, map, meta) {
 
       newVue.replace(initFunc);
 
-      content = `import initApp from '@uvue/core/lib/initApp';\n${doc.print()}`;
+      content = `import { initApp } from '@uvue/core';\n${doc.print()}`;
     }
   }
 
