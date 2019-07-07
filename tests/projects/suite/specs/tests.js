@@ -454,3 +454,30 @@ export const errorHandler = {
     return this;
   },
 };
+
+/**
+ * serverPrefetch
+ */
+export const serverPrefetch = {
+  server() {
+    it('serverPrefetch is working (server)', async () => {
+      const $ = await gotoSSR('/server-prefetch');
+      pageRunTestsSSR($);
+    });
+    return this;
+  },
+  mount() {
+    it('serverPrefetch is working (mount)', async () => {
+      await isMounted();
+      await pageRunTests();
+    });
+    return this;
+  },
+  client() {
+    it('serverPrefetch is working (client)', async () => {
+      await gotoSPA('server-prefetch');
+      await pageRunTests();
+    });
+    return this;
+  },
+};
