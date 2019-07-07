@@ -71,15 +71,13 @@ export class Server implements IServer {
     // Default options
     this.options = merge(
       {
+        adapter: ConnectAdapter,
         distPath: resolve('dist'),
         uvueDir: 'uvue',
       },
       this.options,
     );
 
-    if (!this.options.adapter) {
-      this.options.adapter = ConnectAdapter;
-    }
     this.adapter = new this.options.adapter(this, this.options.httpOptions);
     this.adapter.createApp(this.options.adapterArgs);
 
