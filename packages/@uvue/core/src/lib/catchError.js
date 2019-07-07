@@ -1,4 +1,4 @@
-import UVue from '@uvue/core';
+import UVue from './UVue';
 import { RedirectError, doRedirect } from './redirect';
 
 export class VueError extends Error {

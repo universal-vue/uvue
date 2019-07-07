@@ -8,7 +8,6 @@ import {
   asyncData,
   middlewares,
   errorHandler,
-  serverPrefetch,
 } from './tests';
 
 describe('SPA paths', () => {
@@ -29,6 +28,4 @@ describe('SPA paths', () => {
   middlewares.client();
 
   errorHandler.client().method();
-
-  serverPrefetch.client();
 });

@@ -1,8 +1,3 @@
-import Prefetch from './lib/Prefetch';
-import PrefetchMixin from './lib/PrefetchMixin';
-
-export { Prefetch, PrefetchMixin };
-
 /**
  * Main UVue object to install and call plugins
  */
