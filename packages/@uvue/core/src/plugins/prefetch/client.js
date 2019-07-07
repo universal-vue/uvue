@@ -18,7 +18,7 @@ export default {
     if (hasPrefetch(this) && isSsrHydration(this)) {
       // Hydrate component
       this._hydrated = true;
-      this.$isLoading = false;
+      this.$isFetching = false;
       this._lastFetchAt = Date.now();
 
       this._ssrKey = +this.$vnode.elm.dataset.ssrKey;
