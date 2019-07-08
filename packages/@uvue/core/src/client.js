@@ -1,8 +1,5 @@
-import { createApp } from './main';
-import UVue from '@uvue/core';
-import routeResolve from './lib/routeResolve';
-import onHotReload from './lib/onHotReload';
-import { catchErrorAsync, catchError } from './lib/catchError';
+import { createApp } from '@uvue/core/main';
+import UVue, { routeResolve, onHotReload, catchErrorAsync, catchError } from '@uvue/core';
 
 // Enable HMR
 if (module.hot) {
@@ -15,6 +12,8 @@ if (module.hot) {
 (async () => {
   // Create context object
   const context = {
+    isClient: true,
+    isServer: false,
     url: window.location.pathname + window.location.search,
   };
 

@@ -335,6 +335,33 @@ export const asyncData = {
 };
 
 /**
+ * Vuex
+ */
+export const prefetch = {
+  server() {
+    it('Prefetch plugin is working (server)', async () => {
+      const $ = await gotoSSR('/plugin-prefetch');
+      pageRunTestsSSR($);
+    });
+    return this;
+  },
+  mount() {
+    it('Prefetch plugin is working (mount)', async () => {
+      await isMounted();
+      await pageRunTests();
+    });
+    return this;
+  },
+  client() {
+    it('Prefetch plugin is working (client)', async () => {
+      await gotoSPA('plugin-prefetch');
+      await pageRunTests();
+    });
+    return this;
+  },
+};
+
+/**
  * Middlewares
  */
 export const middlewares = {

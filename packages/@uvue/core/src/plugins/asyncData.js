@@ -1,6 +1,4 @@
-// import Vue from 'vue';
-import getContext from '../lib/getContext';
-import sanitizeComponent from '../lib/sanitizeComponent';
+import { getContext, sanitizeComponent } from '@uvue/core';
 
 const noopData = () => ({});
 

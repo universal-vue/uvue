@@ -80,6 +80,7 @@ export class Server implements IServer {
     if (!this.options.adapter) {
       this.options.adapter = ConnectAdapter;
     }
+
     this.adapter = new this.options.adapter(this, this.options.httpOptions);
     this.adapter.createApp(this.options.adapterArgs);
 

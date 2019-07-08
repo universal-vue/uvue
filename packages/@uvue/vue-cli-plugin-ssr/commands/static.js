@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const consola = require('consola');
 const formatStats = require('@vue/cli-service/lib/commands/build/formatStats');
 const StaticGenerate = require('../uvue/StaticGenerate');
+const execa = require('execa');
 
 const modifyConfig = (config, fn) => {
   if (Array.isArray(config)) {
@@ -24,7 +25,7 @@ module.exports = (api, options) => {
         '--modern': `build two bundle: legacy and modern`,
       },
     },
-    async function(args) {
+    async function(args, ...rawArgs) {
       if (!args.noBuild) {
         // Remove previous build
         await fs.remove(api.resolve(options.outputDir));
@@ -33,14 +34,26 @@ module.exports = (api, options) => {
           await build(api, options, args);
         } else {
           process.env.VUE_CLI_MODERN_MODE = true;
-          delete process.env.VUE_CLI_MODERN_BUILD;
 
-          consola.start('Building legacy bundle...');
+          if (!process.env.VUE_CLI_MODERN_BUILD) {
+            consola.info('Building legacy bundle...');
+          } else {
+            consola.info('Building modern bundle...');
+          }
+
           await build(api, options, args);
 
-          consola.start('Building modern bundle...');
-          process.env.VUE_CLI_MODERN_BUILD = true;
-          await build(api, options, args);
+          if (!process.env.VUE_CLI_MODERN_BUILD) {
+            // Sub process for modern mode
+            const cliBin = api.resolve('node_modules/.bin/vue-cli-service');
+            await execa(cliBin, ['ssr:build', ...rawArgs], {
+              stdio: 'inherit',
+              env: {
+                VUE_CLI_MODERN_MODE: true,
+                VUE_CLI_MODERN_BUILD: true,
+              },
+            });
+          }
 
           delete process.env.VUE_CLI_MODERN_MODE;
           delete process.env.VUE_CLI_MODERN_BUILD;

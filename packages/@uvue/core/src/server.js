@@ -1,7 +1,5 @@
-import { createApp } from './main';
-import UVue from '@uvue/core';
-import routeResolve from './lib/routeResolve';
-import { catchErrorAsync, catchError } from './lib/catchError';
+import { createApp } from '@uvue/core/main';
+import UVue, { routeResolve, catchErrorAsync, catchError } from '@uvue/core';
 
 /**
  * Vue start
@@ -14,6 +12,8 @@ export default async ssr => {
     url: ssr.url,
     req: ssr.req,
     res: ssr.res,
+    isClient: false,
+    isServer: true,
   };
 
   // Call app main
