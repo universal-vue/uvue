@@ -1,13 +1,9 @@
 import * as fs from 'fs';
-import { ExpressAdapter } from '@uvue/server';
-import { FastifyAdapter } from '@uvue/server';
-import { KoaAdapter } from '@uvue/server';
+import { ExpressAdapter, FastifyAdapter, KoaAdapter } from '@uvue/server';
 
 export default {
   // adapter: FastifyAdapter,
-  // adapterArgs: [{
-  //   http2: true,
-  // }],
+  // http2: true
   // https: {
   //   key: fs.readFileSync('ssl.key'),
   //   cert: fs.readFileSync('ssl.cert'),
