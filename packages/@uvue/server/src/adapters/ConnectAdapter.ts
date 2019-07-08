@@ -4,6 +4,7 @@ import * as https from 'https';
 import * as http2 from 'http2';
 import * as killable from 'killable';
 import * as micromatch from 'micromatch';
+import * as httpProxy from 'http-proxy-middleware';
 import { IAdapter, IAdapterOptions, IRequestContext, IResponseContext } from '../interfaces';
 import { Server } from '../Server';
 
@@ -146,6 +147,14 @@ export class ConnectAdapter implements IAdapter {
       context,
       response,
     };
+  }
+
+  /**
+   * proxy() to define a proxy
+   */
+  public proxy(path: string, options: any, middleware?: any) {
+    const proxy = middleware || httpProxy;
+    this.use(path, proxy(options));
   }
 
   public setupRenderer() {

@@ -1,5 +1,4 @@
-import { ExpressAdapter } from '@uvue/server';
-import { FastifyAdapter } from '@uvue/server';
+import { ExpressAdapter, ConnectAdapter, FastifyAdapter } from '@uvue/server';
 
 export default {
   install(server, options) {
@@ -13,6 +12,14 @@ export default {
     } else if (adapter instanceof FastifyAdapter) {
       app.get('/adapter-route', (request, reply) => {
         reply.send({ adapter: 'fastify' });
+      });
+    } else if (adapter instanceof ConnectAdapter) {
+      app.use((req, res, next) => {
+        if (req.url.startsWith('/adapter-route')) {
+          res.end('connect');
+        } else {
+          next();
+        }
       });
     }
   },

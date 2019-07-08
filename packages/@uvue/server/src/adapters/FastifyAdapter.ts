@@ -69,6 +69,15 @@ export class FastifyAdapter extends ConnectAdapter {
     });
   }
 
+  public proxy(path: string, options: any, middleware?: any) {
+    const proxy = middleware || require('fastify-http-proxy');
+
+    this.app.register(proxy, {
+      ...options,
+      prefix: path,
+    });
+  }
+
   protected createRequestContext(request: any, reply: any): IRequestContext {
     const context = super.createRequestContext(request.req, reply.res);
 

@@ -43,6 +43,7 @@ export interface IServerOptions {
     middleware?: any;
     hot?: any;
     proxy?: any;
+    proxyMiddleware?: any;
   };
 
   // Plugins to install

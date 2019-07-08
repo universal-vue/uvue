@@ -17,6 +17,15 @@ export default {
     level: 'silent',
   },
 
+  devServer: {
+    proxy: {
+      '/proxy': {
+        target: 'http://localhost:8080/adapter-route', // Connect, Express, Koa
+        // upstream: 'http://localhost:8080/adapter-route', // Fastify
+      },
+    },
+  },
+
   plugins: [
     ['@uvue/server/plugins/cookie', { secret: 'secret' }],
     ['@uvue/server/plugins/gzip'],

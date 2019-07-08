@@ -18,6 +18,9 @@ export interface IServer {
   use(middleware: HandleFunction);
   use(path: string, middleware: HandleFunction);
 
+  // Add proxy middleware
+  proxy(path: string, options: any, middleware?: any);
+
   // Plugins system
   addPlugin(plugin: any, options?: any);
   invoke(name: string, ...args: any[]): any;

@@ -51,6 +51,11 @@ export class KoaAdapter extends ConnectAdapter {
     return super.renderMiddleware(req, res, { ctx });
   }
 
+  public proxy(path: string, options: any, middleware?: any) {
+    const proxy = middleware || require('koa-proxies');
+    this.use(path, proxy(options));
+  }
+
   protected createRequestContext(
     req: http.IncomingMessage,
     res: http.ServerResponse,

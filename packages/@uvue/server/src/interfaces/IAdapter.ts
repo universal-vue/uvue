@@ -19,6 +19,9 @@ export interface IAdapter {
   setupRenderer(): void;
   renderMiddleware(req: http.IncomingMessage, res: http.ServerResponse): Promise<any>;
 
+  // Proxy utility
+  proxy(path: string, options: any, middleware?: any): void;
+
   // Getters
   getApp(): any;
   getHttpServer(): http.Server | https.Server | http2.Http2Server;

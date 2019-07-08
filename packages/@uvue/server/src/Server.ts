@@ -84,6 +84,13 @@ export class Server implements IServer {
     this.adapter = new this.options.adapter(this, this.options.httpOptions);
     this.adapter.createApp(this.options.adapterArgs);
 
+    if (options.devServer.proxy) {
+      const { proxy, proxyMiddleware } = options.devServer;
+      for (const path in proxy) {
+        this.proxy(path, proxy[path], proxyMiddleware);
+      }
+    }
+
     this.logger = pino(
       merge(
         {
@@ -118,6 +125,13 @@ export class Server implements IServer {
       this.adapter.use(args[0]);
     }
     return this;
+  }
+
+  /**
+   * Add proxy middlware
+   */
+  public proxy(path: string, options: any, middleware?: any) {
+    this.adapter.proxy(path, options, middleware);
   }
 
   /**
@@ -162,6 +176,7 @@ export class Server implements IServer {
     // Setup
     if (this.options.webpack) {
       // Development mode
+      // @ts-ignore
       readyPromise = setupDevMiddleware(this, (serverBundle, { clientManifest, templates }) => {
         this.renderer = this.createRenderer({ serverBundle, clientManifest, templates });
       });
