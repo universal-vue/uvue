@@ -9,15 +9,26 @@ export class FastifyAdapter extends ConnectAdapter {
   protected app: any;
 
   public createApp(adapterArgs: any[] = []) {
-    const httpsOptions = this.options.https || { key: null, cert: null };
+    let httpsOptions = this.options.https || { key: null, cert: null };
     let [fastifyOptions] = adapterArgs;
 
     if (!fastifyOptions) {
       fastifyOptions = {};
+    } else {
+      if (fastifyOptions.https) {
+        httpsOptions = fastifyOptions.https;
+
+        if (fastifyOptions.http2) {
+          this.options.http2 = fastifyOptions.http2;
+        }
+      }
     }
 
     if (!fastifyOptions.https && httpsOptions.key && httpsOptions.cert) {
       fastifyOptions.https = httpsOptions;
+      if (!fastifyOptions.http2 && this.options.http2) {
+        fastifyOptions.http2 = this.options.http2;
+      }
     }
 
     this.app = require('fastify')(fastifyOptions);

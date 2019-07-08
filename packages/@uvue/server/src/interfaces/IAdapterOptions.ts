@@ -8,4 +8,5 @@ export interface IAdapterOptions {
     key: string;
     cert: string;
   };
+  http2?: boolean;
 }

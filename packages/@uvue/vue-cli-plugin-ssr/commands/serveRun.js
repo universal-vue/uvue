@@ -54,6 +54,7 @@ async function startServer({ api, host, port, args }) {
     adapterArgs,
     uvueDir,
     https,
+    http2,
     devServer,
     spaPaths,
     renderer,
@@ -93,6 +94,7 @@ async function startServer({ api, host, port, args }) {
       host,
       port,
       https,
+      http2,
     },
 
     // Dev server options

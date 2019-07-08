@@ -8,6 +8,7 @@ module.exports = () => ({
   uvueDir: 'uvue',
   adapter: null,
   adapterArgs: [],
+  http2: false,
   https: {
     cert: null,
     key: null,
