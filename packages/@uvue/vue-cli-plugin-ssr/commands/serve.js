@@ -1,6 +1,7 @@
 const nodemon = require('nodemon');
 const consola = require('consola');
 const fs = require('fs-extra');
+const ApiUtil = require('../ApiUtil');
 
 const defaults = {
   host: 'localhost',
@@ -20,7 +21,7 @@ module.exports = (api, options) => {
       },
     },
     async function() {
-      const { watch, watchIgnore } = api.uvue.getServerConfig();
+      const { watch, watchIgnore } = new ApiUtil(api).getServerConfig();
       const vueCliPath = require.resolve('@vue/cli-service/bin/vue-cli-service.js');
 
       // Remove dist dir

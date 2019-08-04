@@ -1,9 +1,11 @@
 // const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const VueSSRClientPlugin = require('./plugins/VueSSRClientPlugin');
 const ModernModePlugin = require('./plugins/ModernModePlugin');
+const ApiUtil = require('../ApiUtil');
+
 
 module.exports = (api, chainConfig) => {
-  const uvueDir = api.uvue.getServerConfig('uvueDir');
+  const uvueDir = new ApiUtil(api).getServerConfig('uvueDir');
 
   // Change main entry
   chainConfig.entryPoints

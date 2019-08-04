@@ -3,6 +3,8 @@ const webpack = require('webpack');
 const consola = require('consola');
 const formatStats = require('@vue/cli-service/lib/commands/build/formatStats');
 const execa = require('execa');
+const ApiUtil = require('../ApiUtil');
+
 
 const modifyConfig = (config, fn) => {
   if (Array.isArray(config)) {
@@ -63,7 +65,7 @@ module.exports = (api, options) => {
 
 function build(api, options, args) {
   return new Promise(async (resolve, reject) => {
-    const uvueDir = api.uvue.getServerConfig('uvueDir');
+    const uvueDir = new ApiUtil(api).getServerConfig('uvueDir');
 
     const isLegacyBuild = !process.env.VUE_CLI_MODERN_BUILD && process.env.VUE_CLI_MODERN_MODE;
     const isModernBuild = process.env.VUE_CLI_MODERN_MODE && process.env.VUE_CLI_MODERN_BUILD;

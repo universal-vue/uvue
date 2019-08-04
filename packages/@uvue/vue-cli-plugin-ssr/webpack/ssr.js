@@ -3,6 +3,8 @@ const WebpackBar = require('webpackbar');
 const cssConfig = require('./css');
 const defineOptions = require('./defineOptions');
 const merge = require('lodash/merge');
+const ApiUtil = require('../ApiUtil');
+
 
 module.exports = (api, options = {}) => {
   const opts = Object.assign({ client: true, ssr: true }, options);
@@ -11,11 +13,11 @@ module.exports = (api, options = {}) => {
   // Get base config from SPA
   const chainConfig = api.resolveChainableWebpackConfig();
 
-  const uvueDir = api.uvue.getServerConfig('uvueDir');
+  const uvueDir = new ApiUtil(api).getServerConfig('uvueDir');
 
   // Change template for HTMLWebpackPlugin
   let htmlOptions = {
-    template: api.resolve(api.uvue.getConfig('paths.template')),
+    template: api.resolve(new ApiUtil(api).getConfig('paths.template')),
     filename: `${uvueDir}/ssr.html`,
   };
 
@@ -73,7 +75,7 @@ module.exports = (api, options = {}) => {
     const messages = [];
 
     if (host && port) {
-      const httpsConfig = api.uvue.getServerConfig('https');
+      const httpsConfig = new ApiUtil(api).getServerConfig('https');
       messages.push(
         `Server is running: ${
           httpsConfig.key && httpsConfig.cert ? 'https' : 'http'

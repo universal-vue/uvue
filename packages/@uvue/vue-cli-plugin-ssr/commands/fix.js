@@ -1,5 +1,7 @@
 const path = require('path');
 const CodeFixer = require('../uvue/CodeFixer');
+const ApiUtil = require('../ApiUtil');
+
 
 module.exports = api => {
   api.registerCommand(
@@ -9,8 +11,8 @@ module.exports = api => {
       usage: 'vue-cli-service ssr:fix',
     },
     async function() {
-      const cf = new CodeFixer(path.join(api.uvue.getProjectPath(), 'src'));
-      await cf.run(api, api.uvue.getMainPath());
+      const cf = new CodeFixer(path.join(new ApiUtil(api).getProjectPath(), 'src'));
+      await cf.run(api, new ApiUtil(api).getMainPath());
     },
   );
 };

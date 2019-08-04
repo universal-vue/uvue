@@ -5,6 +5,8 @@ const httpMocks = require('node-mocks-http');
 const { dirname } = require('path');
 const { merge } = require('lodash');
 const { Server } = require('@uvue/server');
+const ApiUtil = require('../ApiUtil');
+
 
 const whiteBox = str => chalk.bgWhite(chalk.black(` ${str} `));
 const greenBox = str => chalk.bgGreen(chalk.black(` ${str} `));
@@ -17,7 +19,7 @@ module.exports = class StaticGenerate {
     this.api = api;
     this.options = options;
 
-    const { uvueDir, spaPaths, renderer, static: staticConfig } = api.uvue.getServerConfig();
+    const { uvueDir, spaPaths, renderer, static: staticConfig } = new ApiUtil(api).getServerConfig();
 
     // Fake server to resolve renderer
     this.server = new Server({
@@ -27,7 +29,7 @@ module.exports = class StaticGenerate {
     });
 
     // Install plugins
-    api.uvue.installServerPlugins(this.server);
+    new ApiUtil(api).installServerPlugins(this.server);
 
     // Renderer
     this.renderer = this.server.createRenderer(this.server.getBuiltFiles());
@@ -72,7 +74,7 @@ module.exports = class StaticGenerate {
     }
 
     // Remove uvue dir
-    await fs.remove(`${this.options.outputDir}/${this.api.uvue.getServerConfig('uvueDir')}`);
+    await fs.remove(`${this.options.outputDir}/${new ApiUtil(this.api).getServerConfig('uvueDir')}`);
   }
 
   /**

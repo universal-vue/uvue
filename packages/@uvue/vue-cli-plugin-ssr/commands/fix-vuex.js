@@ -13,15 +13,15 @@ module.exports = api => {
       usage: 'vue-cli-service ssr:fix-vuex',
     },
     async function() {
-      const cf = new CodeFixer(path.join(api.uvue.getProjectPath(), 'src'));
+      const cf = new CodeFixer(path.join(new ApiUtil(api).getProjectPath(), 'src'));
 
       consola.info('Trying to find Vuex states files...');
       const files = await cf.findVuexStateFiles();
 
       for (const file in files) {
-        let cleanPath = file.replace(api.uvue.getProjectPath() + '/', '');
+        let cleanPath = file.replace(new ApiUtil(api).getProjectPath() + '/', '');
         if (os.platform() === 'win32') {
-          cleanPath = file.replace(api.uvue.getProjectPath().replace(/\//g, '\\') + '\\', '');
+          cleanPath = file.replace(new ApiUtil(api).getProjectPath().replace(/\//g, '\\') + '\\', '');
         }
 
         if (file.type === 'complex') {

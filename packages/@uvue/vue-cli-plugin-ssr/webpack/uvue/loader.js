@@ -2,6 +2,8 @@ const path = require('path');
 const os = require('os');
 const mm = require('micromatch');
 const { RQuery } = require('@uvue/rquery');
+const ApiUtil = require('../../ApiUtil');
+
 
 /**
  * Simple loader to find and replace code before final compilation
@@ -11,11 +13,11 @@ module.exports = async function(content, map, meta) {
 
   // Get UVue API
   const { uvue } = this.query.api;
-  const mainPath = uvue.getMainPath();
+  const mainPath = new ApiUtil(this.query.api).getMainPath();
 
   if (mm.isMatch(this.resourcePath, '**/@uvue/core/(client|server).js')) {
     // Get absolute path to generated main.js
-    const dirPath = path.join(uvue.getProjectPath(), 'node_modules', '.uvue');
+    const dirPath = path.join(new ApiUtil(this.query.api).getProjectPath(), 'node_modules', '.uvue');
     let mainPath = path.join(dirPath, 'main.js');
     if (os.platform() === 'win32') {
       mainPath = mainPath.replace(/\\/g, '/');

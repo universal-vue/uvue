@@ -1,10 +1,11 @@
 const SSRMiniCssExtractPlugin = require('./plugins/SSRMiniCssExtractPlugin');
+const ApiUtil = require('../ApiUtil');
 
 module.exports = (api, chainConfig, isClient) => {
   // CSS rules names
   const preProcessors = ['css', 'postcss', 'scss', 'sass', 'less', 'stylus'];
 
-  const cssConfig = api.uvue.getConfig('css');
+  const cssConfig = new ApiUtil(api).getConfig('css');
   const normalTypes = ['normal', 'normal-modules'];
   const vueTypes = ['vue', 'vue-module'];
 

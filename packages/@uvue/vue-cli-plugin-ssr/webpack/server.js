@@ -1,8 +1,10 @@
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const nodeExternals = require('webpack-node-externals');
+const ApiUtil = require('../ApiUtil');
+
 
 module.exports = (api, chainConfig) => {
-  const { uvueDir, externalsWhitelist } = api.uvue.getServerConfig();
+  const { uvueDir, externalsWhitelist } = new ApiUtil(api).getServerConfig();
 
   // Change entry point
   chainConfig.entryPoints

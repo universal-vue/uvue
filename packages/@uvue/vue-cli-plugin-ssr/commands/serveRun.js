@@ -1,4 +1,5 @@
 const { IpcMessenger } = require('@vue/cli-shared-utils');
+const ApiUtil = require('../ApiUtil');
 
 const defaults = {
   host: 'localhost',
@@ -57,7 +58,7 @@ async function startServer({ api, host, port, args }) {
     spaPaths,
     renderer,
     logger,
-  } = api.uvue.getServerConfig();
+  } = new ApiUtil(api).getServerConfig();
 
   const serverConfig = getWebpackConfig(api, { serve: true, client: false, host, port });
   const clientConfig = getWebpackConfig(api, { serve: true, client: true, host, port });
@@ -102,7 +103,7 @@ async function startServer({ api, host, port, args }) {
   });
 
   // Install plugins
-  api.uvue.installServerPlugins(server);
+  new ApiUtil(api).installServerPlugins(server);
 
   // Start server
   await server.start();

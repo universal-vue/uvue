@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const os = require('os');
+const ApiUtil = require('../../ApiUtil');
 
 /**
  * Simple webpack plugin to generate main.js with imports
@@ -33,7 +34,7 @@ module.exports = class UVuePlugin {
     });
 
     const callPluginsHooks = async (type, compilation) => {
-      const plugins = this.uvue.getServerConfig('plugins');
+      const plugins = new ApiUtil(this.api).getServerConfig('plugins');
       for (const plugin of plugins) {
         const [src, options] = plugin;
         let m = require(src);
@@ -60,10 +61,10 @@ module.exports = class UVuePlugin {
    */
   async writeMain() {
     // Get absolute path for generated main.js
-    const dirPath = path.join(this.uvue.getProjectPath(), 'node_modules', '.uvue');
+    const dirPath = path.join(new ApiUtil(this.api).getProjectPath(), 'node_modules', '.uvue');
     const mainPath = path.join(dirPath, 'main.js');
 
-    let importMainPath = this.uvue.getMainPath();
+    let importMainPath = new ApiUtil(this.api).getMainPath();
     if (os.platform() === 'win32') {
       importMainPath = importMainPath.replace(/\\/g, '/');
     }
@@ -91,7 +92,7 @@ module.exports = class UVuePlugin {
     let result = '';
 
     // Handle imports defined in uvue config
-    const { normal, noSSR } = this.uvue.getConfig('imports').reduce(
+    const { normal, noSSR } = new ApiUtil(this.api).getConfig('imports').reduce(
       (result, item) => {
         if (item.ssr === false) result.noSSR.push(item.src);
         else result.normal.push(item.src);
@@ -109,12 +110,12 @@ module.exports = class UVuePlugin {
   buildPlugins() {
     let result = '';
 
-    let configPath = path.join(this.uvue.getProjectPath(), 'uvue.config');
+    let configPath = path.join(new ApiUtil(this.api).getProjectPath(), 'uvue.config');
     if (os.platform() === 'win32') {
       configPath = configPath.replace(/\\/g, '/');
     }
 
-    if (this.uvue.getConfig('plugins')) {
+    if (new ApiUtil(this.api).getConfig('plugins')) {
       result = `
 import UVue from '@uvue/core';
 import uvueConfig from '${configPath}';
@@ -127,7 +128,7 @@ for (const index in plugins) {
 }
       `;
 
-      const plugins = this.uvue.getConfig('plugins');
+      const plugins = new ApiUtil(this.api).getConfig('plugins');
       for (const index in plugins) {
         let plugin = plugins[index];
 

@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const consola = require('consola');
 const { join } = require('path');
+const ApiUtil = require('../ApiUtil');
 
 const defaults = {
   host: '0.0.0.0',
@@ -23,7 +24,7 @@ module.exports = (api, options) => {
       },
     },
     async function(args) {
-      const serverConfig = api.uvue.getServerConfig();
+      const serverConfig = new ApiUtil(api).getServerConfig();
       const { uvueDir } = serverConfig;
 
       /**
@@ -78,7 +79,7 @@ module.exports = (api, options) => {
       });
 
       // Install plugins
-      api.uvue.installServerPlugins(server);
+      new ApiUtil(api).installServerPlugins(server);
 
       /**
        * Start server
