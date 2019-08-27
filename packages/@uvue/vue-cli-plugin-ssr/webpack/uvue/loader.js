@@ -9,13 +9,11 @@ const { RQuery } = require('@uvue/rquery');
 module.exports = async function(content, map, meta) {
   const callback = this.async();
 
-  // Get UVue API
-  const { uvue } = this.query.api;
-  const mainPath = uvue.getMainPath();
+  const { mainPath, projectPath } = this.query;
 
   if (mm.isMatch(this.resourcePath, '**/@uvue/core/lib/(client|server).js')) {
     // Get absolute path to generated main.js
-    const dirPath = path.join(uvue.getProjectPath(), 'node_modules', '.uvue');
+    const dirPath = path.join(projectPath, 'node_modules', '.uvue');
     let mainPath = path.join(dirPath, 'main.js');
     if (os.platform() === 'win32') {
       mainPath = mainPath.replace(/\\/g, '/');

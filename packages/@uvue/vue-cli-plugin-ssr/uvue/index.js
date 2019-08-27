@@ -40,7 +40,8 @@ module.exports = class {
         .use('uvue-loader')
         .loader('@uvue/vue-cli-plugin-ssr/webpack/uvue/loader.js')
         .options({
-          api,
+          projectPath: api.uvue.getProjectPath(),
+          mainPath: api.uvue.getMainPath(),
         });
     });
 
