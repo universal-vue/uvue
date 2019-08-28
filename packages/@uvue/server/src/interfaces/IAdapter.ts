@@ -1,7 +1,7 @@
 import { HandleFunction } from 'connect';
 import http from 'http';
-import https from 'https';
 import http2 from 'http2';
+import https from 'https';
 
 export interface IAdapter {
   // Create framework instance and HTTP server

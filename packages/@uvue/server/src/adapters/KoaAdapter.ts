@@ -1,6 +1,6 @@
 import * as http from 'http';
-import * as https from 'https';
 import * as http2 from 'http2';
+import * as https from 'https';
 import { IRequestContext } from '../interfaces';
 import { ConnectAdapter } from './ConnectAdapter';
 
