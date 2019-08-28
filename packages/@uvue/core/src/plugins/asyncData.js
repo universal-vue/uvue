@@ -59,7 +59,7 @@ const applyAsyncData = (Component, asyncData) => {
  */
 const findAsyncDataComponents = (parent, components = []) => {
   for (const child of parent.$children) {
-    if (child.$vnode.data.routerView) {
+    if (child.$vnode && child.$vnode.data.routerView) {
       components.push(child);
     }
     if (child.$children.length) {
