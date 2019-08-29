@@ -45,6 +45,11 @@ module.exports = class {
         });
     });
 
+    // Force entry overridden by typescript plugin
+    api.configureWebpack(config => {
+      config.entry.app = [require.resolve('@uvue/core/lib/client')];
+    });
+
     // Core package need to be transpiled
     api.service.projectOptions.transpileDependencies.push(
       /\.uvue(\\|\/)main\.js/,
