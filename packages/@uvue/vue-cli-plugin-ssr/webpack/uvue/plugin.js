@@ -12,8 +12,12 @@ module.exports = class UVuePlugin {
    * Need Vue CLI API
    */
   constructor({ api }) {
-    this.api = api;
     this.uvue = api.uvue;
+    this.mainPath = this.uvue.getMainPath();
+    this.projectPath = this.uvue.getProjectPath();
+    this.imports = this.uvue.getConfig('imports');
+    this.plugins = this.uvue.getConfig('plugins');
+    this.serverPlugins = this.uvue.getServerConfig('plugins');
   }
 
   /**
@@ -21,6 +25,8 @@ module.exports = class UVuePlugin {
    */
   apply(compiler) {
     this.compiler = compiler;
+
+    this.entryPath = compiler.options.entry.app[compiler.options.entry.app.length - 1];
 
     // Build mode
     compiler.hooks.run.tapPromise('UVuePlugin', async () => {
@@ -33,8 +39,7 @@ module.exports = class UVuePlugin {
     });
 
     const callPluginsHooks = async (type, compilation) => {
-      const plugins = this.uvue.getServerConfig('plugins');
-      for (const plugin of plugins) {
+      for (const plugin of this.serverPlugins) {
         const [src, options] = plugin;
         let m = require(src);
         m = m.default || m;
@@ -60,10 +65,10 @@ module.exports = class UVuePlugin {
    */
   async writeMain() {
     // Get absolute path for generated main.js
-    const dirPath = path.join(this.uvue.getProjectPath(), 'node_modules', '.uvue');
-    const mainPath = path.join(dirPath, 'main.js');
+    const dirPath = path.join(this.projectPath, 'node_modules', '.uvue');
+    const uvueMainPath = path.join(dirPath, 'main.js');
 
-    let importMainPath = this.uvue.getMainPath();
+    let importMainPath = this.mainPath;
     if (os.platform() === 'win32') {
       importMainPath = importMainPath.replace(/\\/g, '/');
     }
@@ -76,22 +81,25 @@ module.exports = class UVuePlugin {
     code += this.buildImports();
     code += this.buildPlugins();
 
+    // Copy entry file
+    await fs.copyFile(path.resolve(this.entryPath), path.join(dirPath, 'project-main.js'));
+
     // If file exists and content not updated
-    if ((await fs.exists(mainPath)) && (await fs.readFile(mainPath, 'utf-8')) == code) {
+    if ((await fs.exists(uvueMainPath)) && (await fs.readFile(uvueMainPath, 'utf-8')) == code) {
       // Stop generation of file
       return;
     }
 
     // Write file
     await fs.ensureDir(dirPath);
-    await fs.writeFile(mainPath, code);
+    await fs.writeFile(uvueMainPath, code);
   }
 
   buildImports() {
     let result = '';
 
     // Handle imports defined in uvue config
-    const { normal, noSSR } = this.uvue.getConfig('imports').reduce(
+    const { normal, noSSR } = this.imports.reduce(
       (result, item) => {
         if (item.ssr === false) result.noSSR.push(item.src);
         else result.normal.push(item.src);
@@ -109,12 +117,12 @@ module.exports = class UVuePlugin {
   buildPlugins() {
     let result = '';
 
-    let configPath = path.join(this.uvue.getProjectPath(), 'uvue.config');
+    let configPath = path.join(this.projectPath, 'uvue.config');
     if (os.platform() === 'win32') {
       configPath = configPath.replace(/\\/g, '/');
     }
 
-    if (this.uvue.getConfig('plugins')) {
+    if (this.plugins) {
       result = `
 import UVue from '@uvue/core';
 import uvueConfig from '${configPath}';
@@ -127,9 +135,8 @@ for (const index in plugins) {
 }
       `;
 
-      const plugins = this.uvue.getConfig('plugins');
-      for (const index in plugins) {
-        let plugin = plugins[index];
+      for (const index in this.plugins) {
+        let plugin = this.plugins[index];
 
         if (typeof plugin === 'string') {
           plugin = [plugin, {}];
