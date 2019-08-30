@@ -82,5 +82,8 @@ module.exports = (api, chainConfig) => {
     }
   }
 
+  // Force entry path
+  config.entry.app = [require.resolve('@uvue/core/lib/server')];
+
   return config;
 };

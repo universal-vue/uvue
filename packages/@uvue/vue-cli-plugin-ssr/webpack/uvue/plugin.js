@@ -26,8 +26,6 @@ module.exports = class UVuePlugin {
   apply(compiler) {
     this.compiler = compiler;
 
-    this.entryPath = compiler.options.entry.app[compiler.options.entry.app.length - 1];
-
     // Build mode
     compiler.hooks.run.tapPromise('UVuePlugin', async () => {
       await this.writeMain();
@@ -80,9 +78,6 @@ module.exports = class UVuePlugin {
     code += `import createApp from '${importMainPath}';\nexport { createApp };\n`;
     code += this.buildImports();
     code += this.buildPlugins();
-
-    // Copy entry file
-    await fs.copyFile(path.resolve(this.entryPath), path.join(dirPath, 'project-main.js'));
 
     // If file exists and content not updated
     if ((await fs.exists(uvueMainPath)) && (await fs.readFile(uvueMainPath, 'utf-8')) == code) {
