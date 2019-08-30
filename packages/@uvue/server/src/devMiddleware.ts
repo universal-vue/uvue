@@ -1,4 +1,3 @@
-import consola from 'consola';
 import * as MFS from 'memory-fs';
 import * as path from 'path';
 import * as webpack from 'webpack';
@@ -131,9 +130,9 @@ export const setupDevMiddleware = async (
     stats = stats.toJson();
 
     // tslint:disable-next-line
-    stats.errors.forEach(err => consola.error(err));
+    stats.errors.forEach(err => console.error(err));
     // tslint:disable-next-line
-    stats.warnings.forEach(err => consola.warn(err));
+    stats.warnings.forEach(err => console.warn(err));
 
     handleCompilation();
   });

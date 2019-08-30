@@ -1,5 +1,4 @@
 import { KoaAdapter } from '@uvue/server';
-import consola from 'consola';
 import merge from 'lodash/merge';
 
 export default {
@@ -14,7 +13,7 @@ export default {
     );
 
     if (!secret) {
-      consola.warn('No secret defined for your cookies!');
+      console.warn('No secret defined for your cookies!');
     }
 
     const adapter = server.getAdapter();
