@@ -28,6 +28,14 @@ const libs = [
 async function buildLib(from, to) {
   const bundle = await rollup.rollup({
     input: from,
+    external: [
+      'vue',
+      '@uvue/core',
+      '@uvue/core/main',
+      'isomorphic-fetch',
+      'vue-apollo/ssr',
+      'vuex',
+    ],
     plugins: [
       babel({
         runtimeHelpers: true,
