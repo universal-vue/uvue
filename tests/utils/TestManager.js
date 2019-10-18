@@ -143,6 +143,8 @@ class TestManager {
   async add(name, plugin = '@uvue/vue-cli-plugin-ssr', invokePrompts = []) {
     const projectPath = path.join(this.baseDir, name);
 
+    await fs.writeFile(path.join(projectPath, 'yarn.lock'), '');
+
     // Vue invoke command
     await execa(require.resolve('@vue/cli/bin/vue'), ['add', plugin, ...invokePrompts], {
       cwd: projectPath,
@@ -155,6 +157,8 @@ class TestManager {
    */
   async invoke(name, plugin = '@uvue/vue-cli-plugin-ssr', invokePrompts = []) {
     const projectPath = path.join(this.baseDir, name);
+
+    await fs.writeFile(path.join(projectPath, 'yarn.lock'), '');
 
     // Vue invoke command
     await execa(require.resolve('@vue/cli/bin/vue'), ['invoke', plugin, ...invokePrompts], {
