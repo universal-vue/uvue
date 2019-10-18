@@ -30,6 +30,8 @@ class TestManager {
     this.baseDir = baseDir;
     this.baseProjectPath = path.join(this.baseDir, 'base');
     this.minimalProjectPath = path.join(this.baseDir, 'minimal');
+
+    process.env.VUE_CLI_SKIP_DIRTY_GIT_PROMPT = true;
   }
 
   /**
@@ -53,7 +55,7 @@ class TestManager {
     await fs.ensureDir(this.baseDir);
 
     // Vue create command
-    await vueCreate('base', preset, this.baseDir);
+    await vueCreate('base', preset, this.baseDir, false);
 
     // Add some dependencies
     await execa('yarn', ['add', 'vue-meta'], {
@@ -88,7 +90,7 @@ class TestManager {
     await fs.ensureDir(this.baseDir);
 
     // Vue create command
-    await vueCreate('minimal', preset, this.baseDir);
+    await vueCreate('minimal', preset, this.baseDir, false);
 
     // Setup symlink
     await this.updatePackage('minimal', {
