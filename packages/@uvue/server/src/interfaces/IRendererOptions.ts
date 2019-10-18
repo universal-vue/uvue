@@ -10,6 +10,7 @@ export interface IRendererOptions {
   };
   shouldPreload?: (file: string, type: string) => boolean;
   shouldPrefetch?: (file: string, type: string) => boolean;
+  runInNewContext?: 'once' | boolean;
 
   // For page renderer
   templates: {
