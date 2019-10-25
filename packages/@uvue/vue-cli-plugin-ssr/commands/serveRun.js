@@ -50,7 +50,7 @@ async function startServer({ api, host, port, args }) {
   } = api.uvue.getServerConfig();
 
   const serverConfig = getWebpackConfig(api, { serve: true, client: false, host, port });
-  const clientConfig = getWebpackConfig(api, { serve: true, client: true, host, port });
+  const clientConfig = getWebpackConfig(api, { serve: true, client: true, host, port, hmr: true });
 
   // Create server
   const server = new Server({

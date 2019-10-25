@@ -25,7 +25,7 @@ module.exports = (api, options) => {
       connect: '^3.6.6',
       'cookie-parser': '^1.4.3',
       'serve-static': '^1.13.2',
-      'core-js': '^2.5.7',
+      'core-js': '^3.3.2',
     },
     scripts: {
       'ssr:serve': 'vue-cli-service ssr:serve',
@@ -107,21 +107,9 @@ module.exports = (api, options) => {
     );
   }
 
+  // When this plugin is invoked
   api.onCreateComplete(async () => {
-    const configPath = api.resolve('uvue.config.js');
-
-    let config = { path: { main: './src/main' } };
-    if (fs.existsSync(configPath)) {
-      config = require(api.resolve('uvue.config.js'));
-      if (!config.paths) {
-        config.paths = {};
-      }
-    }
-
-    const mainPath = config.paths.main || './src/main';
-
-    const cf = new CodeFixer(path.join(api.generator.context, 'src'));
-    await cf.run(api, mainPath);
+    await execCodeFixer(api);
 
     const { blue, underline, bold } = chalk;
 
@@ -137,5 +125,30 @@ module.exports = (api, options) => {
     );
   });
 
+  // When another plugin is invoked
+  // Not working ?
+  // api.afterAnyInvoke(async () => {
+  //   await execCodeFixer(api, {
+  //     silent: true,
+  //   });
+  // });
+
   api.extendPackage(extendPackage);
 };
+
+async function execCodeFixer(api, options = {}) {
+  const configPath = api.resolve('uvue.config.js');
+
+  let config = { path: { main: './src/main' } };
+  if (fs.existsSync(configPath)) {
+    config = require(api.resolve('uvue.config.js'));
+    if (!config.paths) {
+      config.paths = {};
+    }
+  }
+
+  const mainPath = config.paths.main || './src/main';
+
+  const cf = new CodeFixer(path.join(api.generator.context, 'src'), options);
+  await cf.run(api, mainPath);
+}

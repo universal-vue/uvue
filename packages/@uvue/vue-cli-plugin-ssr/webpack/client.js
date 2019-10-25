@@ -2,7 +2,7 @@
 const VueSSRClientPlugin = require('./plugins/VueSSRClientPlugin');
 const ModernModePlugin = require('./plugins/ModernModePlugin');
 
-module.exports = (api, chainConfig) => {
+module.exports = (api, chainConfig, { hmr }) => {
   const uvueDir = api.uvue.getServerConfig('uvueDir');
 
   // Change main entry
@@ -43,6 +43,16 @@ module.exports = (api, chainConfig) => {
       filename: clientManifestFilename,
     },
   ]);
+
+  if (hmr) {
+    chainConfig.devtool('cheap-module-eval-source-map');
+
+    chainConfig.plugin('hmr').use(require('webpack/lib/HotModuleReplacementPlugin'));
+
+    // https://github.com/webpack/webpack/issues/6642
+    // https://github.com/vuejs/vue-cli/issues/3539
+    chainConfig.output.globalObject(`(typeof self !== 'undefined' ? self : this)`);
+  }
 
   return api.resolveWebpackConfig(chainConfig);
 };
