@@ -43,6 +43,12 @@ const views = [
         label: 'Route error',
         component: () => import('@/views/ServerRouteError.vue'),
       },
+      {
+        path: '/dev',
+        name: 'dev',
+        label: 'Dev',
+        component: () => import('@/views/Dev.vue'),
+      },
     ],
   },
   {
