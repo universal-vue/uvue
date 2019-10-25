@@ -25,15 +25,12 @@ export default {
 
   async serverPrefetch() {
     if (hasPrefetch(this) && this._fetchOnServer) {
-      const ssrData = this.$context.ssr.data;
-      if (!ssrData.prefetch) ssrData.prefetch = [];
-
       const data = Object.assign({}, this.$data);
 
       await this.$options.prefetch.call(this);
 
       // Define and ssrKey for hydration
-      this._ssrKey = ssrData.prefetch.length;
+      this._ssrKey = this.$context.prefetch.length;
 
       // Add data-ssr-key on parent element of Component
       if (!this.$vnode.data.attrs) {
@@ -42,7 +39,7 @@ export default {
       this.$vnode.data.attrs['data-ssr-key'] = this._ssrKey;
 
       // Add to SSR data
-      ssrData.prefetch.push(getDataDiff(data, this.$data));
+      this.$context.prefetch.push(getDataDiff(data, this.$data));
 
       await new Promise(resolve => this.$nextTick(resolve));
     }

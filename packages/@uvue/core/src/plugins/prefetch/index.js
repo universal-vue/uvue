@@ -3,7 +3,10 @@ import ServerMixin from './server';
 import ClientMixin from './client';
 
 export default {
-  beforeCreate({ isClient }) {
+  beforeCreate(context) {
+    const { isClient } = context;
+    context.prefetch = [];
+
     if (!Vue.__UVUE_PREFETCH_MIXIN__) {
       if (isClient) {
         Vue.mixin(ClientMixin);
@@ -12,5 +15,9 @@ export default {
       }
       Vue.__UVUE_PREFETCH_MIXIN__ = true;
     }
+  },
+
+  sendSSRData({ prefetch, ssr }) {
+    ssr.data.prefetch = prefetch;
   },
 };
