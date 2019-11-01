@@ -54,7 +54,7 @@ process.env.NODE_ENV = 'production';
     options = require(resolve(argv.config)).default;
   }
 
-  const { adapter, uvueDir, https, spaPaths, renderer, logger } = options;
+  const { adapter, adapterArgs, uvueDir, https, spaPaths, renderer, logger } = options;
 
   /**
    * Create server
@@ -68,6 +68,7 @@ process.env.NODE_ENV = 'production';
 
     // Adapter to use
     adapter,
+    adapterArgs,
 
     // Logger options
     logger,

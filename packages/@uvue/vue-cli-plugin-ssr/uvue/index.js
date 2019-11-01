@@ -27,7 +27,7 @@ module.exports = class {
       chainConfig.entryPoints
         .get('app')
         .clear()
-        .add(require.resolve('@uvue/core/client'));
+        .add(require.resolve('@uvue/core/lib/client'));
 
       // Add DefinePlugin
       chainConfig.plugin('uvue-defines').use(webpack.DefinePlugin, [defineOptions()]);
@@ -40,13 +40,18 @@ module.exports = class {
         .use('uvue-loader')
         .loader('@uvue/vue-cli-plugin-ssr/webpack/uvue/loader.js')
         .options({
-          api,
+          projectPath: this.getProjectPath(),
+          mainPath: this.getMainPath(),
         });
+    });
+
+    // Force entry overridden by typescript plugin
+    api.configureWebpack(config => {
+      config.entry.app = [require.resolve('@uvue/core/lib/client')];
     });
 
     // Core package need to be transpiled
     api.service.projectOptions.transpileDependencies.push(
-      /@uvue(\\|\/)core/,
       /\.uvue(\\|\/)main\.js/,
       // PWA: register service worker module
       /register-service-worker/,

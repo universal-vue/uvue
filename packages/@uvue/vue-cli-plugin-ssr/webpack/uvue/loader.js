@@ -9,20 +9,18 @@ const { RQuery } = require('@uvue/rquery');
 module.exports = async function(content, map, meta) {
   const callback = this.async();
 
-  // Get UVue API
-  const { uvue } = this.query.api;
-  const mainPath = uvue.getMainPath();
+  const { mainPath, projectPath } = this.query;
 
-  if (mm.isMatch(this.resourcePath, '**/@uvue/core/(client|server).js')) {
+  if (mm.isMatch(this.resourcePath, '**/@uvue/core/lib/(client|server).js')) {
     // Get absolute path to generated main.js
-    const dirPath = path.join(uvue.getProjectPath(), 'node_modules', '.uvue');
+    const dirPath = path.join(projectPath, 'node_modules', '.uvue');
     let mainPath = path.join(dirPath, 'main.js');
     if (os.platform() === 'win32') {
       mainPath = mainPath.replace(/\\/g, '/');
     }
 
     // Replace import main path to generated file by Webpack plugin
-    content = content.replace('./main', mainPath);
+    content = content.replace('@uvue/core/main', mainPath);
   } else if (this.resourcePath === `${mainPath}.js` || this.resourcePath === `${mainPath}.ts`) {
     // Replace new Vue by a simple return object
 
@@ -45,7 +43,7 @@ module.exports = async function(content, map, meta) {
 
       newVue.replace(initFunc);
 
-      content = `import initApp from '@uvue/core/lib/initApp';\n${doc.print()}`;
+      content = `import { initApp } from '@uvue/core';\n${doc.print()}`;
     }
   }
 

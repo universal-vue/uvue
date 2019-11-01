@@ -1,19 +1,7 @@
-const { IpcMessenger } = require('@vue/cli-shared-utils');
-
 const defaults = {
   host: 'localhost',
   port: 8080,
 };
-
-const modifyConfig = (config, fn) => {
-  if (Array.isArray(config)) {
-    config.forEach(c => fn(c));
-  } else {
-    fn(config);
-  }
-};
-
-let ipc;
 
 module.exports = (api, options) => {
   api.registerCommand(
@@ -51,8 +39,10 @@ async function startServer({ api, host, port, args }) {
 
   const {
     adapter,
+    adapterArgs,
     uvueDir,
     https,
+    http2,
     devServer,
     spaPaths,
     renderer,
@@ -60,23 +50,12 @@ async function startServer({ api, host, port, args }) {
   } = api.uvue.getServerConfig();
 
   const serverConfig = getWebpackConfig(api, { serve: true, client: false, host, port });
-  const clientConfig = getWebpackConfig(api, { serve: true, client: true, host, port });
-
-  // Expose advanced stats
-  if (args.dashboard) {
-    const DashboardPlugin = require('@vue/cli-service/lib/webpack/DashboardPlugin');
-    modifyConfig(clientConfig, config => {
-      config.plugins.push(
-        new DashboardPlugin({
-          type: 'ssr-serve',
-        }),
-      );
-    });
-  }
+  const clientConfig = getWebpackConfig(api, { serve: true, client: true, host, port, hmr: true });
 
   // Create server
   const server = new Server({
     adapter,
+    adapterArgs,
     logger,
     uvueDir,
 
@@ -91,6 +70,7 @@ async function startServer({ api, host, port, args }) {
       host,
       port,
       https,
+      http2,
     },
 
     // Dev server options
@@ -106,17 +86,6 @@ async function startServer({ api, host, port, args }) {
 
   // Start server
   await server.start();
-
-  if (args.dashboard) {
-    // Send final app URL
-    ipc = new IpcMessenger();
-    ipc.connect();
-    ipc.send({
-      vueServe: {
-        url: `http://${host}:${port}`,
-      },
-    });
-  }
 
   return server;
 }

@@ -1,4 +1,4 @@
-FROM node:10 as builder
+FROM node:10-slim as builder
 
 ENV NODE_ENV production
 
@@ -16,7 +16,7 @@ COPY --chown=node:node . /home/node/app
 
 RUN yarn ssr:build && \
   yarn --production --pure-lock && \
-  yarn add core-js@2 && \
+  yarn add core-js@3 && \
   yarn cache clean
 
 ###

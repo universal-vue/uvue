@@ -116,8 +116,8 @@ module.exports = (api, options = {}) => {
   });
 
   if (client) {
-    return require('./client')(api, chainConfig);
+    return require('./client')(api, chainConfig, options);
   } else {
-    return require('./server')(api, chainConfig);
+    return require('./server')(api, chainConfig, options);
   }
 };

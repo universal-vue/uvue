@@ -10,6 +10,7 @@ import {
   middlewares,
   errorHandler,
   serverPrefetch,
+  prefetch,
 } from '../tests';
 
 describe('(SPA) Core', () => {
@@ -31,9 +32,11 @@ describe('(SPA) Core plugins', () => {
 
   asyncData.client();
 
+  serverPrefetch.client();
+
+  prefetch.client();
+
   middlewares.client();
 
   errorHandler.client().method();
-
-  serverPrefetch.client();
 });

@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import * as http from 'http';
+import * as http2 from 'http2';
 import * as https from 'https';
 import * as killable from 'killable';
 import * as micromatch from 'micromatch';
@@ -18,7 +19,7 @@ export class ConnectAdapter implements IAdapter {
   /**
    * HTTP server instance
    */
-  protected server: http.Server | https.Server;
+  protected server: http.Server | https.Server | http2.Http2Server;
 
   constructor(protected uvueServer: Server, protected options: IAdapterOptions = {}) {
     // Default options
@@ -35,7 +36,11 @@ export class ConnectAdapter implements IAdapter {
     // Create HTTP server
     const httpsOptions = this.options.https || { key: null, cert: null };
     if (httpsOptions.key && httpsOptions.cert) {
-      this.server = https.createServer(httpsOptions, this.app);
+      if (this.options.http2) {
+        this.server = http2.createSecureServer(httpsOptions, this.app);
+      } else {
+        this.server = https.createServer(httpsOptions, this.app);
+      }
     } else {
       this.server = http.createServer(this.app);
     }

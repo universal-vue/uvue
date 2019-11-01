@@ -18,17 +18,18 @@ const fileSearchFilter = filename => {
 };
 
 module.exports = class CodeFixer {
-  constructor(basePath = process.cwd()) {
+  constructor(basePath = process.cwd(), options = {}) {
     this.basePath = basePath;
+    this.options = options;
   }
 
   async run(api, mainPath) {
     const fixPlugin = async (name, search, methodName, findByImport = false) => {
-      consola.start(`Checking ${name} file(s)...`);
+      if (!this.options.silent) consola.start(`Checking ${name} file(s)...`);
 
       const files = await this.findFiles(search);
       if (!files.length) {
-        consola.error(`No ${name} file detected!`);
+        if (!this.options.silent) consola.error(`No ${name} file detected!`);
       } else {
         for (const file of files) {
           const code = await fs.readFile(file, 'utf-8');
@@ -38,7 +39,8 @@ module.exports = class CodeFixer {
             await fs.writeFile(file, result);
           }
 
-          consola.success(`${name}: ${path.relative(api.resolve('.'), file)} OK`);
+          if (!this.options.silent)
+            consola.success(`${name}: ${path.relative(api.resolve('.'), file)} OK`);
         }
       }
     };
@@ -74,7 +76,7 @@ module.exports = class CodeFixer {
 
     // Main
     {
-      consola.start(`Checking main file...`);
+      if (!this.options.silent) consola.start(`Checking main file...`);
 
       if (fs.existsSync(mainPath + '.ts')) {
         mainPath += '.ts';
@@ -98,7 +100,8 @@ module.exports = class CodeFixer {
         await fs.writeFile(mainPath, result);
       }
 
-      consola.success(`Main: ${path.relative(api.resolve('.'), mainPath)} OK`);
+      if (!this.options.silent)
+        consola.success(`Main: ${path.relative(api.resolve('.'), mainPath)} OK`);
     }
   }
 
@@ -646,7 +649,7 @@ module.exports = class CodeFixer {
   }
 
   async fixMissingDependencies(api) {
-    consola.start('Checking missing dependencies...');
+    if (!this.options.silent) consola.start('Checking missing dependencies...');
 
     const hasDependency = name => {
       const packageJson = require(api.resolve('package.json'));
@@ -659,7 +662,7 @@ module.exports = class CodeFixer {
 
     // Missing Apollo deps
     if (api.hasPlugin('apollo') && !hasDependency('isomorphic-fetch')) {
-      consola.info('Installing isomorphic-fetch for Apollo...');
+      if (!this.options.silent) consola.info('Installing isomorphic-fetch for Apollo...');
 
       if (isYarn()) {
         await execa('yarn', ['add', 'isomorphic-fetch'], {
@@ -679,7 +682,7 @@ module.exports = class CodeFixer {
     const filepath = api.resolve('tsconfig.json');
 
     if (api.hasPlugin('typescript') && fs.existsSync(filepath)) {
-      consola.start('Checking tsconfig...');
+      if (!this.options.silent) consola.start('Checking tsconfig...');
 
       try {
         const tsConfig = JSON.parse((await fs.readFile(filepath, 'utf-8')) || '{}');
@@ -691,9 +694,9 @@ module.exports = class CodeFixer {
           await fs.writeFile(filepath, JSON.stringify(tsConfig, null, '  '));
         }
 
-        consola.success('Types OK');
+        if (!this.options.silent) consola.success('Types OK');
       } catch (err) {
-        consola.error('Unable to check or fix tsconfig.json');
+        if (!this.options.silent) consola.error('Unable to check or fix tsconfig.json');
       }
     }
   }

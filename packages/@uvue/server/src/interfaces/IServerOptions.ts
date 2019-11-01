@@ -36,6 +36,7 @@ export interface IServerOptions {
     };
     shouldPreload?: (file: string, type: string) => boolean;
     shouldPrefetch?: (file: string, type: string) => boolean;
+    runInNewContext?: 'once' | boolean;
   };
 
   // Dev server options

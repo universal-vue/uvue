@@ -10,4 +10,5 @@ Component.registerHooks([
   'beforeRouteLeave',
   'beforeRouteUpdate',
   'serverPrefetch',
+  'prefetch',
 ]);
