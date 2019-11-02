@@ -6,8 +6,7 @@
   "scripts": {
     "lint": "eslint './**/*.js'",
     "lint:fix": "eslint --fix './**/*.js'",
-    "format": "prettier --ignore-path .gitignore --write './**/*.js'",
-    "prepublishOnly": "cd ui-addon && yarn lint --no-fix && yarn build --dest ../ui-addon-dist"
+    "format": "prettier --ignore-path .gitignore --write './**/*.js'"
   },
   "repository": "https://github.com/universal-vue/uvue",
   "bugs": {
