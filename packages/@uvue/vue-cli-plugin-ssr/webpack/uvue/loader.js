@@ -20,7 +20,7 @@ module.exports = async function(content, map, meta) {
     }
 
     // Replace import main path to generated file by Webpack plugin
-    content = content.replace('@uvue/core/main', mainPath);
+    content = content.replace(/@uvue\/core\/main/g, mainPath);
   } else if (this.resourcePath === `${mainPath}.js` || this.resourcePath === `${mainPath}.ts`) {
     // Replace new Vue by a simple return object
 
