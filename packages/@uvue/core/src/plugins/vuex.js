@@ -39,7 +39,7 @@ export default {
    */
   async beforeStart(context) {
     const { store } = context;
-    if (store && process.client && process.ssr && window.__DATA__) {
+    if (store && context.isClient && window.__DATA__ && window.__DATA__.state) {
       const { state } = window.__DATA__;
       store.replaceState(state);
     }
@@ -61,9 +61,9 @@ export default {
    * Call onHttpRequest action and send data to __DATA__
    */
   sendSSRData(context) {
-    const { store, ssr } = context;
+    const { store, ssr, isServer } = context;
 
-    if (store && process.server) {
+    if (store && isServer) {
       // Inject store data in __DATA__ on server side
       ssr.data.state = store.state;
     }
@@ -94,7 +94,7 @@ export default {
     const { store } = context;
 
     if (this.$options.onHttpRequest && store._actions.onHttpRequest) {
-      if (process.server || !process.ssr || window.__SPA_ROUTE__ || fromHMR) {
+      if (context.isServer || window.__SPA_ROUTE__ || fromHMR) {
         await store.dispatch('onHttpRequest', context);
       }
     }

@@ -119,7 +119,7 @@ module.exports = class UVuePlugin {
 
     if (this.plugins) {
       result = `
-import UVue from '@uvue/core';
+import { UVue } from '@uvue/core';
 import uvueConfig from '${configPath}';
 
 const { plugins } = uvueConfig;

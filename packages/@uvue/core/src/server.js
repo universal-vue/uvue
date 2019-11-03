@@ -1,5 +1,5 @@
 import { createApp } from '@uvue/core/main';
-import UVue, { routeResolve, catchErrorAsync, catchError } from '@uvue/core';
+import { UVue, routeResolve, catchErrorAsync, catchError } from '@uvue/core';
 
 /**
  * Vue start

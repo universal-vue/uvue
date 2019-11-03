@@ -16,7 +16,7 @@ export default async (context, guardContext = {}) => {
   } catch (error) {
     if (error instanceof RedirectError) {
       // Do redirect
-      if (process.client && next) {
+      if (context.isClient && next) {
         context.app.$emit('router.redirect');
         next(error.location);
         return;
@@ -24,7 +24,7 @@ export default async (context, guardContext = {}) => {
         doRedirect(context, error);
       }
     } else {
-      if (process.server && context.ssr.events) {
+      if (context.isServer && context.ssr.events) {
         const { events } = context.ssr;
         events.emit('error', {
           from: 'routeResolve',

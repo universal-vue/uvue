@@ -2,13 +2,13 @@ import 'isomorphic-fetch';
 import Vue from 'vue';
 import ApolloSSR from 'vue-apollo/ssr';
 
-if (process.server) {
-  Vue.use(ApolloSSR);
-}
-
 export default {
-  async sendSSRData({ app, ssr, error }) {
-    if (process.server) {
+  beforeCreate({ isServer }) {
+    if (isServer) Vue.use(ApolloSSR);
+  },
+
+  async sendSSRData({ app, ssr, error, isServer }) {
+    if (isServer) {
       try {
         ssr.bodyAdd = `<script>window.__APOLLO_STATE__=${ApolloSSR.serializeStates(
           app.$apolloProvider,

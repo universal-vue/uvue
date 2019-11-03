@@ -6,7 +6,7 @@ export default {
    */
   beforeCreate(context) {
     // Create error hanlder object to store current error
-    if (process.server) {
+    if (context.isServer) {
       // On server side: create simple object
       context.$errorHandler = {
         error: null,
@@ -60,8 +60,8 @@ export default {
    * If we have an error during SSR process fetch it
    * and hydrate client with it
    */
-  beforeStart({ $errorHandler }) {
-    if (process.client && process.ssr && window.__DATA__ && window.__DATA__.errorHandler) {
+  beforeStart({ $errorHandler, isClient }) {
+    if (isClient && window.__DATA__ && window.__DATA__.errorHandler) {
       const { error, statusCode } = window.__DATA__.errorHandler;
       $errorHandler.error = error;
       $errorHandler.statusCode = statusCode;
@@ -118,12 +118,12 @@ export default {
   /**
    * Main function to process current error
    */
-  setError(data, { $errorHandler }) {
+  setError(data, { $errorHandler, isClient }) {
     let { error, info, statusCode, vm } = data;
 
     if (!error) return;
 
-    if (process.client) {
+    if (isClient) {
       // On client side show errors in console for debug purpose
       if (process.env.NODE_ENV !== 'production') {
         if (info) {
