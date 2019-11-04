@@ -23,9 +23,9 @@
     "isomorphic"
   ],
   "scripts": {
-    "lint": "eslint './src/**/*.js'",
-    "lint:fix": "eslint --fix './src/**/*.js'",
-    "format": "prettier --ignore-path .gitignore --write './src/**/*.js'"
+    "lint": "eslint './**/*.js'",
+    "lint:fix": "eslint --fix './**/*.js'",
+    "format": "prettier --ignore-path .gitignore --write './**/*.js'"
   },
   "devDependencies": {}
 }
