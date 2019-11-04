@@ -19,8 +19,8 @@ module.exports = (api, options) => {
 
   const extendPackage = {
     dependencies: {
-      '@uvue/core': '^0.1.0-alpha',
-      '@uvue/server': '^0.1.0-alpha',
+      '@uvue/core': '^0.1.0',
+      '@uvue/server': '^0.1.0',
       compression: '^1.7.3',
       connect: '^3.6.6',
       'cookie-parser': '^1.4.3',
