@@ -70,12 +70,16 @@ module.exports = (api, chainConfig) => {
   for (const rule of config.module.rules) {
     if (rule.use) {
       for (const item of rule.use) {
-        if (item.loader === 'cache-loader' || item.loader === 'vue-loader') {
-          item.options.cacheIdentifier += '-server';
-          item.options.cacheDirectory += '-server';
+        const cachedLoaders = ['cache-loader', 'babel-loader', 'vue-loader', 'ts-loader'];
 
-          if (item.loader === 'vue-loader') {
-            item.options.optimizeSSR = true;
+        for (const loaderName of cachedLoaders) {
+          if (item.loader === loaderName || item.loader.includes(loaderName)) {
+            item.options.cacheIdentifier += '-server';
+            item.options.cacheDirectory += '-server';
+
+            if (loaderName === 'vue-loader') {
+              item.options.optimizeSSR = true;
+            }
           }
         }
       }
