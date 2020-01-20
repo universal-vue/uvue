@@ -29,7 +29,7 @@
     "deepmerge": "^2.1.1",
     "execa": "^1.0.0",
     "fs-extra": "^7.0.0",
-    "jest": "^23.5.0",
+    "jest": "^24.9.0",
     "jest-puppeteer": "^3.3.1",
     "lerna": "^3.1.4",
     "node-mocks-http": "^1.7.0",

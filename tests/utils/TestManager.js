@@ -58,7 +58,8 @@ class TestManager {
     await vueCreate('base', preset, this.baseDir, false);
 
     // Add some dependencies
-    await execa('yarn', ['add', 'vue-meta'], {
+    const yarnPath = path.resolve('.yarn/releases/yarn-1.18.0.js');
+    await execa('node', [yarnPath, 'add', 'vue-meta'], {
       cwd: this.baseProjectPath,
       stdio: 'inherit',
     });
