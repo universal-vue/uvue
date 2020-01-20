@@ -53,6 +53,7 @@ module.exports = class {
     // Core package need to be transpiled
     api.service.projectOptions.transpileDependencies.push(
       /\.uvue(\\|\/)main\.js/,
+      /@uvue(\\|\/)core/,
       // PWA: register service worker module
       /register-service-worker/,
     );

@@ -1,5 +1,5 @@
 import { createApp } from '@uvue/core/main';
-import UVue, { routeResolve, onHotReload, catchErrorAsync, catchError } from '@uvue/core';
+import { UVue, routeResolve, onHotReload, catchErrorAsync, catchError } from '@uvue/core';
 
 // Enable HMR
 if (module.hot) {

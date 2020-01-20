@@ -73,7 +73,7 @@ const findAsyncDataComponents = (parent, components = []) => {
  * Attach HMR behavior on components to re-apply asyncData
  */
 const addHotReload = context => {
-  if (!module.hot || !process.client) return;
+  if (!module.hot || !context.isClient) return;
 
   const { app, router } = context;
   const components = findAsyncDataComponents(app);
@@ -125,13 +125,13 @@ export default {
 
     const components = await resolveComponentsAsyncData(context, route, routeComponents);
 
-    if (process.server) {
+    if (context.isServer) {
       ssr.data.components = components;
     }
   },
 
-  async beforeReady({ router }) {
-    if (process.client && window.__DATA__ && window.__DATA__.components) {
+  async beforeReady({ router, isClient }) {
+    if (isClient && window.__DATA__ && window.__DATA__.components) {
       const asyncDataComponents = getAsyncDataComponents(
         router.getMatchedComponents(router.currentRoute),
       );

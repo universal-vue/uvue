@@ -2,7 +2,7 @@
  * Listen for HMR and execute callback
  */
 export default (callback, name) => {
-  if (process.client && module.hot) {
+  if (typeof window !== 'undefined' && module.hot) {
     if (!window.__UVUE_HMR) window.__UVUE_HMR = {};
 
     const hotCb = status => {

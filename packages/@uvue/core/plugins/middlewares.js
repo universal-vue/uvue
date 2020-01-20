@@ -1,4 +1,4 @@
-import UVue, { getContext, RedirectError, doRedirect } from '@uvue/core';
+import { UVue, getContext, RedirectError, doRedirect } from '@uvue/core';
 
 export default {
   /**

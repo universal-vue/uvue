@@ -50,7 +50,7 @@ export default async (options, context) => {
     } else {
       UVue.invoke('catchError', context, new VueError(error, vm, info));
 
-      if (process.client) {
+      if (context.isClient) {
         if (process.env.NODE_ENV !== 'production') {
           Vue.util.warn(`Error in ${info}: "${error.toString()}"`, vm);
         } else if (process.env.VUE_APP_ENABLE_ERROR_LOGS) {
@@ -73,7 +73,7 @@ export default async (options, context) => {
     if (error instanceof RedirectError) {
       doRedirect(context, error);
     } else {
-      if (process.server && context.ssr.events) {
+      if (context.isServer && context.ssr.events) {
         emitServerError(context, {
           from: 'router',
           error,

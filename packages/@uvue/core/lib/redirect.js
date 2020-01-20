@@ -13,10 +13,10 @@ export class RedirectError extends Error {
 /**
  * Return redirect function for context
  */
-export const getRedirect = ({ ssr }) => {
+export const getRedirect = ({ ssr, isServer }) => {
   return (location, statusCode = 302) => {
     const redirectError = new RedirectError(location, statusCode);
-    if (process.server) ssr.redirected = statusCode;
+    if (isServer) ssr.redirected = statusCode;
     throw redirectError;
   };
 };
@@ -25,7 +25,7 @@ export const getRedirect = ({ ssr }) => {
  * Simply do a redirect
  * Distinct process for server & client side
  */
-export const doRedirect = ({ app, res, ssr, router }, { location, statusCode }) => {
+export const doRedirect = ({ app, res, ssr, router, isClient }, { location, statusCode }) => {
   if (typeof location === 'object') {
     location = router.resolve(location, router.currentRoute).href;
   }
@@ -34,7 +34,7 @@ export const doRedirect = ({ app, res, ssr, router }, { location, statusCode }) 
     app.$emit('router.redirect');
   }
 
-  if (process.client) {
+  if (isClient) {
     // Client side
     router.replace(location);
   } else {
