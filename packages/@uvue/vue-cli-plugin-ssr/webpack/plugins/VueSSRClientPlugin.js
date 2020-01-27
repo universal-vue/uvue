@@ -4,6 +4,9 @@ const uniq = require('lodash.uniq');
 const isJS = function(file) {
   return /\.js(\?[^.]+)?$/.test(file);
 };
+const isHotUpdate = function(file) {
+  return /\.hot-update\.js(\?[^.]+)?$/.test(file);
+};
 const isCSS = function(file) {
   return /\.css(\?[^.]+)?$/.test(file);
 };
@@ -37,11 +40,13 @@ module.exports = class VueSSRClientPlugin {
         Object.keys(stats.entrypoints)
           .map(name => stats.entrypoints[name].assets)
           .reduce((assets, all) => all.concat(assets), [])
-          .filter(file => isJS(file) || isCSS(file)),
+          .filter(file => isJS(file) || isCSS(file))
+          .filter(file => !isHotUpdate(file)),
       );
 
       const asyncFiles = allFiles
         .filter(file => isJS(file) || isCSS(file))
+        .filter(file => !isHotUpdate(file))
         .filter(file => initialFiles.indexOf(file) < 0);
 
       const manifest = {
