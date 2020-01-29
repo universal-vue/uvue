@@ -1,3 +1,4 @@
+console.log(chainConfig.plugins);
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const nodeExternals = require('webpack-node-externals');
 
@@ -63,6 +64,11 @@ module.exports = (api, chainConfig) => {
   chainConfig.plugin('webpack-bar').tap(() => {
     return [{ name: 'Server', color: 'orange' }];
   });
+
+  // Remove TS types checks plugin
+  if (chainConfig.plugins.has('fork-ts-checker')) {
+    chainConfig.plugins.delete('fork-ts-checker');
+  }
 
   const config = api.resolveWebpackConfig(chainConfig);
 
