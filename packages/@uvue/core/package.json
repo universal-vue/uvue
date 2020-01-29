@@ -1,6 +1,6 @@
 {
   "name": "@uvue/core",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "UVue core package",
   "main": "lib/index.js",
   "types": "index.d.ts",
@@ -26,6 +26,5 @@
     "lint": "eslint './**/*.js'",
     "lint:fix": "eslint --fix './**/*.js'",
     "format": "prettier --ignore-path .gitignore --write './**/*.js'"
-  },
-  "devDependencies": {}
+  }
 }
