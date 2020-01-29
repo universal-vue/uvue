@@ -1,4 +1,3 @@
-console.log(chainConfig.plugins);
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const nodeExternals = require('webpack-node-externals');
 
