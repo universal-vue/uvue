@@ -1,8 +1,8 @@
-import jsonEncode from 'fast-safe-stringify';
 import { merge } from 'lodash';
 import * as LRUCache from 'lru-cache';
 import { BundleRenderer, createBundleRenderer } from 'vue-server-renderer';
 import { IRenderer, IRendererOptions, IRequestContext } from './interfaces';
+import { jsonEncode } from './utils';
 
 export class Renderer implements IRenderer {
   private vue: BundleRenderer;
