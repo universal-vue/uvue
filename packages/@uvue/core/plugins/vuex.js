@@ -30,7 +30,7 @@ export default {
         this.resolveOnHttpRequest(context, true);
       }, 'vuex.onHttpRequest');
     } else {
-      Vue.utils.warn('UVue Vuex plugin installed but no store found!');
+      Vue.util.warn('UVue Vuex plugin installed but no store found!');
     }
   },
 
@@ -39,6 +39,9 @@ export default {
    */
   async beforeStart(context) {
     const { store } = context;
+
+    if (!store) return;
+
     if (store && context.isClient && window.__DATA__ && window.__DATA__.state) {
       const { state } = window.__DATA__;
       store.replaceState(state);
@@ -63,6 +66,8 @@ export default {
   sendSSRData(context) {
     const { store, ssr, isServer } = context;
 
+    if (!store) return;
+
     if (store && isServer) {
       // Inject store data in __DATA__ on server side
       ssr.data.state = store.state;
@@ -71,6 +76,8 @@ export default {
 
   async resolveFetch(context) {
     const { routeComponents, store } = context;
+
+    if (!store) return;
 
     if (store && this.$options.fetch) {
       // Get pages components
@@ -92,6 +99,8 @@ export default {
 
   async resolveOnHttpRequest(context, fromHMR = false) {
     const { store } = context;
+
+    if (!store) return;
 
     if (this.$options.onHttpRequest && store._actions.onHttpRequest) {
       if (context.isServer || window.__SPA_ROUTE__ || fromHMR) {

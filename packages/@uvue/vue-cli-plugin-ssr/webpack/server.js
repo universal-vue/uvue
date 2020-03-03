@@ -64,6 +64,11 @@ module.exports = (api, chainConfig) => {
     return [{ name: 'Server', color: 'orange' }];
   });
 
+  // Remove TS types checks plugin
+  if (chainConfig.plugins.has('fork-ts-checker')) {
+    chainConfig.plugins.delete('fork-ts-checker');
+  }
+
   const config = api.resolveWebpackConfig(chainConfig);
 
   // Change cache folder for server side
@@ -73,9 +78,13 @@ module.exports = (api, chainConfig) => {
         const cachedLoaders = ['cache-loader', 'babel-loader', 'vue-loader', 'ts-loader'];
 
         for (const loaderName of cachedLoaders) {
+          if (!item.options) continue;
+
           if (item.loader === loaderName || item.loader.includes(loaderName)) {
-            item.options.cacheIdentifier += '-server';
-            item.options.cacheDirectory += '-server';
+            if (item.options.cacheDirectory && !/-server$/.test(item.options.cacheDirectory)) {
+              item.options.cacheIdentifier += '-server';
+              item.options.cacheDirectory += '-server';
+            }
 
             if (loaderName === 'vue-loader') {
               item.options.optimizeSSR = true;
