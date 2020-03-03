@@ -20,9 +20,10 @@
     "packages/tests/*"
   ],
   "devDependencies": {
-    "@vue/cli": "^4.0.0",
-    "@vue/cli-plugin-typescript": "^4.0.0",
-    "@vue/cli-test-utils": "^4.0.0",
+    "@vue/babel-preset-app": "^4.2.3",
+    "@vue/cli": "^4.2.3",
+    "@vue/cli-plugin-typescript": "^4.2.3",
+    "@vue/cli-test-utils": "^4.2.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "cheerio": "^1.0.0-rc.2",
