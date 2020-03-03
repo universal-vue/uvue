@@ -11,6 +11,11 @@ module.exports = async function(content, map, meta) {
 
   const { mainPath, projectPath } = this.query;
 
+  const mainHasExt = path.extname(mainPath);
+  let isMainFile = mainHasExt.length
+    ? this.resourcePath === mainPath
+    : this.resourcePath === `${mainPath}.js` || this.resourcePath === `${mainPath}.ts`;
+
   if (mm.isMatch(this.resourcePath, '**/@uvue/core/lib/(client|server).js')) {
     // Get absolute path to generated main.js
     const dirPath = path.join(projectPath, 'node_modules', '.uvue');
@@ -21,7 +26,7 @@ module.exports = async function(content, map, meta) {
 
     // Replace import main path to generated file by Webpack plugin
     content = content.replace(/@uvue\/core\/main/g, mainPath);
-  } else if (this.resourcePath === `${mainPath}.js` || this.resourcePath === `${mainPath}.ts`) {
+  } else if (isMainFile) {
     // Replace new Vue by a simple return object
 
     // Parse source code
