@@ -85,7 +85,7 @@ export class Renderer implements IRenderer {
       .replace(/data-html-attrs(="")?/i, htmlAttrs)
       .replace(/data-body-attrs(="")?/i, bodyAttrs)
       .replace(/<ssr-head\s*\/?>/i, head)
-      .replace(/(<div id="?app"?><\/div>|<ssr-body\s*\/?>)/i, body)
+      .replace(/(?:<div id="?app"?><\/div>|<ssr-body\s*\/?>)/i, body)
       .replace(/<\/ssr-head>/i, '')
       .replace(/<\/ssr-body>/i, '');
 
