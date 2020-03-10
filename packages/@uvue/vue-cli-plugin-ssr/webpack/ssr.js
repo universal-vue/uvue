@@ -8,6 +8,11 @@ module.exports = (api, options = {}) => {
   const opts = Object.assign({ client: true, ssr: true }, options);
   const { client, host, port, serve } = opts;
 
+  // Some variables to check config env
+  process.env.UVUE_SIDE = client ? 'client' : 'server';
+  process.client = !!client;
+  process.server = !client;
+
   // Get base config from SPA
   const chainConfig = api.resolveChainableWebpackConfig();
 
