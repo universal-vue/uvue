@@ -103,6 +103,6 @@ process.env.NODE_ENV = 'production';
    */
   await server.start();
 })().catch(err => {
-  server.logger.error(err);
+  console.error(err);
   process.exit(1);
 });
