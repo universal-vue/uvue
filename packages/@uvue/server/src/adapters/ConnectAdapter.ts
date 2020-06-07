@@ -96,9 +96,9 @@ export class ConnectAdapter implements IAdapter {
 
     try {
       // Hook before render
-      await this.uvueServer.invokeAsync('beforeRender', context, this.uvueServer);
+      await this.uvueServer.invokeAsync('beforeRender', response, context, this.uvueServer);
 
-      if (!res.finished) {
+      if (!res.finished && !response.skipRender) {
         const { spaPaths } = this.uvueServer.options;
 
         if (spaPaths && spaPaths.length && micromatch.some(context.url, spaPaths)) {
@@ -137,7 +137,7 @@ export class ConnectAdapter implements IAdapter {
     this.send(response, context);
 
     // Hook after response was sent
-    this.uvueServer.invoke('afterResponse', context, this.uvueServer);
+    this.uvueServer.invoke('afterResponse', response, context, this.uvueServer);
 
     // Remove listeners
     context.events.removeAllListeners();
@@ -183,10 +183,7 @@ export class ConnectAdapter implements IAdapter {
   /**
    * Send HTTP response
    */
-  protected send(
-    response: { body: string; status: number },
-    { req, res, statusCode }: IRequestContext,
-  ) {
+  protected send(response: { body: string; status: number }, { res, statusCode }: IRequestContext) {
     if (res.finished) {
       return;
     }

@@ -51,6 +51,25 @@ export class KoaAdapter extends ConnectAdapter {
     return super.renderMiddleware(req, res, { ctx });
   }
 
+  /**
+   * Send HTTP response
+   */
+  protected send(
+    response: { body: string; status: number },
+    { res, statusCode, ctx }: IRequestContext,
+  ) {
+    if (res.finished) {
+      return;
+    }
+
+    ctx.response.set({
+      'Content-Type': 'text/html; charset=utf-8',
+      'Content-Lenght': Buffer.byteLength(response.body, 'utf-8'),
+    });
+    ctx.response.status = statusCode || response.status;
+    ctx.response.body = response.body;
+  }
+
   protected createRequestContext(
     req: http.IncomingMessage,
     res: http.ServerResponse,
@@ -59,6 +78,7 @@ export class KoaAdapter extends ConnectAdapter {
     const context = super.createRequestContext(req, res, middlewareContext);
 
     const { ctx } = middlewareContext;
+    context.ctx = ctx;
     context.inject = {
       ctx,
     };
