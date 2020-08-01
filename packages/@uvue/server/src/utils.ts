@@ -1,7 +1,8 @@
 import fastSafeStringify from 'fast-safe-stringify';
 
-const UNSAFE_CHARS_REGEXP = /[<>\/\u2028\u2029]/g;
+const UNSAFE_CHARS_REGEXP = /[$<>\/\u2028\u2029]/g;
 const ESCAPED_CHARS = {
+  '$': '\\u0024',
   '/': '\\u002F',
   '<': '\\u003C',
   '>': '\\u003E',
