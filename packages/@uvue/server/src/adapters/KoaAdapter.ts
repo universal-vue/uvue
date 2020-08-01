@@ -63,8 +63,8 @@ export class KoaAdapter extends ConnectAdapter {
     }
 
     ctx.response.set({
-      'Content-Type': 'text/html; charset=utf-8',
       'Content-Lenght': Buffer.byteLength(response.body, 'utf-8'),
+      'Content-Type': 'text/html; charset=utf-8',
     });
     ctx.response.status = statusCode || response.status;
     ctx.response.body = response.body;

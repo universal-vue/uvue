@@ -1,5 +1,5 @@
 environment:
-  nodejs_version: '8'
+  nodejs_version: "10"
 
 install:
   - yarn --version
@@ -12,9 +12,5 @@ test_script:
   - node --version
   - yarn --version
   - yarn test:win
-
-cache:
-#   - "%LOCALAPPDATA%\\Yarn"
-#   - node_modules -> yarn.lock
 
 build: off
