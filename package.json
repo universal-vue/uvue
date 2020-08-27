@@ -13,7 +13,7 @@
     "test": "./tests/cli install suite && ./tests/cli test suite",
     "test:win": "node tests/cli install suite && node tests/cli test suite",
     "postinstall": "node scripts/postinstall.js",
-    "pub": "yarn clean && lerna publish"
+    "pub": "yarn clean && lerna publish --force-publish"
   },
   "workspaces": [
     "packages/@uvue/*",
