@@ -54,7 +54,7 @@ export const setupDevMiddleware = async (
 
   // Create Webpack compiler
   const compiler = webpack([client, server]);
-  compiler.outputFileSystem = mfs;
+  (compiler as any).outputFileSystem = mfs;
 
   if (app.getApp().__isKoa) {
     const koaWebpack = require('koa-webpack');
@@ -122,7 +122,7 @@ export const setupDevMiddleware = async (
   };
 
   compiler.hooks.done.tap('WebapackClientDev', handleCompilation);
-  compiler.compilers[1].watch({}, (err, stats) => {
+  compiler.compilers[1].watch({}, (err, stats: any) => {
     if (err) {
       throw err;
     }
