@@ -1,3 +1,1 @@
-# UVue / Universal Vue
-
-Work in progress...
+# UVue next

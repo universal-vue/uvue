@@ -1,9 +1,0 @@
-{
-  "name": "@uvue/core",
-  "version": "0.4.0-alpha.0",
-  "description": "UVue core package",
-  "main": "index.js",
-  "repository": "https://github.com/universal-vue/uvue",
-  "author": "Simon Babay <simon@babay.fr>",
-  "license": "MIT"
-}
