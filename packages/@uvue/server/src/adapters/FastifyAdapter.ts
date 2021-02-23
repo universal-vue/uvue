@@ -70,7 +70,7 @@ export class FastifyAdapter extends ConnectAdapter {
   }
 
   protected createRequestContext(request: any, reply: any): IRequestContext {
-    const context = super.createRequestContext(request.req, reply.res);
+    const context = super.createRequestContext(request.raw || request.req, reply.raw || reply.res);
 
     context.inject = {
       reply,
