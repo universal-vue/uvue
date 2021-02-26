@@ -26,7 +26,10 @@ export default async (options, context) => {
   // Inject function
   const inject = (key, value) => {
     if (!/^\$/.test(key)) key = `$${key}`;
-    context[key] = Vue.prototype[key] = value;
+    context[key] = value;
+    if (!Object.prototype.hasOwnProperty.call(Vue.prototype, key)) {
+      Vue.prototype[key] = value;
+    }
     if (options.store) {
       options.store[key] = value;
     }
