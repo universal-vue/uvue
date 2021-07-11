@@ -36,7 +36,11 @@ export const doRedirect = ({ app, res, ssr, router, isClient }, { location, stat
 
   if (isClient) {
     // Client side
-    router.replace(location);
+    try {
+      window.location = new URL(location);
+    } catch {
+      router.replace(location);
+    }
   } else {
     // Server side
     ssr.redirected = {
