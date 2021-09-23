@@ -121,8 +121,10 @@ export const setupDevMiddleware = async (
     }
   };
 
+  const serverCompilerWatchOptions = app.options.devServer.middleware.watchOptions || {};
+
   compiler.hooks.done.tap('WebapackClientDev', handleCompilation);
-  compiler.compilers[1].watch({}, (err, stats) => {
+  compiler.compilers[1].watch(serverCompilerWatchOptions, (err, stats) => {
     if (err) {
       throw err;
     }
