@@ -37,8 +37,11 @@ const resolveComponentsAsyncData = (context, route, components) => {
  * Method to inject asyncData results to $data on component
  */
 const applyAsyncData = (Component, asyncData) => {
-  const ComponentData = Component.options.data || noopData;
+  if (typeof Component.options.__initData === 'undefined') {
+    Component.options.__initData = Component.options.data || noopData;
+  }
 
+  const ComponentData = Component.options.__initData;
   if (!asyncData && Component.options.hasAsyncData) {
     return;
   }
